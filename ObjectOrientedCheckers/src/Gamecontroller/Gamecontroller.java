@@ -20,7 +20,6 @@ public class Gamecontroller {
 		calcBlackMoves();
 		turn++;
 		calcWhiteMoves();
-		
 		testPieces();	
 	}
 	
