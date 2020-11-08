@@ -37,7 +37,7 @@ public class MoveCalcTree{
 			if (Gamecontroller.turn % 2 == 0) { //blackturn
 				if(icoor + 1 < tempboard.length && jcoor - 1 > -1) { //if possible create child node where move is taken
 					if(tempboard[icoor+1][jcoor-1] == null) {
-						Move stepMove = new Move(node.getPiece());
+						Move stepMove = tempstep1;
 						stepMove.setTo(icoor+1, jcoor-1);
 						stepMove.becomesKing(icoor==tempboard.length-1);
 						moveList.add(stepMove);
@@ -62,7 +62,7 @@ public class MoveCalcTree{
 				}
 				if(icoor + 1 < tempboard.length && jcoor + 1 < tempboard[0].length) {
 					if(tempboard[icoor+1][jcoor+1] == null) {
-						Move stepMove = new Move(node.getPiece());
+						Move stepMove = tempstep2;
 						stepMove.setTo(icoor+1, jcoor+1);
 						stepMove.becomesKing(icoor==tempboard.length-1);
 						moveList.add(stepMove);
@@ -89,7 +89,7 @@ public class MoveCalcTree{
 			else { //whiteturn
 				if(icoor - 1 > -1 && jcoor - 1 > -1) {
 					if(tempboard[icoor-1][jcoor-1] == null) {
-						Move stepMove = new Move(node.getPiece());
+						Move stepMove = tempstep3;
 						stepMove.setTo(icoor-1, jcoor-1);
 						stepMove.becomesKing(icoor==0);
 						moveList.add(stepMove);
@@ -114,7 +114,7 @@ public class MoveCalcTree{
 				}
 				if(icoor - 1 > -1 && jcoor + 1 < tempboard[0].length) {
 					if(tempboard[icoor-1][jcoor+1] == null) {
-						Move stepMove = new Move(node.getPiece());
+						Move stepMove = tempstep4;
 						stepMove.setTo(icoor-1, jcoor+1);
 						stepMove.becomesKing(icoor==0);
 						moveList.add(stepMove);
@@ -143,14 +143,13 @@ public class MoveCalcTree{
 			int holdsize = node.getMove().getToList().size();
 			if (holdsize > 0) {
 				int[] holdpos = node.getMove().getToList().get(holdsize-1);
-				System.out.println("here");
 				icoor = holdpos[0];
 				jcoor = holdpos[1];
 			}
 			
 			if(icoor + 1 < tempboard.length && jcoor - 1 > -1) { //if possible create child node where move is taken
 				if(tempboard[icoor+1][jcoor-1] == null && !(node.getMove().remove.size() > 0)) {
-					Move stepMove = new Move(node.getPiece());
+					Move stepMove = tempstep1;
 					stepMove.setTo(icoor+1, jcoor-1);
 					moveList.add(stepMove);
 				}
@@ -174,7 +173,7 @@ public class MoveCalcTree{
 			}
 			if(icoor + 1 < tempboard.length && jcoor + 1 < tempboard[0].length) {
 				if(tempboard[icoor+1][jcoor+1] == null && !(node.getMove().remove.size() > 0)) {
-					Move stepMove = new Move(node.getPiece());
+					Move stepMove = tempstep2;
 					stepMove.setTo(icoor+1, jcoor+1);
 					moveList.add(stepMove);
 				}
@@ -198,7 +197,7 @@ public class MoveCalcTree{
 			}
 			if(icoor - 1 > -1 && jcoor - 1 > -1) {
 				if(tempboard[icoor-1][jcoor-1] == null && !(node.getMove().remove.size() > 0)) {
-					Move stepMove = new Move(node.getPiece());
+					Move stepMove = tempstep3;
 					stepMove.setTo(icoor-1, jcoor-1);
 					moveList.add(stepMove);
 				}
@@ -222,7 +221,7 @@ public class MoveCalcTree{
 			}
 			if(icoor - 1 > -1 && jcoor + 1 < tempboard[0].length) {
 				if(tempboard[icoor-1][jcoor+1] == null && !(node.getMove().remove.size() > 0)) {
-					Move stepMove = new Move(node.getPiece());
+					Move stepMove = tempstep4;
 					stepMove.setTo(icoor-1, jcoor+1);
 					moveList.add(stepMove);
 				}

@@ -1,6 +1,7 @@
 package Piece;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.List;
 
 import Move.Move;
@@ -31,6 +32,7 @@ public class BlackPiece extends CheckersPiece{
 	}
 	
 	public void calcMoves() {
+		this.moves = new ArrayList();
 		MoveCalcTree calc = new MoveCalcTree();
 		this.moves = calc.getMoves(this);
 	}

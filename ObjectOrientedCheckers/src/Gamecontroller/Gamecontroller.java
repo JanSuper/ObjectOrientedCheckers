@@ -5,6 +5,7 @@ import java.util.List;
 
 import Board.Board;
 import Move.Move;
+import Move.MoveToAction;
 import Piece.Piece;
 import UI.BoardPanel;
 
@@ -20,7 +21,28 @@ public class Gamecontroller {
 		calcBlackMoves();
 		turn++;
 		calcWhiteMoves();
+		turn++;
 		testPieces();	
+		Move firstMove = new Move(((Piece)field[2][1]));
+		firstMove.setTo(3, 2);
+		calcBlackMoves();
+		MoveToAction.UserAction(firstMove);	
+		testPieces();	
+		calcWhiteMoves();
+		firstMove = new Move(((Piece)field[5][4]));
+		firstMove.setTo(4, 3);
+		MoveToAction.UserAction(firstMove);
+		testPieces();
+		
+		calcBlackMoves();
+		testPieces();
+		firstMove = new Move(((Piece)field[3][2]));
+		firstMove.setTo(5, 4);
+		MoveToAction.UserAction(firstMove);
+		calcWhiteMoves();
+		turn++;
+		calcBlackMoves();
+		testPieces();
 	}
 	
 	public static void newGame() {
@@ -56,7 +78,7 @@ public class Gamecontroller {
 		for(int i = 0; i <= field.length - 1; i++) {
 			for(int j = 0; j <= field[0].length - 1; j++) {
 				if(field[i][j] != null) {
-					if(((Piece) field[i][j]).getColour() == 1) {
+					if(((Piece) field[i][j]).getColour() == 1) {		
 						((Piece) field[i][j]).calcMoves();
 					}
 				}
@@ -90,6 +112,7 @@ public class Gamecontroller {
 			}
 			System.out.println();
 		}
+		System.out.println("-------------");
 	}	
 
 }
