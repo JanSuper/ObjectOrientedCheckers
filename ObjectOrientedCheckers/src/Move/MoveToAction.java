@@ -49,7 +49,7 @@ public class MoveToAction {
 	}
 	
 	public static void AIAction(Move m) {
-		for(int i = 0; i <= m.getToList().size()-1; i = i) {
+		for(int i = 0; i <= m.getToList().size()-1;) {
 			System.out.println("here");
 			int[] startingPos;
 			if (i == 0) {
