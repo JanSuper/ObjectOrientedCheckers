@@ -105,6 +105,26 @@ public class Gamecontroller {
 			calcWhiteMoves();
 			System.out.println("White's turn");
 		}
+		
+		boolean endOfGame = true;
+		for(int i = 0; i <= field.length - 1; i++) {
+			for(int j = 0; j <= field[0].length - 1; j++) {
+				if(field[i][j] != null) {
+					if(((Piece) field[i][j]).getMoves().size() != 0) {
+						endOfGame = false;
+						break;
+					}
+				}
+			}
+			if (!endOfGame) {
+				break;
+			}
+		}
+		
+		if(endOfGame) {
+			System.out.println("end of game");
+		}
+		
 	}
 	
 	public static void calcWhiteMoves() {
