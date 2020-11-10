@@ -21,6 +21,10 @@ public class MoveToAction {
 			for(int i = possibleMoves.size()-1; i>=0; i--) {
 				((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().get(i).getRemoveList().remove(0);
 				((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().get(i).getToList().remove(0);
+				
+				if(((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().get(i).getToList().size() == 0) {
+					((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().remove(i);
+				}
 			}
 		}
 		else {
@@ -32,8 +36,15 @@ public class MoveToAction {
 		}
 		Gamecontroller.field[toHold[0]][toHold[1]] = holdPiece;
 		Gamecontroller.field[postionHold[0]][postionHold[1]] = null;
-		Gamecontroller.turn++;
 		((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).setLocation(toHold[0],toHold[1]);
+		
+		if(((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).getMoves().size() == 0) {
+			System.out.println("No More Steps");
+			Gamecontroller.endTurn();
+		}
+		else {
+			Gamecontroller.limitToThis(toHold[0],toHold[1]);
+		}
 
 	}
 	

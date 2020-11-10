@@ -57,4 +57,8 @@ public class WhitePiece extends CheckersPiece{
 	public void makeKing() {
 		isKing = true;
 	}
+	
+	public void resetMoveList() {
+		this.moves = new ArrayList();
+	}
 }

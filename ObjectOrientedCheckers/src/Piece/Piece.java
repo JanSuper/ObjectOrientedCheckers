@@ -16,4 +16,5 @@ public interface Piece {
 	int getColour();
 	List<Move> getMoves();
 	void makeKing();
+	void resetMoveList();
 }
