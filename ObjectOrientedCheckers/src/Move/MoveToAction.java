@@ -49,7 +49,19 @@ public class MoveToAction {
 	}
 	
 	public static void AIAction(Move m) {
-		
+		for(int i = 0; i <= m.getToList().size()-1; i = i) {
+			System.out.println("here");
+			int[] startingPos;
+			if (i == 0) {
+				startingPos = m.getPiece().getLocation();
+			}
+			else {
+				startingPos = m.getToList().get(i-1);
+			}
+			Move holdMove = new Move(((Piece)Gamecontroller.field[startingPos[0]][startingPos[1]]));
+			holdMove.setTo(m.getToList().get(i)[0], m.getToList().get(i)[1]);
+			UserAction(holdMove);
+		}
 	}
 
 }

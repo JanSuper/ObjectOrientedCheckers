@@ -37,13 +37,16 @@ public class Gamecontroller {
 		firstMove.setTo(3, 2);
 		MoveToAction.UserAction(firstMove);
 		testPieces();
-		firstMove = new Move(((Piece)field[6][5]));
-		firstMove.setTo(4, 3);
-		MoveToAction.UserAction(firstMove);
-		testPieces();
-		firstMove = new Move(((Piece)field[4][3]));
-		firstMove.setTo(2, 1);
-		MoveToAction.UserAction(firstMove);
+//		firstMove = new Move(((Piece)field[6][5]));
+//		firstMove.setTo(4, 3);
+//		MoveToAction.UserAction(firstMove);
+//		testPieces();
+//		firstMove = new Move(((Piece)field[4][3]));
+//		firstMove.setTo(2, 1);
+//		MoveToAction.UserAction(firstMove);
+		
+		MoveToAction.AIAction(((Piece)field[6][5]).getMoves().get(0));
+		
 		testPieces();
 	}
 	
