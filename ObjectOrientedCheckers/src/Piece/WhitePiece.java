@@ -10,7 +10,7 @@ import Move.MoveCalcTree;
 public class WhitePiece extends CheckersPiece{
 	
 	int[] position = {-1,-1};
-	boolean isKing = false;;
+	boolean isKing = false;
 	List<Move> moves;
 	
 	public WhitePiece() {
