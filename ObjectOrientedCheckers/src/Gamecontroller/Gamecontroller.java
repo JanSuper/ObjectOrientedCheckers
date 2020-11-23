@@ -8,8 +8,10 @@ import Move.Move;
 import Move.MoveToAction;
 import ObjectUI.Main;
 import ObjectUI.Visual;
+import Piece.BlackPiece;
 import Piece.Piece;
 import Piece.PlaceholderPiece;
+import Piece.WhitePiece;
 
 public class Gamecontroller {
 	public static Board board;
@@ -131,11 +133,13 @@ public class Gamecontroller {
 			}
 		}
 		
-		if(endOfGame) {
+		if(endOfGame) { //TODO game reset
 			System.out.println("end of game");
-			newGame();
-			calcBlackMoves();
-			Main.board = new Visual();
+//			startNewGame();
+//			newGame();
+//			calcBlackMoves();
+//			Main.board = new Visual();
+//			Main.board.place_pieces();
 		}
 		
 	}
@@ -249,5 +253,22 @@ public class Gamecontroller {
 			}
 		}
 	}
-
+	
+	public static void startNewGame() {
+		for(int i = 0; i <= field.length - 1; i++) {
+			for (int j = 0; j <= field[0].length - 1; j++) {
+				if (field[i][j] != null) {
+					if (((Piece)field[i][j]).getColour() == 2) {
+						Main.board.getChildren().remove((PlaceholderPiece)field[i][j]);
+					}
+					else if (((Piece)field[i][j]).getColour() == 1) {
+						Main.board.getChildren().remove((WhitePiece)field[i][j]);
+					}
+					else {
+						Main.board.getChildren().remove((BlackPiece)field[i][j]);
+					}
+				}
+			}
+		}
+	}
 }

@@ -44,7 +44,7 @@ public class Visual extends SmartGroup {
         }
     }
     
-    private void place_pieces(){
+    public void place_pieces(){
 
         for(int i = 0; i <= board.length - 1; i++){
             for(int j = 0; j <= board[0].length - 1; j++){
