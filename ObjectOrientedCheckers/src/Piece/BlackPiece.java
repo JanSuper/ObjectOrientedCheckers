@@ -24,7 +24,7 @@ public class BlackPiece extends CheckersPiece{
 	public BlackPiece() {
 		super();
 	      PhongMaterial material = new PhongMaterial();
-	      material.setDiffuseColor(Color.BLACK);
+	      material.setDiffuseColor(Color.DARKGRAY);
 	      setMaterial(material);
 	      addEvent();
 	}
@@ -84,7 +84,7 @@ public class BlackPiece extends CheckersPiece{
 	 
 	 public void king(){
 		 PhongMaterial mt = new PhongMaterial();
-		 mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/RedCrown.png"))));
+		 mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/BlackCrown_1.png"))));
 		 setMaterial(mt);
 	    }
 }

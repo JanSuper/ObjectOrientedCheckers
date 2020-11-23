@@ -82,8 +82,7 @@ public class WhitePiece extends CheckersPiece{
 	        });
 	    }
 	 
-	 public void king()
-	    {
+	 public void king(){
 	        PhongMaterial mt = new PhongMaterial();
 	        mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/RedCrown.png"))));
 	        setMaterial(mt);
