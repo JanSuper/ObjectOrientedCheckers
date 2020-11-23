@@ -1,7 +1,6 @@
 package Piece;
 
 import Gamecontroller.*;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,11 @@ import Move.MoveCalcTree;
 import UI.FakePiece;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.geometry.HPos;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+
 
 public class WhitePiece extends CheckersPiece{
 	
@@ -75,5 +79,13 @@ public class WhitePiece extends CheckersPiece{
 	            //add new fake pieces
 	            Gamecontroller.addPlaceholders(this);
 	        });
+	    }
+	 
+	 public void king()
+	    {
+	        PhongMaterial mt = new PhongMaterial();
+	        mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/RedCrown.png"))));
+	        setMaterial(mt);
+
 	    }
 }

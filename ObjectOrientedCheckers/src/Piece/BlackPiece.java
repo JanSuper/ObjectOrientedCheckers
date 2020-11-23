@@ -1,14 +1,19 @@
 package Piece;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
 import Gamecontroller.Gamecontroller;
 import Move.Move;
 import Move.MoveCalcTree;
+import UI.FakePiece;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.geometry.HPos;
+import javafx.scene.image.Image;
+
+
+
 
 public class BlackPiece extends CheckersPiece{
 	
@@ -74,6 +79,12 @@ public class BlackPiece extends CheckersPiece{
 	            //add new fake pieces
 	            Gamecontroller.addPlaceholders(this);
 	        });
+	    }
+	 
+	 public void king(){
+		 PhongMaterial mt = new PhongMaterial();
+		 mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/RedCrown.png"))));
+		 setMaterial(mt);
 	    }
 }
 
