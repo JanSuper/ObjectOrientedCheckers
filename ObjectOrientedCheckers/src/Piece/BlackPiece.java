@@ -6,7 +6,6 @@ import java.util.List;
 import Gamecontroller.Gamecontroller;
 import Move.Move;
 import Move.MoveCalcTree;
-import UI.FakePiece;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.geometry.HPos;

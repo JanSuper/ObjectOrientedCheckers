@@ -50,13 +50,9 @@ public class Visual extends SmartGroup {
             for(int j = 0; j <= board[0].length - 1; j++){
             	if(board[i][j] != null) {
                 	if(((Piece)board[i][j]).getColour() == 0){
-//                		((BlackPiece)board[i][j]).translateXProperty().set(((BlackPiece)board[i][j]).getTranslateX()+100*(j-1));
-//                		((BlackPiece)board[i][j]).translateYProperty().set(((BlackPiece)board[i][j]).getTranslateY()+100*i);
                     	getChildren().add(((BlackPiece)board[i][j]));
                 	}
                 	else if(((Piece)board[i][j]).getColour() == 1){
-//                		((WhitePiece)board[i][j]).translateXProperty().set(((WhitePiece)board[i][j]).getTranslateX()+100*(j-1));
-//                		((WhitePiece)board[i][j]).translateYProperty().set(((WhitePiece)board[i][j]).getTranslateY()+100*i);
                     	getChildren().add(((WhitePiece)board[i][j]));
                 	}
             	}

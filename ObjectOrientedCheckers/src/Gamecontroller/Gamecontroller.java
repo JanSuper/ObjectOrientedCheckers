@@ -7,9 +7,9 @@ import Board.Board;
 import Move.Move;
 import Move.MoveToAction;
 import ObjectUI.Main;
+import ObjectUI.Visual;
 import Piece.Piece;
 import Piece.PlaceholderPiece;
-import UI.BoardPanel;
 
 public class Gamecontroller {
 	public static Board board;
@@ -133,6 +133,9 @@ public class Gamecontroller {
 		
 		if(endOfGame) {
 			System.out.println("end of game");
+			newGame();
+			calcBlackMoves();
+			Main.board = new Visual();
 		}
 		
 	}
