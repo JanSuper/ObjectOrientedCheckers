@@ -19,7 +19,7 @@ public class WhiteTile extends Box
         translateYProperty().set(this.getTranslateY()+50);
 
         PhongMaterial material = new PhongMaterial();
-        material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/images/white tile.jpg"))));
+        material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/white tile.jpg"))));
         setMaterial(material);
     }
 }

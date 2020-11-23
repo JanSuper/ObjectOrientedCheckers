@@ -27,7 +27,7 @@ public class RedPiece extends Piece
     {
         this.king = true;
         PhongMaterial mt = new PhongMaterial();
-        mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/images/RedCrown.png"))));
+        mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/RedCrown.png"))));
         setMaterial(mt);
         this.setOnMouseClicked(e->{
             //if it's red's turn
