@@ -65,6 +65,7 @@ public class BlackPiece extends CheckersPiece{
 	}
 	
 	public void makeKing() {
+		king();
 		isKing = true;
 	}
 	

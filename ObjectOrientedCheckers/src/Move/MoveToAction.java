@@ -42,6 +42,15 @@ public class MoveToAction {
 		Gamecontroller.field[postionHold[0]][postionHold[1]] = null;
 		((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).setLocation(toHold[0],toHold[1]);
 		
+		if(Gamecontroller.turn%2 == 0) {
+			if (toHold[0] == 7)
+			((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).makeKing();
+		}
+		else {
+			if (toHold[0] == 0)
+				((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).makeKing();
+		}
+		
 		if(((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).getMoves().size() == 0) {
 			System.out.println("No More Steps");
 			Gamecontroller.endTurn();

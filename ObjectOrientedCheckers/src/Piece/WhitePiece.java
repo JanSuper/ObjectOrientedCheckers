@@ -64,6 +64,7 @@ public class WhitePiece extends CheckersPiece{
 	}
 	
 	public void makeKing() {
+		king();
 		isKing = true;
 	}
 	

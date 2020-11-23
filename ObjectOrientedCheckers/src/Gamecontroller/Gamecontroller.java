@@ -21,41 +21,41 @@ public class Gamecontroller {
 		calcBlackMoves();
 	}
 	
-	public static void main(String[] args) {
-		newGame();
-		//testBoard();
-		calcBlackMoves();
-		testPieces();	
-		Move firstMove = new Move(((Piece)field[2][1]));
-		firstMove.setTo(3, 2);
-		MoveToAction.UserAction(firstMove);	
-		testPieces();	
-		firstMove = new Move(((Piece)field[5][4]));
-		firstMove.setTo(4, 3);
-		MoveToAction.UserAction(firstMove);
-		testPieces();
-		firstMove = new Move(((Piece)field[3][2]));
-		firstMove.setTo(5, 4);
-		MoveToAction.UserAction(firstMove);
-		testPieces();
-		endTurn();
-		testPieces();
-		firstMove = new Move(((Piece)field[2][3]));
-		firstMove.setTo(3, 2);
-		MoveToAction.UserAction(firstMove);
-		testPieces();
-//		firstMove = new Move(((Piece)field[6][5]));
+//	public static void main(String[] args) {
+//		newGame();
+//		//testBoard();
+//		calcBlackMoves();
+//		testPieces();	
+//		Move firstMove = new Move(((Piece)field[2][1]));
+//		firstMove.setTo(3, 2);
+//		MoveToAction.UserAction(firstMove);	
+//		testPieces();	
+//		firstMove = new Move(((Piece)field[5][4]));
 //		firstMove.setTo(4, 3);
 //		MoveToAction.UserAction(firstMove);
 //		testPieces();
-//		firstMove = new Move(((Piece)field[4][3]));
-//		firstMove.setTo(2, 1);
+//		firstMove = new Move(((Piece)field[3][2]));
+//		firstMove.setTo(5, 4);
 //		MoveToAction.UserAction(firstMove);
-		
-		MoveToAction.AIAction(((Piece)field[6][5]).getMoves().get(0));
-		
-		testPieces();
-	}
+//		testPieces();
+//		endTurn();
+//		testPieces();
+//		firstMove = new Move(((Piece)field[2][3]));
+//		firstMove.setTo(3, 2);
+//		MoveToAction.UserAction(firstMove);
+//		testPieces();
+////		firstMove = new Move(((Piece)field[6][5]));
+////		firstMove.setTo(4, 3);
+////		MoveToAction.UserAction(firstMove);
+////		testPieces();
+////		firstMove = new Move(((Piece)field[4][3]));
+////		firstMove.setTo(2, 1);
+////		MoveToAction.UserAction(firstMove);
+//		
+//		MoveToAction.AIAction(((Piece)field[6][5]).getMoves().get(0));
+//		
+//		testPieces();
+//	}
 	
 	public static void newGame() {
 		board = new Board();
