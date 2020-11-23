@@ -6,13 +6,20 @@ import java.util.List;
 import Board.Board;
 import Move.Move;
 import Move.MoveToAction;
+import ObjectUI.Main;
 import Piece.Piece;
+import Piece.PlaceholderPiece;
 import UI.BoardPanel;
 
 public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
+	
+	public Gamecontroller() {
+		newGame();
+		calcBlackMoves();
+	}
 	
 	public static void main(String[] args) {
 		newGame();
@@ -207,6 +214,33 @@ public class Gamecontroller {
 				if (field[i][j] != null) {
 					if (i != icoor || j != jcoor) {
 						((Piece)field[i][j]).resetMoveList();
+					}
+				}
+			}
+		}
+	}
+	
+	public static void addPlaceholders (Piece piece) {
+		List<Move> holdlist = piece.getMoves();
+		Piece placepiece = new PlaceholderPiece();
+		for (int i = 0; i <= holdlist.size() - 1; i++) {
+			System.out.println("place");
+			int[] start = piece.getLocation();
+			int[] coor = piece.getMoves().get(i).getToList().get(0);
+			field[coor[0]][coor[1]] = placepiece.clone();
+			((Piece)field[coor[0]][coor[1]]).setLocation(coor[0],coor[1]);
+			((PlaceholderPiece)field[coor[0]][coor[1]]).setFrom(start[0], start[1]);
+			Main.board.getChildren().add((PlaceholderPiece)field[coor[0]][coor[1]]);
+		}
+	}
+	
+	public static void removePlaceholders() {
+		for(int i = 0; i <= field.length - 1; i++) {
+			for (int j = 0; j <= field[0].length - 1; j++) {
+				if (field[i][j] != null) {
+					if (((Piece)field[i][j]).getColour() == 2) {
+						Main.board.getChildren().remove((PlaceholderPiece)field[i][j]);
+						field[i][j] = null;
 					}
 				}
 			}

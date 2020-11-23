@@ -4,8 +4,11 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gamecontroller.Gamecontroller;
 import Move.Move;
 import Move.MoveCalcTree;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 
 public class BlackPiece extends CheckersPiece{
 	
@@ -14,7 +17,11 @@ public class BlackPiece extends CheckersPiece{
 	List<Move> moves;
 	
 	public BlackPiece() {
-		//this.setVisual(databasePointer);
+		super();
+	      PhongMaterial material = new PhongMaterial();
+	      material.setDiffuseColor(Color.BLACK);
+	      setMaterial(material);
+	      addEvent();
 	}
 	
 	@Override
@@ -22,10 +29,6 @@ public class BlackPiece extends CheckersPiece{
 		return new BlackPiece();
 	}
 	
-	@Override
-	public Image getVisual() {
-		return super.getVisual();
-	}
 	
 	public List<Move> getMoves(){
 		return moves;
@@ -40,6 +43,8 @@ public class BlackPiece extends CheckersPiece{
 	public void setLocation(int i, int j) {
 		position[0] = i;
 		position[1] = j;
+		this.setTranslateX((100*j)+50);
+		this.setTranslateY((100*i)+50);
 	}
 	
 	public boolean isKing() {
@@ -61,5 +66,14 @@ public class BlackPiece extends CheckersPiece{
 	public void resetMoveList() {
 		this.moves = new ArrayList();
 	}
+	
+	 private void addEvent(){
+	        this.setOnMouseClicked(e->{	     
+	        	//delete all fake pieces
+	        	Gamecontroller.removePlaceholders();
+	            //add new fake pieces
+	            Gamecontroller.addPlaceholders(this);
+	        });
+	    }
 }
 

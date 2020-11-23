@@ -1,8 +1,9 @@
 package Board;
 
 import Piece.*;
+import ObjectUI.SmartGroup;
 
-public class Board {
+public class Board{
 	
 	public static Object[][] board = new Object[8][8];
 	

@@ -4,4 +4,5 @@ module ObjectOrientedCheckers {
 	requires javafx.controls;
 	requires java.sql;
 	exports UI;
+	exports ObjectUI;
 }

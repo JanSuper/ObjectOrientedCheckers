@@ -8,7 +8,6 @@ import Move.Move;
 public interface Piece {
 	
 	CheckersPiece clone();
-	Image getVisual();
 	void calcMoves();
 	void setLocation(int i, int j);
 	boolean isKing();
