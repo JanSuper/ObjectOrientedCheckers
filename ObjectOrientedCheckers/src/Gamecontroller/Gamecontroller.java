@@ -231,7 +231,7 @@ public class Gamecontroller {
 		List<Move> holdlist = piece.getMoves();
 		Piece placepiece = new PlaceholderPiece();
 		for (int i = 0; i <= holdlist.size() - 1; i++) {
-			System.out.println("place");
+//			System.out.println("place");
 			int[] start = piece.getLocation();
 			int[] coor = piece.getMoves().get(i).getToList().get(0);
 			field[coor[0]][coor[1]] = placepiece.clone();
