@@ -13,6 +13,7 @@ public class Move{
 	List<Piece> remove = new ArrayList();
 	boolean becomeKing;
 	
+	
 	public Move (Piece p) {
 		pieceMoved = p;
 		from = p.getLocation();
