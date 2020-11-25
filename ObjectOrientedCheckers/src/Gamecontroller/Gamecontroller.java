@@ -9,6 +9,7 @@ import Move.MoveToAction;
 import ObjectUI.Main;
 import ObjectUI.Visual;
 import Piece.BlackPiece;
+import Piece.CheckersPiece;
 import Piece.Piece;
 import Piece.PlaceholderPiece;
 import Piece.WhitePiece;
@@ -17,6 +18,8 @@ public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
+	public static boolean playerOneAI = false;
+	public static boolean playerTwoAI = false;
 	
 	public Gamecontroller() {
 		newGame();
@@ -270,5 +273,27 @@ public class Gamecontroller {
 				}
 			}
 		}
+	}
+	
+	public static Object[][] deepBoardCopy(Object[][] board){
+		Object[][] boardCopy = new Object[board.length][board[0].length];
+		
+		for(int i = 0; i <= board.length - 1; i++) {
+			for(int j = 0; j <= board[0].length - 1; j++) {
+				if(board[i][j] == null) {
+					boardCopy[i][j] = null;
+				}
+				else if (((Piece)board[i][j]).getColour() == 1) {
+					WhitePiece hold = new WhitePiece();
+					boardCopy[i][j] = hold.deepClone((Piece)(board[i][j]));
+				}
+				else {
+					BlackPiece hold = new BlackPiece();
+					boardCopy[i][j] = hold.deepClone((Piece)(board[i][j]));
+				}
+			}
+		}
+		
+		return boardCopy;
 	}
 }

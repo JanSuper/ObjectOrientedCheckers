@@ -62,19 +62,33 @@ public class MoveToAction {
 	}
 	
 	public static void AIAction(Move m) {
-		for(int i = 0; i <= m.getToList().size()-1;) {
-			System.out.println("here");
-			int[] startingPos;
-			if (i == 0) {
-				startingPos = m.getPiece().getLocation();
-			}
-			else {
-				startingPos = m.getToList().get(i-1);
-			}
+		if(m.getToList().size() == 1) {
+			int[] startingPos = m.getPiece().getLocation();
 			Move holdMove = new Move(((Piece)Gamecontroller.field[startingPos[0]][startingPos[1]]));
-			holdMove.setTo(m.getToList().get(i)[0], m.getToList().get(i)[1]);
+			holdMove.setTo(m.getToList().get(0)[0], m.getToList().get(0)[1]);
 			UserAction(holdMove);
+		}		
+		else {
+			for(int i = 0; i <= m.getToList().size()-1;) {
+				System.out.println("here?");
+				int[] startingPos;
+				if (i == 0) {
+					startingPos = m.getPiece().getLocation();
+				}
+				else {
+					startingPos = m.getToList().get(i-1);
+				}
+				Move holdMove = new Move(((Piece)Gamecontroller.field[startingPos[0]][startingPos[1]]));
+				holdMove.setTo(m.getToList().get(i)[0], m.getToList().get(i)[1]);
+				UserAction(holdMove);
+			}
 		}
+		if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
+    		//do AI turn
+    	}
+    	else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
+    		//do AI turn
+    	}
 	}
 
 }

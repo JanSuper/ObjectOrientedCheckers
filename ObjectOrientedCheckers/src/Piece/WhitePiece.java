@@ -15,10 +15,7 @@ import javafx.scene.paint.PhongMaterial;
 
 
 public class WhitePiece extends CheckersPiece{
-	
-	int[] position = {-1,-1};
-	boolean isKing = false;
-	List<Move> moves;
+
 	
 	public WhitePiece() {
 		  super();
@@ -40,7 +37,13 @@ public class WhitePiece extends CheckersPiece{
 	public void calcMoves() {
 		this.moves = new ArrayList();
 		MoveCalcTree calc = new MoveCalcTree();
-		this.moves = calc.getMoves(this);
+		this.moves = calc.getMoves(this, Gamecontroller.field);
+	}
+	
+	public void AIcalcMoves(Object[][] tempboard) {
+		this.moves = new ArrayList();
+		MoveCalcTree calc = new MoveCalcTree();
+		this.moves = calc.getMoves(this, tempboard);
 	}
 	
 	public void setLocation(int i, int j) {
@@ -87,4 +90,24 @@ public class WhitePiece extends CheckersPiece{
 	        setMaterial(mt);
 
 	    }
+	 
+	 @Override
+	 public WhitePiece deepClone(Piece piece) {
+			WhitePiece newPiece = new WhitePiece();
+			
+			newPiece.position[0] = piece.getLocation()[0];
+			newPiece.position[1] = piece.getLocation()[1];
+			
+			newPiece.isKing = piece.isKing();
+			
+			newPiece.moves = new ArrayList();
+			List<Move> holdList = piece.getMoves();
+			
+			for(int i = 0; i <= holdList.size()-1; i++) {
+				newPiece.moves.add(MoveCalcTree.copyMove(holdList.get(i)));
+			}
+			
+			return newPiece;
+		}
+
 }

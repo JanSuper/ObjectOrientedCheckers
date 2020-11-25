@@ -13,17 +13,17 @@ public class MoveCalcTree{
 	List<Move> moveList = new ArrayList();
 	boolean takeMove = false;
 
-	public List<Move> getMoves (Piece currentpiece){
+	public List<Move> getMoves (Piece currentpiece, Object[][] tempboard){
 		Move nullmove =  new Move(currentpiece);
 		headNode = new MoveCalcNode(currentpiece, nullmove);
-		recursion(headNode);
+		recursion(headNode, tempboard);
 		if (takeMove) {
 			removeNormalSteps();
 		}
 		return moveList;
 	}
 	
-	public void recursion(MoveCalcNode node) {
+	public void recursion(MoveCalcNode node, Object[][] tempboard) {
 		Move tempstep1 = copyMove(node.getMove());
 		Move tempstep2 = copyMove(node.getMove());
 		Move tempstep3 = copyMove(node.getMove());
@@ -32,7 +32,6 @@ public class MoveCalcTree{
 		boolean nextStep = false;
 		int icoor = node.getPiece().getLocation()[0];
 		int jcoor = node.getPiece().getLocation()[1];
-		Object[][] tempboard = Board.getBoard();
 		if (!node.getPiece().isKing() && !(node.getMove().remove.size() > 0)) {
 			if (Gamecontroller.turn % 2 == 0) { //blackturn
 				if(icoor + 1 < tempboard.length && jcoor - 1 > -1) { //if possible create child node where move is taken
@@ -53,7 +52,7 @@ public class MoveCalcTree{
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 									takeMove = true;
 									nextStep = true;
-									recursion(newNode);
+									recursion(newNode, tempboard);
 								}
 							}
 						}
@@ -78,7 +77,7 @@ public class MoveCalcTree{
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 									takeMove = true;
 									nextStep = true;
-									recursion(newNode);
+									recursion(newNode, tempboard);
 								}
 							}
 						}
@@ -105,7 +104,7 @@ public class MoveCalcTree{
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 									takeMove = true;
 									nextStep = true;
-									recursion(newNode);
+									recursion(newNode, tempboard);
 								}
 							}
 						}
@@ -130,7 +129,7 @@ public class MoveCalcTree{
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 									takeMove = true;
 									nextStep = true;
-									recursion(newNode);
+									recursion(newNode, tempboard);
 								}
 							}
 						}
@@ -164,7 +163,7 @@ public class MoveCalcTree{
 								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 								takeMove = true;
 								nextStep = true;
-								recursion(newNode);
+								recursion(newNode, tempboard);
 							}
 						}
 					}
@@ -188,7 +187,7 @@ public class MoveCalcTree{
 								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 								takeMove = true;
 								nextStep = true;
-								recursion(newNode);
+								recursion(newNode, tempboard);
 							}
 						}
 					}
@@ -212,7 +211,7 @@ public class MoveCalcTree{
 								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 								takeMove = true;
 								nextStep = true;
-								recursion(newNode);
+								recursion(newNode, tempboard);
 							}
 						}
 					}
@@ -236,7 +235,7 @@ public class MoveCalcTree{
 								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
 								takeMove = true;
 								nextStep = true;
-								recursion(newNode);
+								recursion(newNode, tempboard);
 							}
 						}
 					}

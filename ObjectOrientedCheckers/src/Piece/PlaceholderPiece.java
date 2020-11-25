@@ -5,7 +5,7 @@ import java.util.List;
 import Move.Move;
 import Move.MoveToAction;
 import Gamecontroller.Gamecontroller;
-
+import MINIMAX.AIController;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 
@@ -30,6 +30,16 @@ public class PlaceholderPiece extends CheckersPiece{
 	        	Move newMove = new Move((Piece)Gamecontroller.field[from[0]][from[1]]);
 	        	newMove.setTo(location[0], location[1]);
 	        	MoveToAction.UserAction(newMove);
+	        	
+	        	Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+	        	
+	        	if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
+	        		//do AI turn
+	        	}
+	        	else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
+	        		System.out.println("aiTurn");
+	        		MoveToAction.AIAction(aiMove);
+	        	}
 	        	
 	        });
 	    }
@@ -90,6 +100,12 @@ public class PlaceholderPiece extends CheckersPiece{
 
 	@Override
 	public void resetMoveList() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void AIcalcMoves(Object[][] tempboard) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,6 +1,7 @@
 package ObjectUI;
 
 import Board.Board;
+import Gamecontroller.Gamecontroller;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.stage.Stage;
@@ -25,6 +26,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+    	if(Gamecontroller.playerOneAI) {
+       	 //do first AI move
+        }
         launch(args);
     }
 

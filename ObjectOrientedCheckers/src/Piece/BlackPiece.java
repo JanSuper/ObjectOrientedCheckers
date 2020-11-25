@@ -15,10 +15,7 @@ import javafx.scene.image.Image;
 
 
 public class BlackPiece extends CheckersPiece{
-	
-	int[] position = {-1, -1};
-	boolean isKing = false;
-	List<Move> moves;
+
 	
 	public BlackPiece() {
 		super();
@@ -41,7 +38,13 @@ public class BlackPiece extends CheckersPiece{
 	public void calcMoves() {
 		this.moves = new ArrayList();
 		MoveCalcTree calc = new MoveCalcTree();
-		this.moves = calc.getMoves(this);
+		this.moves = calc.getMoves(this, Gamecontroller.field);
+	}
+	
+	public void AIcalcMoves(Object[][] tempboard) {
+		this.moves = new ArrayList();
+		MoveCalcTree calc = new MoveCalcTree();
+		this.moves = calc.getMoves(this, tempboard);
 	}
 
 	public void setLocation(int i, int j) {
@@ -86,5 +89,25 @@ public class BlackPiece extends CheckersPiece{
 		 mt.setDiffuseMap(new Image(String.valueOf(getClass().getResource("images/BlackCrown_1.png"))));
 		 setMaterial(mt);
 	    }
+	 
+	 @Override
+	 public BlackPiece deepClone(Piece piece) {
+			BlackPiece newPiece = new BlackPiece();
+			
+			newPiece.position[0] = piece.getLocation()[0];
+			newPiece.position[1] = piece.getLocation()[1];
+			
+			newPiece.isKing = piece.isKing();
+			
+			newPiece.moves = new ArrayList();
+			List<Move> holdList = piece.getMoves();
+			
+			for(int i = 0; i <= holdList.size()-1; i++) {
+				newPiece.moves.add(MoveCalcTree.copyMove(holdList.get(i)));
+			}
+			
+			return newPiece;
+		}
+
 }
 
