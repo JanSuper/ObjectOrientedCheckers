@@ -19,7 +19,7 @@ public class Gamecontroller {
 	public static Object[][] field;
 	public static int turn = 0;
 	public static boolean playerOneAI = false;
-	public static boolean playerTwoAI = false;
+	public static boolean playerTwoAI = true;
 	
 	public Gamecontroller() {
 		newGame();

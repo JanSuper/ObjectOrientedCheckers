@@ -53,13 +53,12 @@ public class SearchTree {
 		for(int i = 0; i <= node.children.size() - 1; i++) {
 			List<Move> allEnemyMoves = new ArrayList();
 			if(node.children.get(i).nextMove.getPiece().getColour() == 1) {
-				node.children.get(i).projectedBoard = AIController.calcBlackMoves(node.children.get(i).projectedBoard);
-				
+				node.children.get(i).projectedBoard = AIController.calcBlackMoves(Gamecontroller.deepBoardCopy(node.children.get(i).projectedBoard));
 				for(int j = 0; j <= holdBoard.length - 1; j++) {
 					for(int k = 0; k <= holdBoard[0].length - 1; k++) {
-						if(holdBoard[j][k] != null) {
-							if(((Piece)holdBoard[j][k]).getMoves().size() > 0){ // if the piece has moves
-								allEnemyMoves.addAll(((Piece)holdBoard[j][k]).getMoves());
+						if(node.children.get(i).projectedBoard[j][k] != null) {
+							for(int l = 0; l <= ((Piece)node.children.get(i).projectedBoard[j][k]).getMoves().size() - 1; l++) {
+								allEnemyMoves.add(MoveCalcTree.copyMove(((Piece)node.children.get(i).projectedBoard[j][k]).getMoves().get(l)));
 							}
 						}
 					}
@@ -68,18 +67,17 @@ public class SearchTree {
 				
 			}
 			else {
-				node.children.get(i).projectedBoard = AIController.calcWhiteMoves(node.children.get(i).projectedBoard);
+				node.children.get(i).projectedBoard = AIController.calcWhiteMoves(Gamecontroller.deepBoardCopy(node.children.get(i).projectedBoard));
 				for(int j = 0; j <= holdBoard.length - 1; j++) {
 					for(int k = 0; k <= holdBoard[0].length - 1; k++) {
-						if(holdBoard[j][k] != null) {
-							if(((Piece)holdBoard[j][k]).getMoves().size() > 0){ // if the piece has moves
-								allEnemyMoves.addAll(((Piece)holdBoard[j][k]).getMoves());
+						if(node.children.get(i).projectedBoard[j][k] != null) {
+							for(int l = 0; l <= ((Piece)node.children.get(i).projectedBoard[j][k]).getMoves().size() - 1; l++) {
+								allEnemyMoves.add(MoveCalcTree.copyMove(((Piece)node.children.get(i).projectedBoard[j][k]).getMoves().get(l)));
 							}
 						}
 					}
 				}
 			}
-			
 			Move enemyMove;
 			if (allEnemyMoves.get(0).getRemoveList().size() > 0) {
 				int index = rn.nextInt(allEnemyMoves.size());
@@ -89,19 +87,18 @@ public class SearchTree {
 				int index = rn.nextInt(allEnemyMoves.size());
 		        enemyMove = allEnemyMoves.get(index);
 			}
+			Object[][] copyBoard = Gamecontroller.deepBoardCopy(node.children.get(i).projectedBoard);
 			
-			node.children.get(i).projectedBoard = AIMoveToAction.AIAction(enemyMove, node.children.get(i).projectedBoard);
+			copyBoard = AIMoveToAction.AIAction(enemyMove, Gamecontroller.deepBoardCopy(copyBoard));
 		}
 		
+		// recursion + pruning
 		
 		// Pick best child
-		
-		// Recursion
 		
 		int bruh = rn.nextInt(node.children.size());
 		
 		Move bruhmove = node.children.get(bruh).nextMove;
-		System.out.println(bruhmove.getToList().size());
 		
 		return bruhmove;
 	}

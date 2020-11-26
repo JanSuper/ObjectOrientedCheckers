@@ -106,5 +106,20 @@ public class AIController {
 		}
 		return field;
 	}
+	
+	public static void testBoard(Object[][] field) {
+		for(int i = 0; i <= field.length - 1; i++) {
+			for(int j = 0; j <= field[0].length - 1; j++) {
+				if(field[i][j] == null) {
+					System.out.print("-");
+				}
+				else {
+					System.out.print(((Piece)field[i][j]).getMoves().size());
+				}
+			}
+			System.out.println();
+		}
+		System.out.println("-------------");
+	}
 
 }

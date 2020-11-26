@@ -18,7 +18,7 @@ public class CheckersPiece extends Cylinder implements Piece {
     
     int[] position = {-1, -1};
 	boolean isKing = false;
-	List<Move> moves;
+	List<Move> moves = new ArrayList();
     
 	public CheckersPiece() {
 		super(RADIUS, HEIGHT);

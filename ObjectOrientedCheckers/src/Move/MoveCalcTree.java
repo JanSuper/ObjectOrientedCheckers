@@ -33,7 +33,7 @@ public class MoveCalcTree{
 		int icoor = node.getPiece().getLocation()[0];
 		int jcoor = node.getPiece().getLocation()[1];
 		if (!node.getPiece().isKing() && !(node.getMove().remove.size() > 0)) {
-			if (Gamecontroller.turn % 2 == 0) { //blackturn
+			if (node.currentPiece.getColour() == 0) { //blackturn
 				if(icoor + 1 < tempboard.length && jcoor - 1 > -1) { //if possible create child node where move is taken
 					if(tempboard[icoor+1][jcoor-1] == null) {
 						Move stepMove = tempstep1;
