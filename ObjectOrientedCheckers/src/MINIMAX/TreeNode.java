@@ -11,7 +11,8 @@ public class TreeNode {
 	public Move nextMove;
 	public TreeNode parent;
 	public List<TreeNode> children = new ArrayList();
-	public double score;
+	public int score;
+	public int EnemyMoveScore;
 	
 	public TreeNode(Object[][] projectedboard, Move move, TreeNode parent) {
 		this.projectedBoard = projectedboard;

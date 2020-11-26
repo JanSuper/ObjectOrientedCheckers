@@ -1,8 +1,10 @@
 package MINIMAX;
 
 import Move.Move;
+import Move.MoveCalcTree;
 import Piece.Piece;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Gamecontroller.*;
@@ -120,6 +122,77 @@ public class AIController {
 			System.out.println();
 		}
 		System.out.println("-------------");
+	}
+	
+	public static int[] moveScore (Object[][] board, Move move) {
+		// Amount taken | Amount to be lost | new King |  Total friendly in own half | Total enemy in own half
+		
+		int amountTaken = move.getRemoveList().size();
+		
+		board = AIMoveToAction.AIAction(move, Gamecontroller.deepBoardCopy(board));
+		
+		if (move.getPiece().getColour() == 1) {
+			board = AIController.calcBlackMoves(Gamecontroller.deepBoardCopy(board));
+		}
+		else {
+			board = AIController.calcWhiteMoves(Gamecontroller.deepBoardCopy(board));
+		}
+		
+		int amountToBeTaken = 0;
+		for(int i = 0; i <= board.length - 1; i++) {
+			for(int j = 0; j <= board[0].length - 1; j++) {
+				if (board[i][j] != null) {
+					List<Move> possibleMoves = ((Piece)board[i][j]).getMoves();
+					for(int k = 0; k <= possibleMoves.size() - 1; k++) {
+						if (amountToBeTaken < possibleMoves.get(k).getRemoveList().size()) {
+							amountToBeTaken = possibleMoves.get(k).getRemoveList().size();
+						}
+					}
+				}
+			}
+		}
+		int king = -1;
+		if(move.becomesKing()) {
+			king = 1;
+		}
+		else {
+			king = 0;
+		}
+		
+		int[] currentPos = move.getPiece().getLocation();
+		int amountFriendly = 0;
+		int amountEnemy = 0;
+		if (currentPos[0] <= 3) {
+			for(int i = 0; i <= 3; i++) {
+				for(int j = 0; j <= 7; j++) {
+					if(board[i][j] != null) {
+						if(((Piece)board[i][j]).getColour() == move.getPiece().getColour()) {
+							amountFriendly++;
+						}
+						else {
+							amountEnemy++;
+						}
+					}
+				}
+			}
+		}
+		else {
+			for(int i = 4; i <= 7; i++) {
+				for(int j = 0; j <= 7; j++) {
+					if(board[i][j] != null) {
+						if(((Piece)board[i][j]).getColour() == move.getPiece().getColour()) {
+							amountFriendly++;
+						}
+						else {
+							amountEnemy++;
+						}
+					}
+				}
+			}
+		}
+		
+		int[] score = {amountTaken, amountToBeTaken, king, amountFriendly, amountEnemy};
+		return score;
 	}
 
 }

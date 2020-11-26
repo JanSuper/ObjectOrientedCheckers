@@ -69,7 +69,7 @@ public class MoveToAction {
 			UserAction(holdMove);
 		}		
 		else {
-			for(int i = 0; i <= m.getToList().size()-1;) {
+			for(int i = 0; i <= m.getToList().size()-1; i++) {
 				System.out.println("here?");
 				int[] startingPos;
 				if (i == 0) {
@@ -83,6 +83,7 @@ public class MoveToAction {
 				UserAction(holdMove);
 			}
 		}
+		
 		if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
     		//do AI turn
     	}
