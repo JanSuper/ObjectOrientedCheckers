@@ -1,4 +1,4 @@
-package MINIMAX;
+package SimpleAI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class TreeNode {
 		this.parent = null;
 	}
 	
-	public void addScore(double add) {
+	public void addScore(double add) { //Add score to both itself and parent if it has one
 		this.score += add;
 		if(parent != null) {
 			parent.addScore(add);

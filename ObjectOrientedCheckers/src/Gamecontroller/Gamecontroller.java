@@ -20,6 +20,7 @@ public class Gamecontroller {
 	public static int turn = 0;
 	public static boolean playerOneAI = false;
 	public static boolean playerTwoAI = true;
+	public static boolean gameOver = false;
 	
 	public Gamecontroller() {
 		newGame();
@@ -138,6 +139,7 @@ public class Gamecontroller {
 		
 		if(endOfGame) { //TODO game reset
 			System.out.println("end of game");
+			gameOver = true;
 //			startNewGame();
 //			newGame();
 //			calcBlackMoves();

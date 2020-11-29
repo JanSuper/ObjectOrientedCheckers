@@ -4,8 +4,10 @@ import Gamecontroller.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import AIClasses.AIController;
 import Move.Move;
 import Move.MoveCalcTree;
+import Move.MoveToAction;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.geometry.HPos;
@@ -77,10 +79,17 @@ public class WhitePiece extends CheckersPiece{
 	 private void addEvent()
 	    {
 	        this.setOnMouseClicked(e->{	     
-	        	//delete all fake pieces
-	        	Gamecontroller.removePlaceholders();
-	            //add new fake pieces
-	            Gamecontroller.addPlaceholders(this);
+	        	if(!Gamecontroller.playerTwoAI) {
+		        	//delete all fake pieces
+		        	Gamecontroller.removePlaceholders();
+		            //add new fake pieces
+		            Gamecontroller.addPlaceholders(this);
+		        	}
+		        	else if (Gamecontroller.turn%2 == 1) {
+		        		System.out.println("aiTurn");
+		        		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+		        		MoveToAction.AIAction(aiMove);
+		        	}
 	        });
 	    }
 	 

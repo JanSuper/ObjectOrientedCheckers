@@ -2,6 +2,7 @@ package Move;
 
 import java.util.List;
 
+import AIClasses.AIController;
 import Gamecontroller.Gamecontroller;
 import ObjectUI.Main;
 import Piece.Piece;
@@ -84,12 +85,16 @@ public class MoveToAction {
 			}
 		}
 		
-		if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
-    		//do AI turn
-    	}
-    	else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
-    		//do AI turn
-    	}
+//		if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
+//			System.out.println("aiTurn");
+//    		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+//    		MoveToAction.AIAction(aiMove);
+//    	}
+//    	else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
+//    		System.out.println("aiTurn");
+//    		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+//    		MoveToAction.AIAction(aiMove);
+//    	}
 	}
 
 }

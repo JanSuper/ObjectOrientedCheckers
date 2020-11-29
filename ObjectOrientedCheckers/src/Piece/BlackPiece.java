@@ -3,9 +3,11 @@ package Piece;
 import java.util.ArrayList;
 import java.util.List;
 
+import AIClasses.AIController;
 import Gamecontroller.Gamecontroller;
 import Move.Move;
 import Move.MoveCalcTree;
+import Move.MoveToAction;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.geometry.HPos;
@@ -76,11 +78,19 @@ public class BlackPiece extends CheckersPiece{
 	}
 	
 	 private void addEvent(){
-	        this.setOnMouseClicked(e->{	     
+	        this.setOnMouseClicked(e->{	  
+	        	
+	        	if(!Gamecontroller.playerOneAI) {
 	        	//delete all fake pieces
 	        	Gamecontroller.removePlaceholders();
 	            //add new fake pieces
 	            Gamecontroller.addPlaceholders(this);
+	        	}
+	        	else if (Gamecontroller.turn%2 == 0) {
+	        		System.out.println("aiTurn");
+	        		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+	        		MoveToAction.AIAction(aiMove);
+	        	}
 	        });
 	    }
 	 

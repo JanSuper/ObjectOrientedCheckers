@@ -1,8 +1,9 @@
-package MINIMAX;
+package AIClasses;
 
 import Move.Move;
 import Move.MoveCalcTree;
 import Piece.Piece;
+import SimpleAI.SearchTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,10 +114,10 @@ public class AIController {
 		for(int i = 0; i <= field.length - 1; i++) {
 			for(int j = 0; j <= field[0].length - 1; j++) {
 				if(field[i][j] == null) {
-					System.out.print("-");
+					System.out.print("--");
 				}
 				else {
-					System.out.print(((Piece)field[i][j]).getMoves().size());
+					System.out.print(((Piece)field[i][j]).getMoves().size() + "" + ((Piece)field[i][j]).getColour());
 				}
 			}
 			System.out.println();

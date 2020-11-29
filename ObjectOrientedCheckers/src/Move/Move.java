@@ -60,5 +60,10 @@ public class Move{
 	public boolean becomesKing() {
 		return becomeKing;
 	}
+	
+	@Override
+	public String toString() {
+		return ((String)("[" + from[0] + "," + from[1] + "]" + " to " + "[" + to.get(to.size() - 1)[0] + "," + to.get(to.size() - 1)[1] + "]"));
+	}
 
 }
