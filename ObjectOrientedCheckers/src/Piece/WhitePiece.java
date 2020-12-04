@@ -78,10 +78,15 @@ public class WhitePiece extends CheckersPiece{
 	
 	 private void addEvent()
 	    {
-	        this.setOnMouseClicked(e->{	     
-	        	if(!Gamecontroller.playerTwoAI) {
+	        this.setOnMouseClicked(e->{	   
+	        	
+	        	System.out.println("bruh");
+	        	
+	        	Gamecontroller.removePlaceholders();
+	        	
+	        		if(!Gamecontroller.playerTwoAI) {
 		        	//delete all fake pieces
-		        	Gamecontroller.removePlaceholders();
+		        	
 		            //add new fake pieces
 		            Gamecontroller.addPlaceholders(this);
 		        	}

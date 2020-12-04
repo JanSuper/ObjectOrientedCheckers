@@ -29,19 +29,23 @@ public class PlaceholderPiece extends CheckersPiece{
 	           
 	        	Move newMove = new Move((Piece)Gamecontroller.field[from[0]][from[1]]);
 	        	newMove.setTo(location[0], location[1]);
+	        	
+	        	Gamecontroller.removePlaceholders();
+	        
 	        	MoveToAction.UserAction(newMove);
 
-	        	
-//	        	if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
-//	        		System.out.println("aiTurn");
-//	        		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
-//	        		MoveToAction.AIAction(aiMove);
-//	        	}
-//	        	else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
-//	        		System.out.println("aiTurn");
-//	        		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
-//	        		MoveToAction.AIAction(aiMove);
-//	        	}
+	        	if(!Gamecontroller.gameOver) {
+	        		if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
+	        			System.out.println("aiTurn");
+	        			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+	        			MoveToAction.AIAction(aiMove);
+	        		}
+	        		else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
+	        			System.out.println("aiTurn");
+	        			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+	        			MoveToAction.AIAction(aiMove);
+	        		}
+	        	}
 	        	
 	        });
 	    }

@@ -13,13 +13,13 @@ public class MoveToAction {
 		int[] postionHold = m.getFrom();
 		int[] toHold = m.getToList().get(0);
 		
-		Gamecontroller.removePlaceholders();
 		List<Move> possibleMoves = ((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves();
 		
-		Piece holdPiece = ((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]);
-		
 		if (Math.abs(postionHold[0] - m.getToList().get(0)[0]) == 2) {
-			int[] takePosition = ((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().get(0).getRemoveList().get(0).getLocation();
+			
+			
+			int[] takePosition = {(postionHold[0] + toHold[0])/2, (postionHold[1] + toHold[1])/2};
+			
 			Main.board.getChildren().remove((Piece)Gamecontroller.field[takePosition[0]][takePosition[1]]);
 			Gamecontroller.field[takePosition[0]][takePosition[1]] = null;
 			for(int i = possibleMoves.size()-1; i>=0; i--) {
@@ -38,8 +38,9 @@ public class MoveToAction {
 				}
 			}
 		}
-		Gamecontroller.field[toHold[0]][toHold[1]] = holdPiece;
+		Piece holdPiece = ((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]);
 		
+		Gamecontroller.field[toHold[0]][toHold[1]] = holdPiece;
 		Gamecontroller.field[postionHold[0]][postionHold[1]] = null;
 		((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).setLocation(toHold[0],toHold[1]);
 		
@@ -59,6 +60,8 @@ public class MoveToAction {
 		else {
 			Gamecontroller.limitToThis(toHold[0],toHold[1]);
 		}
+		
+		System.out.println("movemade");
 
 	}
 	

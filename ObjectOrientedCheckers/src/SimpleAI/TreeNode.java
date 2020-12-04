@@ -11,8 +11,8 @@ public class TreeNode {
 	public Move nextMove;
 	public TreeNode parent;
 	public List<TreeNode> children = new ArrayList();
-	public int score;
-	public int EnemyMoveScore;
+	public int score = Integer.MIN_VALUE;
+	public int EnemyMoveScore = Integer.MIN_VALUE;
 	
 	public TreeNode(Object[][] projectedboard, Move move, TreeNode parent) {
 		this.projectedBoard = projectedboard;
@@ -25,10 +25,23 @@ public class TreeNode {
 		this.parent = null;
 	}
 	
-	public void addScore(double add) { //Add score to both itself and parent if it has one
-		this.score += add;
+	public void addScore(int add) {//Add score to both itself and parent if it has one
+		
+		if(this.score < add) {
+			this.score = add;
+		}
 		if(parent != null) {
 			parent.addScore(add);
+		}
+	}
+	
+public void addEnemyScore(int add) {//Add score to both itself and parent if it has one
+		
+		if(this.EnemyMoveScore < add) {
+			this.EnemyMoveScore = add;
+		}
+		if(parent != null) {
+			parent.addEnemyScore(add);
 		}
 	}
 

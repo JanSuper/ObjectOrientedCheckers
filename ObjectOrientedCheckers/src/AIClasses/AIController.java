@@ -126,7 +126,7 @@ public class AIController {
 	}
 	
 	public static int[] moveScore (Object[][] board, Move move) {
-		// Amount taken | Amount to be lost | new King |  Total friendly in own half | Total enemy in own half
+		// Amount taken | Amount to be lost |
 		
 		int amountTaken = move.getRemoveList().size();
 		
@@ -139,60 +139,37 @@ public class AIController {
 			board = AIController.calcWhiteMoves(Gamecontroller.deepBoardCopy(board));
 		}
 		
-		int amountToBeTaken = 0;
-		for(int i = 0; i <= board.length - 1; i++) {
-			for(int j = 0; j <= board[0].length - 1; j++) {
-				if (board[i][j] != null) {
-					List<Move> possibleMoves = ((Piece)board[i][j]).getMoves();
-					for(int k = 0; k <= possibleMoves.size() - 1; k++) {
-						if (amountToBeTaken < possibleMoves.get(k).getRemoveList().size()) {
-							amountToBeTaken = possibleMoves.get(k).getRemoveList().size();
-						}
-					}
-				}
-			}
-		}
-		int king = -1;
-		if(move.becomesKing()) {
-			king = 1;
-		}
-		else {
-			king = 0;
-		}
-		
 		int[] currentPos = move.getPiece().getLocation();
-		int amountFriendly = 0;
-		int amountEnemy = 0;
-		if (currentPos[0] <= 3) {
-			for(int i = 0; i <= 3; i++) {
+		int amountFriendlyPieces = 0;
+		int amountEnemyPieces = 0;
+		int amountFriendlyKings = 0;
+		int amountEnemyKings = 0;
+			for(int i = 0; i <= 7; i++) {
 				for(int j = 0; j <= 7; j++) {
 					if(board[i][j] != null) {
 						if(((Piece)board[i][j]).getColour() == move.getPiece().getColour()) {
-							amountFriendly++;
+							if(((Piece)board[i][j]).isKing()){
+								amountFriendlyKings++;
+								amountFriendlyPieces++;
+							}
+							else {
+								amountFriendlyPieces++;
+							}
 						}
 						else {
-							amountEnemy++;
+							if(((Piece)board[i][j]).isKing()){
+								amountEnemyKings++;
+								amountEnemyPieces++;
+							}
+							else {
+								amountEnemyPieces++;
+							}
 						}
 					}
 				}
 			}
-		}
-		else {
-			for(int i = 4; i <= 7; i++) {
-				for(int j = 0; j <= 7; j++) {
-					if(board[i][j] != null) {
-						if(((Piece)board[i][j]).getColour() == move.getPiece().getColour()) {
-							amountFriendly++;
-						}
-						else {
-							amountEnemy++;
-						}
-					}
-				}
-			}
-		}
 		
-		int[] score = {amountTaken, amountToBeTaken, king, amountFriendly, amountEnemy};
+		int[] score = {amountFriendlyPieces, amountFriendlyKings, amountEnemyPieces, amountEnemyKings};
 		return score;
 	}
 

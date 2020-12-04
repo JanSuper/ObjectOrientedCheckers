@@ -80,9 +80,11 @@ public class BlackPiece extends CheckersPiece{
 	 private void addEvent(){
 	        this.setOnMouseClicked(e->{	  
 	        	
+	        	Gamecontroller.removePlaceholders();
+	        	
 	        	if(!Gamecontroller.playerOneAI) {
 	        	//delete all fake pieces
-	        	Gamecontroller.removePlaceholders();
+	        	
 	            //add new fake pieces
 	            Gamecontroller.addPlaceholders(this);
 	        	}

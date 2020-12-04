@@ -18,8 +18,8 @@ public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
-	public static boolean playerOneAI = false;
-	public static boolean playerTwoAI = true;
+	public static boolean playerOneAI = true;
+	public static boolean playerTwoAI = false;
 	public static boolean gameOver = false;
 	
 	public Gamecontroller() {
@@ -239,10 +239,13 @@ public class Gamecontroller {
 //			System.out.println("place");
 			int[] start = piece.getLocation();
 			int[] coor = piece.getMoves().get(i).getToList().get(0);
-			field[coor[0]][coor[1]] = placepiece.clone();
-			((Piece)field[coor[0]][coor[1]]).setLocation(coor[0],coor[1]);
-			((PlaceholderPiece)field[coor[0]][coor[1]]).setFrom(start[0], start[1]);
-			Main.board.getChildren().add((PlaceholderPiece)field[coor[0]][coor[1]]);
+			
+			if(field[coor[0]][coor[1]] == null) {
+				field[coor[0]][coor[1]] = placepiece.clone();
+				((Piece)field[coor[0]][coor[1]]).setLocation(coor[0],coor[1]);
+				((PlaceholderPiece)field[coor[0]][coor[1]]).setFrom(start[0], start[1]);
+				Main.board.getChildren().add((PlaceholderPiece)field[coor[0]][coor[1]]);
+			}
 		}
 	}
 	
