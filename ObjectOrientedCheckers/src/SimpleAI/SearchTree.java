@@ -51,7 +51,9 @@ public class SearchTree {
 //							System.out.println(holdList.get(k).getFrom()[0] + " " + holdList.get(k).getFrom()[1]);
 							node.children.add(childnode); // add node to children
 							
-							node.children.get(node.children.size()-1).addScore(moveStats[0] + 5*moveStats[1] - (moveStats[2] + 5*moveStats[3])); // add score to current child
+							node.children.get(node.children.size()-1).addScore(moveStats[0] + 5*moveStats[1] - (moveStats[2] + 5*moveStats[3]));// add score to current child
+							
+							node.childScore += moveStats[0] + 5*moveStats[1] - (moveStats[2] + 5*moveStats[3]);
 							
 //							AIController.testBoard(Gamecontroller.deepBoardCopy(tempBoard));
 						}
@@ -59,6 +61,8 @@ public class SearchTree {
 				}
 			}
 		}
+		
+		node.childScore = node.childScore/node.children.size();
 		
 		/*
 		 * calc oponent move for every child node
@@ -99,7 +103,6 @@ public class SearchTree {
 			int enemydepth = depth + 1;
 			Move enemyMove = recursion(enemyTree, enemydepth);
 					
-//					null; // Enemy move
 //			int bestScore = Integer.MIN_VALUE; // lowest possible value
 //			int bestChoiceIndex = -1; // best index
 			
@@ -129,13 +132,13 @@ public class SearchTree {
 		}
 		
 		int best = Integer.MIN_VALUE; // look for best child
-		int worst = Integer.MIN_VALUE;
+		int worst = Integer.MAX_VALUE;
 		int index = -1;
 		for(int i = 0; i <= node.children.size() - 1; i++) {
 			if(node.children.get(i).score > best) {
 				best = node.children.get(i).score;
 			}
-			if(node.children.get(i).EnemyMoveScore > best) {
+			if(node.children.get(i).EnemyMoveScore < worst) {
 				worst = node.children.get(i).EnemyMoveScore;
 			}
 		}
@@ -170,16 +173,16 @@ public class SearchTree {
 		
 		
 		if(node.children.size() > 0 && depth == 1){
-			int best = Integer.MIN_VALUE;
+			double best = Double.NEGATIVE_INFINITY;
 			int index = -1;
 			
 			for(int i = 0; i <= node.children.size()-1; i++) {
-				if (node.children.get(i).score > best) {
+				if (node.children.get(i).childScore > best) {
 					index = i;
-					best = node.children.get(i).score;
+					best = node.children.get(i).childScore;
 				}
 			}
-			
+			System.out.println(best);
 			Move bruhmove = node.children.get(index).nextMove;
 			
 			return bruhmove;

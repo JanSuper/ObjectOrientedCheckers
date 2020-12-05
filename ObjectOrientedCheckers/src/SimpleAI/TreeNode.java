@@ -13,6 +13,7 @@ public class TreeNode {
 	public List<TreeNode> children = new ArrayList();
 	public int score = Integer.MIN_VALUE;
 	public int EnemyMoveScore = Integer.MIN_VALUE;
+	public double childScore = 0.0;
 	
 	public TreeNode(Object[][] projectedboard, Move move, TreeNode parent) {
 		this.projectedBoard = projectedboard;
@@ -43,6 +44,7 @@ public void addEnemyScore(int add) {//Add score to both itself and parent if it 
 		if(parent != null) {
 			parent.addEnemyScore(add);
 		}
+		
 	}
 
 }

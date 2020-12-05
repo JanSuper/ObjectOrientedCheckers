@@ -54,14 +54,11 @@ public class MoveToAction {
 		}
 		
 		if(((Piece)Gamecontroller.field[toHold[0]][toHold[1]]).getMoves().size() == 0) {
-			System.out.println("No More Steps");
 			Gamecontroller.endTurn();
 		}
 		else {
 			Gamecontroller.limitToThis(toHold[0],toHold[1]);
 		}
-		
-		System.out.println("movemade");
 
 	}
 	
