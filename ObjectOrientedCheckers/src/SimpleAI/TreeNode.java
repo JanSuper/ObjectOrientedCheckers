@@ -30,19 +30,19 @@ public class TreeNode {
 		
 		if(this.score < add) {
 			this.score = add;
-		}
-		if(parent != null) {
-			parent.addScore(add);
+			if(parent != null) {
+				parent.addScore(add);
+			}
 		}
 	}
 	
 public void addEnemyScore(int add) {//Add score to both itself and parent if it has one
 		
-		if(this.EnemyMoveScore < add) {
+		if(this.EnemyMoveScore > add) {
 			this.EnemyMoveScore = add;
-		}
-		if(parent != null) {
-			parent.addEnemyScore(add);
+			if(parent != null) {
+				parent.addEnemyScore(add);
+			}
 		}
 		
 	}

@@ -51,9 +51,9 @@ public class SearchTree {
 //							System.out.println(holdList.get(k).getFrom()[0] + " " + holdList.get(k).getFrom()[1]);
 							node.children.add(childnode); // add node to children
 							
-							node.children.get(node.children.size()-1).addScore(moveStats[0] + 5*moveStats[1] - (moveStats[2] + 5*moveStats[3]));// add score to current child
+							node.children.get(node.children.size()-1).addScore(moveStats[0] + 2*moveStats[1] - (moveStats[2] + 2*moveStats[3]));// add score to current child
 							
-							node.childScore += moveStats[0] + 5*moveStats[1] - (moveStats[2] + 5*moveStats[3]);
+							node.childScore += moveStats[0] + 2*moveStats[1] - (moveStats[2] + 2*moveStats[3]);
 							
 //							AIController.testBoard(Gamecontroller.deepBoardCopy(tempBoard));
 						}
@@ -114,7 +114,7 @@ public class SearchTree {
 				
 				if(enemyMove !=null) {
 					int[] scorehold = AIController.moveScore(Gamecontroller.deepBoardCopy(copyBoard), MoveCalcTree.copyMove(enemyMove));
-					bestScore = (scorehold[0] + 5*scorehold[1]) - (scorehold[2] + 5*scorehold[3]);
+					bestScore = (scorehold[0] + 2*scorehold[1]) - (scorehold[2] + 2*scorehold[3]);
 					copyBoard = Gamecontroller.deepBoardCopy(AIMoveToAction.AIAction(enemyMove, Gamecontroller.deepBoardCopy(copyBoard))); // update projected board with enemy move
 				}
 				

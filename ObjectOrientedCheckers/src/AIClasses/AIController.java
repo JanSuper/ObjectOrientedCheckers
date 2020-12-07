@@ -126,7 +126,6 @@ public class AIController {
 	}
 	
 	public static int[] moveScore (Object[][] board, Move move) {
-		// Amount taken | Amount to be lost |
 		
 		int amountTaken = move.getRemoveList().size();
 		
