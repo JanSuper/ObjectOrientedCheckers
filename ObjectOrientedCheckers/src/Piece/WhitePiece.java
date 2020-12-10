@@ -150,9 +150,6 @@ public class WhitePiece extends CheckersPiece{
 						}
 						System.out.println();
 						System.out.println();
-
-						Gamecontroller.turn = 1;
-						Gamecontroller.endTurn();
 		        	}
 	        });
 	    }
