@@ -74,6 +74,7 @@ public class MoveToAction {
 		}		
 		else {
 			for(int i = 0; i <= m.getToList().size()-1; i++) {
+				System.out.println("here?");
 				int[] startingPos;
 				if (i == 0) {
 					startingPos = m.getPiece().getLocation();

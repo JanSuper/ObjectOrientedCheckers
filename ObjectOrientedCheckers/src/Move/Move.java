@@ -65,5 +65,7 @@ public class Move{
 	public String toString() {
 		return ((String)("[" + from[0] + "," + from[1] + "]" + " to " + "[" + to.get(to.size() - 1)[0] + "," + to.get(to.size() - 1)[1] + "]"));
 	}
+	
+	public void setRemove(ArrayList<Piece> removeList){this.remove = removeList;}
 
 }

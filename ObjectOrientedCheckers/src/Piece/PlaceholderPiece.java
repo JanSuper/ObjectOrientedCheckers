@@ -5,7 +5,9 @@ import java.util.List;
 import AIClasses.AIController;
 import Move.Move;
 import Move.MoveToAction;
+import ObjectUI.Main;
 import Gamecontroller.Gamecontroller;
+import MonteCarlo.mcTreeSearch;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 
@@ -41,9 +43,64 @@ public class PlaceholderPiece extends CheckersPiece{
 	        			MoveToAction.AIAction(aiMove);
 	        		}
 	        		else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {
-	        			System.out.println("aiTurn");
-	        			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
-	        			MoveToAction.AIAction(aiMove);
+	        			mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+						tree.setOGturn(1);
+						Move move = tree.getNextMove();
+
+						String GREEN = "\033[0;32m";
+						String RESET = "\033[0m";  // Text Reset
+						String PURPLE = "\033[0;35m";  // PURPLE
+
+						for(Object[] arr : Main.board.board)//print board
+						{
+							for(Object obj : arr)
+							{
+								if(obj instanceof BlackPiece)
+									System.out.print(GREEN+"B  "+RESET);
+								else if(obj instanceof WhitePiece)
+									System.out.print(PURPLE+"W  "+RESET);
+								else if(obj == null)
+									System.out.print("0  ");
+							}
+							System.out.println();
+						}
+						System.out.println();
+						System.out.println();
+
+						System.out.println();
+						System.out.println("move from x= "+move.getPiece().getLocation()[0]+" y= "+move.getPiece().getLocation()[1]);
+						System.out.println("move to x= "+move.getToList().get(move.getToList().size()-1)[0]+" y= "+move.getToList().get(move.getToList().size()-1)[1]);
+						System.out.println("number of eaten pieces = "+move.getRemoveList().size());
+						if(move.getRemoveList().size() == 2) {
+							Piece ep1, ep2;
+							ep1 = move.getRemoveList().get(0);
+							ep2 = move.getRemoveList().get(1);
+							System.out.println("ep1 x = "+ep1.getLocation()[0]+" y= "+ep1.getLocation()[1]);
+							System.out.println("ep2 x = "+ep2.getLocation()[0]+" y= "+ep2.getLocation()[1]);
+						}
+						System.out.println();
+
+						MoveToAction.AIAction(move);
+
+
+						for(Object[] arr : Main.board.board)//print board
+						{
+							for(Object obj : arr)
+							{
+								if(obj instanceof BlackPiece)
+									System.out.print(GREEN+"B  "+RESET);
+								else if(obj instanceof WhitePiece)
+									System.out.print(PURPLE+"W  "+RESET);
+								else if(obj == null)
+									System.out.print("0  ");
+							}
+							System.out.println();
+						}
+						System.out.println();
+						System.out.println();
+
+						Gamecontroller.turn = 1;
+						Gamecontroller.endTurn();
 	        		}
 	        	}
 	        	
