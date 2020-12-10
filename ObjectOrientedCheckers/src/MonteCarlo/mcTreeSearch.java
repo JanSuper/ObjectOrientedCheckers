@@ -1,16 +1,12 @@
 package MonteCarlo;
 
 import AIClasses.AIMoveToAction;
-import Board.Board;
 import Gamecontroller.Gamecontroller;
 import Move.Move;
-import ObjectUI.Main;
-import ObjectUI.Visual;
 import Piece.BlackPiece;
 import Piece.CheckersPiece;
 import Piece.Piece;
 import Piece.WhitePiece;
-import javafx.scene.control.skin.CellSkinBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +43,7 @@ public class mcTreeSearch {
                 max = UCB(child);
             }
         }
-
-        Object[][] board_after_play = best_child.game_state;
-
-        Move move = getMoveMadeByAI(this.root.game_state, board_after_play);
+        Move move = best_child.move_made;
         return move;
     }
 
@@ -73,6 +66,7 @@ public class mcTreeSearch {
                                 temp_board = AIMoveToAction.AIAction(m, temp_board);
                                 mcNode new_node = new mcNode(temp_board, node);
                                 node.children.add(new_node);
+                                new_node.setMove_made(m);
                             }
                         }
                     }
@@ -86,6 +80,7 @@ public class mcTreeSearch {
                                     temp_board = AIMoveToAction.AIAction(m, temp_board);
                                     mcNode new_node = new mcNode(temp_board, node);
                                     node.children.add(new_node);
+                                    new_node.setMove_made(m);
                                 }
                             }
                         }
@@ -243,17 +238,6 @@ public class mcTreeSearch {
         }
     }
 
-    private boolean sameBoard(Object[][] b1, Object[][] b2) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if ((b1[i][j] != null && b2[i][j] == null)
-                        || (b1[i][j] == null && b2[i][j] != null))
-                    return false;
-            }
-        }
-        return true;
-    }
-
     ArrayList<BlackPiece> blackPieces = new ArrayList<>();
     private BlackPiece getRandomBPiece(Object[][] board, boolean isFirstIteration)
     {
@@ -308,87 +292,6 @@ public class mcTreeSearch {
             return wp;
         }
     }
-
-    private Move getMoveMadeByAI(Object[][] board1, Object[][] board2)
-    {
-        //find moved piece
-        CheckersPiece movedPiece = find_moved_piece(board1, board2);
-        Move move = new Move(movedPiece);
-        //find moved to where
-        int[] moved_to = piece_moved_to(board1, board2);
-        move.setTo(moved_to[0], moved_to[1]);
-        //find eaten pieces
-        move.setRemove(find_eaten_pieces(board1, board2));
-        //find if piece becomes king
-        move.becomesKing(find_if_piece_becomes_king(board1, board2));
-
-        return move;
-    }
-    private CheckersPiece find_moved_piece(Object[][] board1, Object[][] board2) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (this.OGturn == 0) {//if AI played as black
-                    if (board1[i][j] != null && board2[i][j] == null && board1[i][j] instanceof BlackPiece) {
-                        ((BlackPiece) board1[i][j]).setLocation(i, j);
-                        return (BlackPiece) board1[i][j];
-                    }
-                } else {//if AI played as white
-                    if (board1[i][j] != null && board2[i][j] == null && board1[i][j] instanceof WhitePiece) {
-                        ((WhitePiece) board1[i][j]).setLocation(i, j);
-                        return (WhitePiece) board1[i][j];
-                    }
-                }
-            }
-        }
-        return null;
-    }
-    private int[] piece_moved_to(Object[][] board1, Object[][] board2){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(this.OGturn == 0) {//if AI plays as Black
-                    if(board1[i][j] == null && board2[i][j] != null && board2[i][j] instanceof BlackPiece)
-                        return new int[]{i, j};
-                }
-                else{
-                    if(board1[i][j] == null && board2[i][j] != null && board2[i][j] instanceof WhitePiece) {
-                        return new int[]{i, j};
-                    }
-                }
-            }
-        }
-        return null;
-    }
-    private ArrayList<Piece> find_eaten_pieces(Object[][] board1, Object[][] board2){
-        ArrayList<Piece> eaten_pieces = new ArrayList<>();
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(board2[i][j] == null && board1[i][j] != null){
-                    if(this.OGturn%2 == 0 && board1[i][j] instanceof WhitePiece)
-                        eaten_pieces.add((Piece) board1[i][j]);
-                    else if(this.OGturn%2 == 1 && board1[i][j] instanceof BlackPiece){
-                        eaten_pieces.add((Piece) board1[i][j]);
-                    }
-                }
-            }
-        }
-        return eaten_pieces;
-    }
-    private boolean find_if_piece_becomes_king(Object[][] board1, Object[][] board2){
-        if(this.OGturn%2 == 0){
-            for(int j = 0; j < 8; j++) {
-                if (board1[7][j] == null && board2[7][j] instanceof BlackPiece)
-                    return true;
-            }
-        }
-        else{
-            for(int j = 0; j < 8; j++){
-                if(board1[0][j] == null && board2[0][j] instanceof WhitePiece)
-                    return true;
-            }
-        }
-        return false;
-    }
-
     public static void calcWhiteMoves(Object[][] field) {
         boolean captureMove = false;
         for(int i = 0; i <= field.length - 1; i++) {

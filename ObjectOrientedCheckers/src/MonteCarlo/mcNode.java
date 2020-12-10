@@ -1,5 +1,7 @@
 package MonteCarlo;
 
+import Move.Move;
+
 import java.util.ArrayList;
 
 public class mcNode
@@ -9,6 +11,7 @@ public class mcNode
     public int num_simulations;
     public mcNode parent;
     public ArrayList<mcNode> children = new ArrayList<>();
+    public Move move_made;
 
     public mcNode(Object[][] g_state)
     {
@@ -24,6 +27,10 @@ public class mcNode
         this.num_wins = 0;
         this.num_simulations = 0;
         this.parent.children.add(this);
+    }
+
+    public void setMove_made(Move m){
+        this.move_made = m;
     }
 
     public boolean isLeaf() {return this.children.size() == 0;}
