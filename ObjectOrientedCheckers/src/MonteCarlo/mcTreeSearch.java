@@ -108,7 +108,6 @@ public class mcTreeSearch {
                     move = piece.getMoves().get(rng.nextInt(piece.getMoves().size()));
                     board = AIMoveToAction.AIAction(move, board);
                 }
-                Gamecontroller.turn=1;
             }
             else if(Gamecontroller.turn%2 == 1){
                 WhitePiece piece = getRandomWPiece(board, true);// get a random movable white piece
@@ -121,7 +120,6 @@ public class mcTreeSearch {
                     board = AIMoveToAction.AIAction(move, board);
                 }
 
-                Gamecontroller.turn = 0;
             }
         }
 

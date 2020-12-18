@@ -14,7 +14,7 @@ import Piece.Piece;
 
 public class SearchTree {
 	
-	//TODO add alpha beta pruning and correct enemy minimax
+	//TODO DIVIDE BY ENEMY SCORE INSTEAD OF SUBSTRACTING MIGHT HELP WITH END GAME
 	
 	public static int MAX_DEPTH = 3;
 	

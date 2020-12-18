@@ -4,6 +4,7 @@ import Move.Move;
 import Move.MoveCalcTree;
 import Piece.Piece;
 import SimpleAI.SearchTree;
+import TrueMinimax.TrueMinimaxTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,7 @@ public class AIController {
 	public static Move getAiMove(Object[][] board) {
 		Object[][] holdBoard = Gamecontroller.deepBoardCopy(board); // too early
 		
-		Move move = SearchTree.getMove(holdBoard);
-		
+		Move move = TrueMinimaxTree.getMove(holdBoard);
 		//this class do be kinda useless tho ngl
 		
 		return move;
