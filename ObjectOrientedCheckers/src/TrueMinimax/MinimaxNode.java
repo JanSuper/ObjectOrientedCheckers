@@ -7,12 +7,13 @@ import Move.Move;
 
 public class MinimaxNode {
 	
+	public boolean pruned = false;
 	public boolean maxNode = true;
 	public int minimaxValue;
 	public int alpha = Integer.MIN_VALUE;
 	public int beta = Integer.MAX_VALUE;
 	
-	public Move madeMove;
+	public Move madeMove = null;
 	public Object[][] beforeBoard;
 	public Object[][] projectedBoard;
 	
@@ -43,15 +44,14 @@ public class MinimaxNode {
 		}
 	}
 	
-	public void Minimax(int depth) {
-		int oldvalue = this.minimaxValue;
+	public void Minimax() {
 		if(this.maxNode) {
 			for(int i = 0; i <= this.scoreList.size()-1; i++) {
 				if (this.minimaxValue < this.scoreList.get(i)) {
 					this.minimaxValue = this.scoreList.get(i);
 				}
 			}
-			if(this.parent != null && oldvalue != this.minimaxValue) {
+			if(this.parent != null) {
 				this.parent.scoreList.add(this.minimaxValue);
 			}
 		}
@@ -61,10 +61,23 @@ public class MinimaxNode {
 					this.minimaxValue = this.scoreList.get(i);
 				}
 			}
-			if(this.parent != null && oldvalue != this.minimaxValue) {
+			if(this.parent != null) {
 				this.parent.scoreList.add(this.minimaxValue);
 			}
 		}
+	}
+	
+	public void AlphaBeta() {
+		if(this.maxNode) {
+			this.alpha = Math.max(this.alpha, this.children.get(this.children.size() - 1).alpha);
+			this.alpha = Math.max(this.alpha, this.children.get(this.children.size() - 1).beta);
+		}
+		else {
+			this.beta = Math.min(this.beta, this.children.get(this.children.size() - 1).alpha);
+			this.beta = Math.min(this.beta, this.children.get(this.children.size() - 1).beta);
+		}
+		
+		this.pruned = this.alpha >= this.beta;
 	}
 
 }
