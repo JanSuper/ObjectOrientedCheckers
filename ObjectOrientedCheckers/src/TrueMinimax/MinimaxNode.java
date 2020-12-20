@@ -62,18 +62,5 @@ public class MinimaxNode {
 			}
 		}
 	}
-	
-//	public void AlphaBeta() {
-//		if(this.maxNode) {
-//			this.alpha = Math.max(this.alpha, this.children.get(this.children.size() - 1).alpha);
-//			this.alpha = Math.max(this.alpha, this.children.get(this.children.size() - 1).beta);
-//		}
-//		else {
-//			this.beta = Math.min(this.beta, this.children.get(this.children.size() - 1).alpha);
-//			this.beta = Math.min(this.beta, this.children.get(this.children.size() - 1).beta);
-//		}
-//		
-//		this.pruned = this.alpha >= this.beta;
-//	}
 
 }
