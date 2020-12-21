@@ -1,5 +1,6 @@
 package TrueMinimax;
 
+import java.util.Arrays;
 import java.util.List;
 
 import AIClasses.AIController;
@@ -11,7 +12,7 @@ import Piece.Piece;
 
 public class TrueMinimaxTree {
 	
-	public static final int MAX_DEPTH = 7;
+	public static final int MAX_DEPTH = 9;
 	
 	public static int[][] alphabeta = new int[MAX_DEPTH][2];
 	
@@ -24,6 +25,11 @@ public class TrueMinimaxTree {
 		rootNode = new MinimaxNode(board);
 		
 		recursion(rootNode, 1);
+		
+		for(int i = 0; i <= MAX_DEPTH - 1; i++) {
+			System.out.println(Arrays.toString(alphabeta[i]));
+		}
+		
 		
 		System.out.println(rootNode.minimaxValue);
 		
@@ -117,7 +123,7 @@ public class TrueMinimaxTree {
 				}
 				else {
 					parentnode.parent.scoreList.add(Integer.MIN_VALUE);
-					parentnode.minimaxValue = Integer.MIN_VALUE;
+					parentnode.minimaxValue  = Integer.MIN_VALUE;
 					alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], Integer.MIN_VALUE);
 				}
 			}
