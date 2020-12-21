@@ -18,7 +18,7 @@ public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
-	public static boolean playerOneAI = true;
+	public static boolean playerOneAI = false;
 	public static boolean playerTwoAI = false;
 	public static boolean gameOver = false;
 	

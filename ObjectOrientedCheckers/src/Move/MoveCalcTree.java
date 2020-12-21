@@ -47,12 +47,17 @@ public class MoveCalcTree{
 								if (tempboard[icoor+2][jcoor-2] == null) {
 									Move stepMove = tempstep1;
 									stepMove.setTo(icoor+2, jcoor-2);
-									stepMove.becomesKing(icoor==tempboard.length-1);
+									stepMove.becomesKing(icoor+2==tempboard.length-1);
 									stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor-1]);
-									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-									takeMove = true;
-									nextStep = true;
-									recursion(newNode, tempboard);
+									if (!node.getPiece().isKing() && stepMove.becomeKing) {
+										moveList.add(stepMove);
+									}
+									else {
+										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+										takeMove = true;
+										nextStep = true;
+										recursion(newNode, tempboard);
+									}
 								}
 							}
 						}
@@ -72,12 +77,17 @@ public class MoveCalcTree{
 								if (tempboard[icoor+2][jcoor+2] == null) {
 									Move stepMove = tempstep2;
 									stepMove.setTo(icoor+2, jcoor+2);
-									stepMove.becomesKing(icoor==tempboard.length-1);
+									stepMove.becomesKing(icoor+2==tempboard.length-1);
 									stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor+1]);
-									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-									takeMove = true;
-									nextStep = true;
-									recursion(newNode, tempboard);
+									if (!node.getPiece().isKing() && stepMove.becomeKing) {
+										moveList.add(stepMove);
+									}
+									else {
+										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+										takeMove = true;
+										nextStep = true;
+										recursion(newNode, tempboard);
+									}
 								}
 							}
 						}
@@ -99,12 +109,17 @@ public class MoveCalcTree{
 								if (tempboard[icoor-2][jcoor-2] == null) {
 									Move stepMove = tempstep3;
 									stepMove.setTo(icoor-2, jcoor-2);
-									stepMove.becomesKing(icoor==0);
+									stepMove.becomesKing(icoor-2==0);
 									stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor-1]);
-									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-									takeMove = true;
-									nextStep = true;
-									recursion(newNode, tempboard);
+									if (!node.getPiece().isKing() && stepMove.becomeKing) {
+										moveList.add(stepMove);
+									}
+									else {
+										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+										takeMove = true;
+										nextStep = true;
+										recursion(newNode, tempboard);
+									}
 								}
 							}
 						}
@@ -124,12 +139,17 @@ public class MoveCalcTree{
 								if (tempboard[icoor-2][jcoor+2] == null) {
 									Move stepMove = tempstep4;
 									stepMove.setTo(icoor-2, jcoor+2);
-									stepMove.becomesKing(icoor==0);
+									stepMove.becomesKing(icoor-2==0);
 									stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor+1]);
-									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-									takeMove = true;
-									nextStep = true;
-									recursion(newNode, tempboard);
+									if (!node.getPiece().isKing() && stepMove.becomeKing) {
+										moveList.add(stepMove);
+									}
+									else {
+										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+										takeMove = true;
+										nextStep = true;
+										recursion(newNode, tempboard);
+									}
 								}
 							}
 						}
@@ -158,12 +178,17 @@ public class MoveCalcTree{
 							if (tempboard[icoor+2][jcoor-2] == null || ((Piece)tempboard[icoor+2][jcoor-2]).equals(node.getPiece())) {
 								Move stepMove = tempstep1;
 								stepMove.setTo(icoor+2, jcoor-2);
-								stepMove.becomesKing(icoor==tempboard.length-1);
+								stepMove.becomesKing(icoor+2==tempboard.length-1);
 								stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor-1]);
-								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-								takeMove = true;
-								nextStep = true;
-								recursion(newNode, tempboard);
+								if (!node.getPiece().isKing() && stepMove.becomeKing) {
+									moveList.add(stepMove);
+								}
+								else {
+									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+									takeMove = true;
+									nextStep = true;
+									recursion(newNode, tempboard);
+								}
 							}
 						}
 					}
@@ -182,12 +207,17 @@ public class MoveCalcTree{
 							if (tempboard[icoor+2][jcoor+2] == null || ((Piece)tempboard[icoor+2][jcoor+2]).equals(node.getPiece())) {
 								Move stepMove = tempstep2;
 								stepMove.setTo(icoor+2, jcoor+2);
-								stepMove.becomesKing(icoor==tempboard.length-1);
+								stepMove.becomesKing(icoor+2==tempboard.length-1);
 								stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor+1]);
-								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-								takeMove = true;
-								nextStep = true;
-								recursion(newNode, tempboard);
+								if (!node.getPiece().isKing() && stepMove.becomeKing) {
+									moveList.add(stepMove);
+								}
+								else {
+									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+									takeMove = true;
+									nextStep = true;
+									recursion(newNode, tempboard);
+								}
 							}
 						}
 					}
@@ -206,12 +236,17 @@ public class MoveCalcTree{
 							if (tempboard[icoor-2][jcoor-2] == null || ((Piece)tempboard[icoor-2][jcoor-2]).equals(node.getPiece())) {
 								Move stepMove = tempstep3;
 								stepMove.setTo(icoor-2, jcoor-2);
-								stepMove.becomesKing(icoor==tempboard.length-1);
+								stepMove.becomesKing(icoor-2==0);
 								stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor-1]);
-								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-								takeMove = true;
-								nextStep = true;
-								recursion(newNode, tempboard);
+								if (!node.getPiece().isKing() && stepMove.becomeKing) {
+									moveList.add(stepMove);
+								}
+								else {
+									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+									takeMove = true;
+									nextStep = true;
+									recursion(newNode, tempboard);
+								}
 							}
 						}
 					}
@@ -230,12 +265,17 @@ public class MoveCalcTree{
 							if (tempboard[icoor-2][jcoor+2] == null || ((Piece)tempboard[icoor-2][jcoor+2]).equals(node.getPiece())) {
 								Move stepMove = tempstep4;
 								stepMove.setTo(icoor-2, jcoor+2);
-								stepMove.becomesKing(icoor==tempboard.length-1);
+								stepMove.becomesKing(icoor-2==0);
 								stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor+1]);
-								MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
-								takeMove = true;
-								nextStep = true;
-								recursion(newNode, tempboard);
+								if (!node.getPiece().isKing() && stepMove.becomeKing) {
+									moveList.add(stepMove);
+								}
+								else {
+									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
+									takeMove = true;
+									nextStep = true;
+									recursion(newNode, tempboard);
+								}
 							}
 						}
 					}
