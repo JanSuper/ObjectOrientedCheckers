@@ -173,7 +173,7 @@ public class MoveCalcTree{
 					moveList.add(stepMove);
 				}
 				else if (tempboard[icoor+1][jcoor-1] != null) {
-					if ((((Piece)tempboard[icoor+1][jcoor-1]).getColour() != node.getPiece().getColour()) && !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor+1][jcoor-1])))) { //if enemy piece
+					if (((((Piece)tempboard[icoor+1][jcoor-1]).getColour() != node.getPiece().getColour()) && !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor+1][jcoor-1]))))&& (node.getPiece().isKing() || node.getPiece().getColour() == 0)) { //if enemy piece
 						if (icoor + 2 < tempboard.length && jcoor - 2 > -1) { //check for board edge
 							if (tempboard[icoor+2][jcoor-2] == null || ((Piece)tempboard[icoor+2][jcoor-2]).equals(node.getPiece())) {
 								Move stepMove = tempstep1;
@@ -202,7 +202,7 @@ public class MoveCalcTree{
 					moveList.add(stepMove);
 				}
 				else if (tempboard[icoor+1][jcoor+1] != null) {
-					if ((((Piece)tempboard[icoor+1][jcoor+1]).getColour() != node.getPiece().getColour()&& !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor+1][jcoor+1]))))) { //if enemy piece
+					if (((((Piece)tempboard[icoor+1][jcoor+1]).getColour() != node.getPiece().getColour()&& !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor+1][jcoor+1])))))&& (node.getPiece().isKing() || node.getPiece().getColour() == 0)) { //if enemy piece
 						if (icoor + 2 < tempboard.length && jcoor + 2 < tempboard[0].length) { //check for board edge
 							if (tempboard[icoor+2][jcoor+2] == null || ((Piece)tempboard[icoor+2][jcoor+2]).equals(node.getPiece())) {
 								Move stepMove = tempstep2;
@@ -231,7 +231,7 @@ public class MoveCalcTree{
 					moveList.add(stepMove);
 				}
 				else if (tempboard[icoor-1][jcoor-1] != null) {
-					if ((((Piece)tempboard[icoor-1][jcoor-1]).getColour() != node.getPiece().getColour() && !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor-1][jcoor-1]))))) { //if enemy piece
+					if (((((Piece)tempboard[icoor-1][jcoor-1]).getColour() != node.getPiece().getColour() && !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor-1][jcoor-1])))))&& (node.getPiece().isKing() || node.getPiece().getColour() == 1)) { //if enemy piece
 						if (icoor - 2 > -1 && jcoor - 2 > -1) { //check for board edge
 							if (tempboard[icoor-2][jcoor-2] == null || ((Piece)tempboard[icoor-2][jcoor-2]).equals(node.getPiece())) {
 								Move stepMove = tempstep3;
@@ -260,7 +260,7 @@ public class MoveCalcTree{
 					moveList.add(stepMove);
 				}
 				else if (tempboard[icoor-1][jcoor+1] != null) {
-					if ((((Piece)tempboard[icoor-1][jcoor+1]).getColour() != node.getPiece().getColour()&& !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor-1][jcoor+1]))))) { //if enemy piece
+					if (((((Piece)tempboard[icoor-1][jcoor+1]).getColour() != node.getPiece().getColour()&& !(node.getMove().getRemoveList().contains(((Piece)tempboard[icoor-1][jcoor+1])))))&& (node.getPiece().isKing() || node.getPiece().getColour() == 1)) { //if enemy piece
 						if (icoor - 2 > -1 && jcoor + 2 < tempboard[0].length) { //check for board edge
 							if (tempboard[icoor-2][jcoor+2] == null || ((Piece)tempboard[icoor-2][jcoor+2]).equals(node.getPiece())) {
 								Move stepMove = tempstep4;
