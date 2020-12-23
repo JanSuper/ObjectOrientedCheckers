@@ -92,16 +92,16 @@ public class Gamecontroller {
 				}
 			}		
 		}
+		testPieces();
 		if (captureMove) {
 			for(int i = 0; i <= field.length - 1; i++) {
 				for(int j = 0; j <= field[0].length - 1; j++) {
 					if(field[i][j] != null) {
 						if(((Piece) field[i][j]).getColour() == 0) {	
 							List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-							for (int k = 0; k <= holdMoveList.size() - 1; k++) {
+							for (int k = holdMoveList.size() - 1; k >= 0; k--) {
 								if(holdMoveList.get(k).getRemoveList().size() == 0) {
-									((Piece) field[i][j]).resetMoveList();
-									break;
+									((Piece) field[i][j]).getMoves().remove(k);
 								}
 							}
 						}
@@ -139,7 +139,7 @@ public class Gamecontroller {
 		
 		if(endOfGame) { //TODO game reset
 			System.out.println("end of game");
-			gameOver = true;
+//			gameOver = true;
 //			startNewGame();
 //			newGame();
 //			calcBlackMoves();
@@ -172,16 +172,16 @@ public class Gamecontroller {
 				}
 			}
 		}
+		testPieces();
 		if(captureMove) {
 			for(int i = 0; i <= field.length - 1; i++) {
 				for(int j = 0; j <= field[0].length - 1; j++) {
 					if(field[i][j] != null) {
 						if(((Piece) field[i][j]).getColour() == 1) {	
 							List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-							for (int k = 0; k <= holdMoveList.size() - 1; k++) {
+							for (int k = holdMoveList.size() - 1; k >= 0; k--) {
 								if(holdMoveList.get(k).getRemoveList().size() == 0) {
-									((Piece) field[i][j]).resetMoveList();
-									break;
+									((Piece) field[i][j]).getMoves().remove(k);
 								}
 							}
 						}
