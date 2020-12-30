@@ -51,10 +51,9 @@ public class AIController {
 					if(field[i][j] != null) {
 						if(((Piece) field[i][j]).getColour() == 0) {	
 							List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-							for (int k = 0; k <= holdMoveList.size() - 1; k++) {
+							for (int k = holdMoveList.size() - 1; k >= 0; k--) {
 								if(holdMoveList.get(k).getRemoveList().size() == 0) {
-									((Piece) field[i][j]).resetMoveList();
-									break;
+									((Piece) field[i][j]).getMoves().remove(k);
 								}
 							}
 						}
@@ -96,10 +95,9 @@ public class AIController {
 					if(field[i][j] != null) {
 						if(((Piece) field[i][j]).getColour() == 1) {	
 							List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-							for (int k = 0; k <= holdMoveList.size() - 1; k++) {
+							for (int k = holdMoveList.size() - 1; k >= 0; k--) {
 								if(holdMoveList.get(k).getRemoveList().size() == 0) {
-									((Piece) field[i][j]).resetMoveList();
-									break;
+									((Piece) field[i][j]).getMoves().remove(k);
 								}
 							}
 						}
@@ -149,7 +147,6 @@ public class AIController {
 						if(((Piece)board[i][j]).getColour() == move.getPiece().getColour()) {
 							if(((Piece)board[i][j]).isKing()){
 								amountFriendlyKings++;
-								amountFriendlyPieces++;
 							}
 							else {
 								amountFriendlyPieces++;
@@ -158,7 +155,6 @@ public class AIController {
 						else {
 							if(((Piece)board[i][j]).isKing()){
 								amountEnemyKings++;
-								amountEnemyPieces++;
 							}
 							else {
 								amountEnemyPieces++;
@@ -170,6 +166,50 @@ public class AIController {
 		
 		int[] score = {amountFriendlyPieces, amountFriendlyKings, amountEnemyPieces, amountEnemyKings};
 		return score;
+	}
+	
+	public static double boardEval(Object[][] board, int colour) {
+		int movecount = 0;
+		int amountFriendlyPieces = 0;
+		int amountEnemyPieces = 0;
+		int amountFriendlyKings = 0;
+		int amountEnemyKings = 0;
+		for(int i = 0; i <= board.length - 1; i++) {
+			for(int j = 0; j <= board[0].length - 1; j++) {
+				if(board[i][j] != null) {
+					movecount += ((Piece)board[i][j]).getMoves().size();
+					if(((Piece)board[i][j]).getColour() == colour) {
+						if(((Piece)board[i][j]).isKing()) {
+							amountFriendlyKings++;
+						}
+						else {
+							amountFriendlyPieces++;
+						}
+					}
+					else {
+						if(((Piece)board[i][j]).isKing()) {
+							amountEnemyKings++;
+						}
+						else {
+							amountEnemyPieces++;
+						}
+					}
+				}
+			}
+		}
+		if(movecount > 0) {
+			return ((double)((amountFriendlyPieces + 2*amountFriendlyKings) - (amountEnemyPieces + 2*amountEnemyKings)));
+		}
+		else {
+			if((amountFriendlyKings + amountFriendlyPieces) > 0 && (amountEnemyKings + amountEnemyPieces) == 0) {
+				return 100.0;
+			}
+			if((amountFriendlyKings + amountFriendlyPieces) == 0 && (amountEnemyKings + amountEnemyPieces) > 0) {
+				return -100.0;
+			}
+			return -0.5;
+		}
+		
 	}
 
 }

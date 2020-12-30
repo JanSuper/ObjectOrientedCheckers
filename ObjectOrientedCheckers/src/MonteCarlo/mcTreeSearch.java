@@ -1,5 +1,6 @@
 package MonteCarlo;
 
+import AIClasses.AIController;
 import AIClasses.AIMoveToAction;
 import Gamecontroller.Gamecontroller;
 import Move.Move;
@@ -60,7 +61,7 @@ public class mcTreeSearch {
                     //if ai plays as black turn
                     if (Gamecontroller.turn == 0) {
                         if (obj instanceof BlackPiece) {
-                            calcBlackMoves(node.game_state);
+                        	AIController.calcBlackMoves(node.game_state);
                             for (Move m : ((BlackPiece) obj).getMoves()) {
                                 Object[][] temp_board = Gamecontroller.deepBoardCopy(node.game_state);
                                 temp_board = AIMoveToAction.AIAction(m, temp_board);
@@ -73,7 +74,7 @@ public class mcTreeSearch {
                     //if ai plays as white
                     else {
                         if (obj instanceof WhitePiece) {
-                            calcWhiteMoves(node.game_state);
+                            AIController.calcWhiteMoves(node.game_state);
                             if(((WhitePiece) obj).getMoves().size() != 0){
                                 for (Move m : ((WhitePiece) obj).getMoves()) {
                                     Object[][] temp_board = Gamecontroller.deepBoardCopy(node.game_state);
@@ -288,88 +289,6 @@ public class mcTreeSearch {
         }
         else {
             return wp;
-        }
-    }
-    public static void calcWhiteMoves(Object[][] field) {
-        boolean captureMove = false;
-        for(int i = 0; i <= field.length - 1; i++) {
-            for(int j = 0; j <= field[0].length - 1; j++) {
-                if(field[i][j] != null) {
-                    if(((Piece) field[i][j]).getColour() == 1) {
-                        ((Piece) field[i][j]).calcMoves();
-                        List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-                        if(!captureMove) {
-                            for (int k = 0; k <= holdMoveList.size() - 1; k++) {
-                                if(holdMoveList.get(k).getRemoveList().size() != 0) {
-                                    captureMove = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        ((Piece) field[i][j]).resetMoveList();
-                    }
-                }
-            }
-        }
-        if(captureMove) {
-            for(int i = 0; i <= field.length - 1; i++) {
-                for(int j = 0; j <= field[0].length - 1; j++) {
-                    if(field[i][j] != null) {
-                        if(((Piece) field[i][j]).getColour() == 1) {
-                            List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-                            for (int k = 0; k <= holdMoveList.size() - 1; k++) {
-                                if(holdMoveList.get(k).getRemoveList().size() == 0) {
-                                    ((Piece) field[i][j]).resetMoveList();
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    public static void calcBlackMoves(Object[][] field) {
-        boolean captureMove = false;
-        for(int i = 0; i <= field.length - 1; i++) {
-            for(int j = 0; j <= field[0].length - 1; j++) {
-                if(field[i][j] != null) {
-                    if(((Piece) field[i][j]).getColour() == 0) {
-                        ((Piece) field[i][j]).calcMoves();
-                        List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-                        if(!captureMove) {
-                            for (int k = 0; k <= holdMoveList.size() - 1; k++) {
-                                if(holdMoveList.get(k).getRemoveList().size() != 0) {
-                                    captureMove = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        ((Piece) field[i][j]).resetMoveList();
-                    }
-                }
-            }
-        }
-        if (captureMove) {
-            for(int i = 0; i <= field.length - 1; i++) {
-                for(int j = 0; j <= field[0].length - 1; j++) {
-                    if(field[i][j] != null) {
-                        if(((Piece) field[i][j]).getColour() == 0) {
-                            List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
-                            for (int k = 0; k <= holdMoveList.size() - 1; k++) {
-                                if(holdMoveList.get(k).getRemoveList().size() == 0) {
-                                    ((Piece) field[i][j]).resetMoveList();
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 

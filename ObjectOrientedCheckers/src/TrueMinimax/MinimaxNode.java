@@ -9,7 +9,7 @@ public class MinimaxNode {
 	
 	public boolean pruned = false;
 	public boolean maxNode = true;
-	public int minimaxValue;
+	public double minimaxValue;
 	
 	public Move madeMove = null;
 	public Object[][] beforeBoard;
@@ -18,7 +18,7 @@ public class MinimaxNode {
 	public MinimaxNode parent = null;
 	public List<MinimaxNode> children = new ArrayList();
 	
-	public ArrayList<Integer> scoreList = new ArrayList();
+	public ArrayList<Double> scoreList = new ArrayList();
 	
 	public MinimaxNode(Object[][] board) {
 		this.projectedBoard = board;
@@ -33,10 +33,10 @@ public class MinimaxNode {
 		this.maxNode = maxNode;
 		
 		if(this.maxNode) {
-			this.minimaxValue = Integer.MIN_VALUE;
+			this.minimaxValue = Double.NEGATIVE_INFINITY;
 		}
 		else {
-			this.minimaxValue = Integer.MAX_VALUE;
+			this.minimaxValue = Double.POSITIVE_INFINITY;
 		}
 	}
 	

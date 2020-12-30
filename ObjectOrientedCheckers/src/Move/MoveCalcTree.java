@@ -51,6 +51,7 @@ public class MoveCalcTree{
 									stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor-1]);
 									if (!node.getPiece().isKing() && stepMove.becomeKing) {
 										moveList.add(stepMove);
+										nextStep = true;
 									}
 									else {
 										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -81,6 +82,7 @@ public class MoveCalcTree{
 									stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor+1]);
 									if (!node.getPiece().isKing() && stepMove.becomeKing) {
 										moveList.add(stepMove);
+										nextStep = true;
 									}
 									else {
 										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -113,6 +115,7 @@ public class MoveCalcTree{
 									stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor-1]);
 									if (!node.getPiece().isKing() && stepMove.becomeKing) {
 										moveList.add(stepMove);
+										nextStep = true;
 									}
 									else {
 										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -143,6 +146,7 @@ public class MoveCalcTree{
 									stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor+1]);
 									if (!node.getPiece().isKing() && stepMove.becomeKing) {
 										moveList.add(stepMove);
+										nextStep = true;
 									}
 									else {
 										MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -182,6 +186,7 @@ public class MoveCalcTree{
 								stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor-1]);
 								if (!node.getPiece().isKing() && stepMove.becomeKing) {
 									moveList.add(stepMove);
+									nextStep = true;
 								}
 								else {
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -211,6 +216,7 @@ public class MoveCalcTree{
 								stepMove.addToRemove((Piece)tempboard[icoor+1][jcoor+1]);
 								if (!node.getPiece().isKing() && stepMove.becomeKing) {
 									moveList.add(stepMove);
+									nextStep = true;
 								}
 								else {
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -240,6 +246,7 @@ public class MoveCalcTree{
 								stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor-1]);
 								if (!node.getPiece().isKing() && stepMove.becomeKing) {
 									moveList.add(stepMove);
+									nextStep = true;
 								}
 								else {
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);
@@ -269,6 +276,7 @@ public class MoveCalcTree{
 								stepMove.addToRemove((Piece)tempboard[icoor-1][jcoor+1]);
 								if (!node.getPiece().isKing() && stepMove.becomeKing) {
 									moveList.add(stepMove);
+									nextStep = true;
 								}
 								else {
 									MoveCalcNode newNode = new MoveCalcNode(node.getPiece(), stepMove);

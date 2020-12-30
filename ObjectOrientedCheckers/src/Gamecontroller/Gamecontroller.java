@@ -18,8 +18,8 @@ public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
-	public static boolean playerOneAI = false;
-	public static boolean playerTwoAI = false;
+	public static boolean playerOneAI = true;
+	public static boolean playerTwoAI = true;
 	public static boolean gameOver = false;
 	
 	public Gamecontroller() {
@@ -92,7 +92,6 @@ public class Gamecontroller {
 				}
 			}		
 		}
-		testPieces();
 		if (captureMove) {
 			for(int i = 0; i <= field.length - 1; i++) {
 				for(int j = 0; j <= field[0].length - 1; j++) {
@@ -147,6 +146,7 @@ public class Gamecontroller {
 //			Main.board.place_pieces();
 		}
 		
+		System.out.println("turn: " + turn);
 	}
 	
 	public static void calcWhiteMoves() {
@@ -172,7 +172,6 @@ public class Gamecontroller {
 				}
 			}
 		}
-		testPieces();
 		if(captureMove) {
 			for(int i = 0; i <= field.length - 1; i++) {
 				for(int j = 0; j <= field[0].length - 1; j++) {
