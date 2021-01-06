@@ -34,21 +34,21 @@ public class TrueMinimaxTree {
 			System.out.println(Arrays.toString(alphabeta[i]));
 		}
 
-		double newValue = rootNode.minimaxValue;
-		
-		if(rootNode.minimaxValue != -0.5 && Gamecontroller.turn + MAX_DEPTH < 50) {
-			for (int i = 0; i <= rootNode.children.size() - 1; i++) {
-				if(rootNode.children.get(i).minimaxValue == rootNode.minimaxValue) {
-					rootNode.children.get(i).minimaxValue += rn.nextDouble();
-				
-					if(rootNode.children.get(i).minimaxValue > newValue) {
-						newValue = rootNode.children.get(i).minimaxValue;
-					}
-				}
-			}
-			rootNode.minimaxValue = newValue;
-		}
-		
+//		double newValue = rootNode.minimaxValue;
+//		
+//		if(rootNode.minimaxValue != -0.5 && Gamecontroller.turn + MAX_DEPTH < 50) {
+//			for (int i = 0; i <= rootNode.children.size() - 1; i++) {
+//				if(rootNode.children.get(i).minimaxValue == rootNode.minimaxValue) {
+//					rootNode.children.get(i).minimaxValue += rn.nextDouble();
+//				
+//					if(rootNode.children.get(i).minimaxValue > newValue) {
+//						newValue = rootNode.children.get(i).minimaxValue;
+//					}
+//				}
+//			}
+//			rootNode.minimaxValue = newValue;
+//		}
+//		
 		System.out.println(rootNode.minimaxValue);
 		System.out.println(rootNode.children.size());
 		System.out.println("----");
@@ -95,16 +95,23 @@ public class TrueMinimaxTree {
 						if(((alphabeta[depth-1][0] < alphabeta[depth-1][1]))) {
 							Object[][] tempBoard = Gamecontroller.deepBoardCopy(holdBoard);
 							Object[][] projectedBoard = AIMoveToAction.AIAction(MoveCalcTree.copyMove(holdList.get(k)), Gamecontroller.deepBoardCopy(tempBoard));
-
+							
+							List<Move> mademoveList = Gamecontroller.copyMoveList(parentnode.MadeMoves);
+							mademoveList.add(MoveCalcTree.copyMove(holdList.get(k)));
+							
+							if(mademoveList.size() > 16) {
+								mademoveList.remove(0);
+							}
+							
 							boolean maxNode = !parentnode.maxNode;
-							MinimaxNode childNode = new MinimaxNode(tempBoard, projectedBoard, holdList.get(k), parentnode, maxNode);
+							MinimaxNode childNode = new MinimaxNode(tempBoard, projectedBoard, holdList.get(k), parentnode, maxNode, Gamecontroller.copyMoveList(mademoveList));
 							parentnode.children.add(childNode);
 							
 							if(currentColour == 1) { // If White just made a move
-								parentnode.children.get(parentnode.children.size()-1).projectedBoard = AIController.calcBlackMoves(Gamecontroller.deepBoardCopy(parentnode.children.get(parentnode.children.size()-1).projectedBoard)); 
+								parentnode.children.get(parentnode.children.size()-1).projectedBoard = AIController.calcBlackMoves(Gamecontroller.deepBoardCopy(parentnode.children.get(parentnode.children.size()-1).projectedBoard), Gamecontroller.copyMoveList(mademoveList)); 
 							}
 							else { // If Black just made a move
-								parentnode.children.get(parentnode.children.size()-1).projectedBoard = AIController.calcWhiteMoves(Gamecontroller.deepBoardCopy(parentnode.children.get(parentnode.children.size()-1).projectedBoard)); 
+								parentnode.children.get(parentnode.children.size()-1).projectedBoard = AIController.calcWhiteMoves(Gamecontroller.deepBoardCopy(parentnode.children.get(parentnode.children.size()-1).projectedBoard), Gamecontroller.copyMoveList(mademoveList)); 
 							}
 							
 							double score = AIController.boardEval(parentnode.children.get(parentnode.children.size()-1).projectedBoard, Gamecontroller.turn%2, (Gamecontroller.turn + depth) > 50);

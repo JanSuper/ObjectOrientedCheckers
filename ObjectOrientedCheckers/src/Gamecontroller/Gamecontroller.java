@@ -19,7 +19,7 @@ public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
-	public static boolean playerOneAI = false;
+	public static boolean playerOneAI = true;
 	public static boolean playerTwoAI = false;
 	public static boolean gameOver = false;
 	public static List<Move> madeMoves = new ArrayList();
@@ -207,7 +207,6 @@ public class Gamecontroller {
 				if(field[i][j] != null) {
 					List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
 					for (int k = holdMoveList.size() - 1; k >= 0; k--) {
-						System.out.println("check");
 						if(Gamecontroller.illegalMove(holdMoveList.get(k), madeMoves)) {
 							((Piece) field[i][j]).getMoves().remove(k);
 						}
@@ -330,7 +329,7 @@ public class Gamecontroller {
 	
 	public static void AddMoveToList(Move m) {
 		madeMoves.add(m);
-		if(madeMoves.size() > 10) {
+		if(madeMoves.size() > 16) {
 			madeMoves.remove(0);
 		}
 	}
@@ -351,7 +350,6 @@ public class Gamecontroller {
 				if(MadeMoves.get(i).getRemoveList().size() == 0 && MadeMoves.get(i).getPiece().getColour() == m.getPiece().getColour()) {
 					int[] MadeMoveEnd = MadeMoves.get(i).getToList().get(0);
 					if((moveEnd[0] == MadeMoveEnd[0]) && (moveEnd[1] == MadeMoveEnd[1])) {
-						System.out.println("count");
 						count++;
 					}
 				}
