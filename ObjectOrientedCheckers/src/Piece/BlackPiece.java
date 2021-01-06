@@ -90,7 +90,7 @@ public class BlackPiece extends CheckersPiece{
 	        	}
 	        	else if (Gamecontroller.turn%2 == 0) {
 	        		System.out.println("aiTurn");
-	        		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+	        		Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field),Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 	        		MoveToAction.AIAction(aiMove);
 	        	}
 	        });

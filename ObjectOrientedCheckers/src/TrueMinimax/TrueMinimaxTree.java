@@ -3,6 +3,7 @@ package TrueMinimax;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import AIClasses.AIController;
 import AIClasses.AIMoveToAction;
@@ -13,24 +14,40 @@ import Piece.Piece;
 
 public class TrueMinimaxTree {
 	
-	public static final int MAX_DEPTH = 11;
+	public static final int MAX_DEPTH = 5;
 	
 	public static double[][] alphabeta = new double[MAX_DEPTH][2];
 	
 	public static MinimaxNode rootNode;
 	
-	public static Move getMove(Object[][] board) {
+	public static Random rn = new Random();
+	
+	public static Move getMove(Object[][] board, List<Move> MadeMoves) {
 		
 		resetAlphaBeta();
 		
-		rootNode = new MinimaxNode(board);
+		rootNode = new MinimaxNode(board, MadeMoves);
 		
 		recursion(rootNode, 1);
 		
 		for(int i = 0; i <= MAX_DEPTH - 1; i++) {
 			System.out.println(Arrays.toString(alphabeta[i]));
 		}
+
+		double newValue = rootNode.minimaxValue;
 		
+		if(rootNode.minimaxValue != -0.5 && Gamecontroller.turn + MAX_DEPTH < 50) {
+			for (int i = 0; i <= rootNode.children.size() - 1; i++) {
+				if(rootNode.children.get(i).minimaxValue == rootNode.minimaxValue) {
+					rootNode.children.get(i).minimaxValue += rn.nextDouble();
+				
+					if(rootNode.children.get(i).minimaxValue > newValue) {
+						newValue = rootNode.children.get(i).minimaxValue;
+					}
+				}
+			}
+			rootNode.minimaxValue = newValue;
+		}
 		
 		System.out.println(rootNode.minimaxValue);
 		System.out.println(rootNode.children.size());
@@ -39,6 +56,7 @@ public class TrueMinimaxTree {
 		for (int i = 0; i <= rootNode.children.size() - 1; i++) {
 			System.out.println(rootNode.children.get(i).minimaxValue);
 			if(rootNode.children.get(i).minimaxValue == rootNode.minimaxValue) {
+				System.out.println(rootNode.children.get(i).children.size());
 				return(rootNode.children.get(i).madeMove);
 			}
 		}
@@ -65,7 +83,7 @@ public class TrueMinimaxTree {
 		for(int i = 0; i <= holdBoard.length - 1; i++) {
 			for(int j = 0; j <= holdBoard[0].length - 1; j++) {
 				if(holdBoard[i][j] != null) {
-					if(((Piece)holdBoard[i][j]).getColour() != currentColour) {
+					if(((Piece)holdBoard[i][j]).getColour() !=  Gamecontroller.turn%2) {
 						amountOfEnemies++;
 					}
 					else {
@@ -74,7 +92,7 @@ public class TrueMinimaxTree {
 					
 					List<Move> holdList = ((Piece)holdBoard[i][j]).getMoves(); // Hold onto list of moves for simplicity
 					for(int k = 0; k <= holdList.size() - 1; k++) {// for every possible move	
-						if((alphabeta[depth-1][0] < alphabeta[depth-1][1])) {
+						if(((alphabeta[depth-1][0] < alphabeta[depth-1][1]))) {
 							Object[][] tempBoard = Gamecontroller.deepBoardCopy(holdBoard);
 							Object[][] projectedBoard = AIMoveToAction.AIAction(MoveCalcTree.copyMove(holdList.get(k)), Gamecontroller.deepBoardCopy(tempBoard));
 
@@ -89,7 +107,7 @@ public class TrueMinimaxTree {
 								parentnode.children.get(parentnode.children.size()-1).projectedBoard = AIController.calcWhiteMoves(Gamecontroller.deepBoardCopy(parentnode.children.get(parentnode.children.size()-1).projectedBoard)); 
 							}
 							
-							double score = AIController.boardEval(parentnode.children.get(parentnode.children.size()-1).projectedBoard, Gamecontroller.turn%2);
+							double score = AIController.boardEval(parentnode.children.get(parentnode.children.size()-1).projectedBoard, Gamecontroller.turn%2, (Gamecontroller.turn + depth) > 50);
 							
 							if(depth == MAX_DEPTH) {
 								if(parentnode.maxNode) {
@@ -107,48 +125,48 @@ public class TrueMinimaxTree {
 								recursion(parentnode.children.get(parentnode.children.size()-1), depth + 1);
 								}
 							}
-							else {
-//							System.out.println("pruned at depth " + depth);
+						else {
+							parentnode.pruned = true;
 							}
 						}
 					}
 				}
 			}	
 		
-		if(parentnode.children.size() == 0) { //TODO
-			if(parentnode.maxNode) {
-				if(amountOfFriendly == 0) {
-					parentnode.parent.scoreList.add(-100.0);
-					parentnode.minimaxValue = -100.0;
-					alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -100.0);
-					alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -100.0);
-				}
-				else { //TODO drawing better than losing
-					parentnode.parent.scoreList.add(-0.5);
-					parentnode.minimaxValue  = -0.5;
-					alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -0.5);
-					alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -0.5);
-					System.out.println("draw at depth " + depth);
+		
+			if(parentnode.children.size() == 0) {//TODO
+				if((alphabeta[depth-1][0] < alphabeta[depth-1][1])) {
+					if(parentnode.maxNode) {
+						if(amountOfFriendly == 0) {
+							parentnode.parent.scoreList.add(-100.0);
+							parentnode.minimaxValue = -100.0;
+							alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -100.0);
+							alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -100.0);
+						}
+						else { //TODO drawing better than losing
+							parentnode.parent.scoreList.add(-0.5);
+							parentnode.minimaxValue  = -0.5;
+							alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -0.5);
+							alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -0.5);
+							System.out.println("draw at depth " + depth);
+						}
+					}
+				else {
+					if(amountOfEnemies == 0) {
+						parentnode.parent.scoreList.add(100.0);
+						parentnode.minimaxValue = 100.0;
+						alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], 100.0);
+						alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], 100.0);
+					}
+					else { //TODO drawing better than losing
+						parentnode.parent.scoreList.add(-0.5);
+						parentnode.minimaxValue  = -0.5;
+						alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], -0.5);
+						alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], -0.5);
+						System.out.println("draw at depth " + depth);
+					}
 				}
 			}
-			else {
-				if(amountOfEnemies == 0) {
-					parentnode.parent.scoreList.add(100.0);
-					parentnode.minimaxValue = 100.0;
-					alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], 100.0);
-					alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], 100.0);
-				}
-				else { //TODO drawing better than losing
-					parentnode.parent.scoreList.add(-0.5);
-					parentnode.minimaxValue  = -0.5;
-					alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], -0.5);
-					alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], -0.5);
-					System.out.println("draw at depth " + depth);
-				}
-			}
-			
-			
-			
 		}
 		else {
 			parentnode.Minimax();

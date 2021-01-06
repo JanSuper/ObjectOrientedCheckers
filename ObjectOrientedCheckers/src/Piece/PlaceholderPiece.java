@@ -39,7 +39,7 @@ public class PlaceholderPiece extends CheckersPiece{
 	        	if(!Gamecontroller.gameOver) {
 	        		if(Gamecontroller.turn%2 == 0 && Gamecontroller.playerOneAI) {
 	        			System.out.println("aiTurn");
-	        			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+	        			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 	        			MoveToAction.AIAction(aiMove);
 	        		}
 	        		else if(Gamecontroller.turn%2 == 1 && Gamecontroller.playerTwoAI) {

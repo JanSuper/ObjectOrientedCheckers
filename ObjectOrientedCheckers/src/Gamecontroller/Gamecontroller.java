@@ -5,6 +5,7 @@ import java.util.List;
 
 import Board.Board;
 import Move.Move;
+import Move.MoveCalcTree;
 import Move.MoveToAction;
 import ObjectUI.Main;
 import ObjectUI.Visual;
@@ -18,9 +19,10 @@ public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
-	public static boolean playerOneAI = true;
-	public static boolean playerTwoAI = true;
+	public static boolean playerOneAI = false;
+	public static boolean playerTwoAI = false;
 	public static boolean gameOver = false;
+	public static List<Move> madeMoves = new ArrayList();
 	
 	public Gamecontroller() {
 		newGame();
@@ -108,6 +110,18 @@ public class Gamecontroller {
 				}
 			}
 		}
+		for(int i = 0; i <= field.length - 1; i++) {
+			for(int j = 0; j <= field[0].length - 1; j++) {
+				if(field[i][j] != null) {
+					List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
+					for (int k = holdMoveList.size() - 1; k >= 0; k--) {
+						if(Gamecontroller.illegalMove(holdMoveList.get(k), madeMoves)) {
+							((Piece) field[i][j]).getMoves().remove(k);
+						}
+					}
+				}		
+			}		
+		}
 	}
 	
 	public static void endTurn() {
@@ -187,6 +201,19 @@ public class Gamecontroller {
 					}
 				}
 			}
+		}
+		for(int i = 0; i <= field.length - 1; i++) {
+			for(int j = 0; j <= field[0].length - 1; j++) {
+				if(field[i][j] != null) {
+					List<Move> holdMoveList = ((Piece) field[i][j]).getMoves();
+					for (int k = holdMoveList.size() - 1; k >= 0; k--) {
+						System.out.println("check");
+						if(Gamecontroller.illegalMove(holdMoveList.get(k), madeMoves)) {
+							((Piece) field[i][j]).getMoves().remove(k);
+						}
+					}
+				}		
+			}		
 		}
 	}
 	
@@ -299,5 +326,38 @@ public class Gamecontroller {
 		}
 		
 		return boardCopy;
+	}
+	
+	public static void AddMoveToList(Move m) {
+		madeMoves.add(m);
+		if(madeMoves.size() > 10) {
+			madeMoves.remove(0);
+		}
+	}
+	
+	public static List<Move> copyMoveList(List<Move> MadeMoves){
+		List<Move> returnList = new ArrayList();
+		for(int i = 0; i <= MadeMoves.size()-1; i++) {
+			returnList.add(MoveCalcTree.copyMove(MadeMoves.get(i)));
+		}
+		return returnList;
+	}
+	
+	public static boolean illegalMove(Move m, List<Move> MadeMoves) {
+		int count = 0;
+		if(m.getRemoveList().size() == 0) {
+			int[] moveEnd = m.getToList().get(0);
+			for(int i = 0; i<= MadeMoves.size() - 1; i++) {
+				if(MadeMoves.get(i).getRemoveList().size() == 0 && MadeMoves.get(i).getPiece().getColour() == m.getPiece().getColour()) {
+					int[] MadeMoveEnd = MadeMoves.get(i).getToList().get(0);
+					if((moveEnd[0] == MadeMoveEnd[0]) && (moveEnd[1] == MadeMoveEnd[1])) {
+						System.out.println("count");
+						count++;
+					}
+				}
+			}
+		}
+		
+		return (count > 2);
 	}
 }

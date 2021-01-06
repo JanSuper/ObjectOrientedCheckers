@@ -1,5 +1,7 @@
 package Move;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import AIClasses.AIController;
@@ -10,6 +12,11 @@ import Piece.Piece;
 public class MoveToAction {
 	
 	public static void UserAction(Move m) {
+		Gamecontroller.AddMoveToList(m);
+		ExUserAction(m);
+	}
+	
+	public static void ExUserAction(Move m) {
 		int[] postionHold = m.getFrom();
 		int[] toHold = m.getToList().get(0);
 		
@@ -22,7 +29,30 @@ public class MoveToAction {
 			
 			Main.board.getChildren().remove((Piece)Gamecontroller.field[takePosition[0]][takePosition[1]]);
 			Gamecontroller.field[takePosition[0]][takePosition[1]] = null;
+			boolean endpoint = false;
+			boolean step = false;
+			
 			for(int i = possibleMoves.size()-1; i>=0; i--) {
+				System.out.println(Arrays.toString(possibleMoves.get(i).getToList().get(possibleMoves.get(i).getToList().size()-1)));
+				System.out.println("---");
+				System.out.println(Arrays.toString(toHold));
+				if(Arrays.equals(possibleMoves.get(i).getToList().get(possibleMoves.get(i).getToList().size()-1),toHold)) {
+					endpoint = true;
+					System.out.println("endpoint");
+				}
+				else if(Arrays.equals(possibleMoves.get(i).getToList().get(0),toHold)) {
+					step = true;
+					System.out.println("step");
+				}
+			}
+			
+			if(endpoint && !step) {
+				((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).resetMoveList();
+				possibleMoves = new ArrayList();
+			}
+			
+			for(int i = possibleMoves.size()-1; i>=0; i--) {
+				
 				((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().get(i).getRemoveList().remove(0);
 				((Piece)Gamecontroller.field[postionHold[0]][postionHold[1]]).getMoves().get(i).getToList().remove(0);
 				
@@ -67,7 +97,7 @@ public class MoveToAction {
 			int[] startingPos = m.getPiece().getLocation();
 			Move holdMove = new Move(((Piece)Gamecontroller.field[startingPos[0]][startingPos[1]]));
 			holdMove.setTo(m.getToList().get(0)[0], m.getToList().get(0)[1]);
-			UserAction(holdMove);
+			ExUserAction(holdMove);
 		}		
 		else {
 			for(int i = 0; i <= m.getToList().size()-1; i++) {
@@ -81,7 +111,7 @@ public class MoveToAction {
 				}
 				Move holdMove = new Move(((Piece)Gamecontroller.field[startingPos[0]][startingPos[1]]));
 				holdMove.setTo(m.getToList().get(i)[0], m.getToList().get(i)[1]);
-				UserAction(holdMove);
+				ExUserAction(holdMove);
 			}
 		}
 		

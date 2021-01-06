@@ -12,6 +12,7 @@ public class MinimaxNode {
 	public double minimaxValue;
 	
 	public Move madeMove = null;
+	public List<Move> MadeMoves;
 	public Object[][] beforeBoard;
 	public Object[][] projectedBoard;
 	
@@ -20,17 +21,19 @@ public class MinimaxNode {
 	
 	public ArrayList<Double> scoreList = new ArrayList();
 	
-	public MinimaxNode(Object[][] board) {
+	public MinimaxNode(Object[][] board, List<Move> MadeMoves) {
 		this.projectedBoard = board;
+		this.MadeMoves = MadeMoves;
 		this.minimaxValue = Integer.MIN_VALUE;
 	}
 	
-	public MinimaxNode(Object[][] beforeBoard, Object[][] projectedboard, Move move, MinimaxNode parent, boolean maxNode) {
+	public MinimaxNode(Object[][] beforeBoard, Object[][] projectedboard, Move move, MinimaxNode parent, boolean maxNode, List<Move> MadeMoves) {
 		this.beforeBoard = beforeBoard;
 		this.projectedBoard = projectedboard;
 		this.madeMove = move;
 		this.parent = parent;
 		this.maxNode = maxNode;
+		this.MadeMoves = MadeMoves;
 		
 		if(this.maxNode) {
 			this.minimaxValue = Double.NEGATIVE_INFINITY;
@@ -45,6 +48,7 @@ public class MinimaxNode {
 			for(int i = 0; i <= this.scoreList.size()-1; i++) {
 				if (this.minimaxValue < this.scoreList.get(i)) {
 					this.minimaxValue = this.scoreList.get(i);
+					this.pruned = this.children.get(i).pruned;
 				}
 			}
 			if(this.parent != null) {
@@ -55,6 +59,7 @@ public class MinimaxNode {
 			for(int i = 0; i <= this.scoreList.size()-1; i++) {
 				if (this.minimaxValue > this.scoreList.get(i)) {
 					this.minimaxValue = this.scoreList.get(i);
+					this.pruned = this.children.get(i).pruned;
 				}
 			}
 			if(this.parent != null) {
