@@ -15,6 +15,8 @@ public class AIController {
 	
 	public static Random rn = new Random();
 	
+	public static double[] weights = {1.0, 2.0, 1.0, 2.0};
+	
 	public static Move getAiMove(Object[][] board, List<Move> MadeMoves) {
 		Object[][] holdBoard = Gamecontroller.deepBoardCopy(board); // too early
 		
@@ -183,27 +185,7 @@ public class AIController {
 			}
 		}
 		if(movecount > 0) {
-			if(true) {
-				return ((double)((amountFriendlyPieces + 2*amountFriendlyKings) - (amountEnemyPieces + 2*amountEnemyKings)));
-			}
-			else {
-				//calculate farthest Manhattan distances
-				double distance = 0.0;
-				for(int i = 0; i <= friendlyPos.size() - 1; i++) {
-					double holdDistance = 0.0;
-					int[] fPos = friendlyPos.get(i);
-					for(int j = 0; j <= enemyPos.size() - 1; j++) {
-						int[] ePos = enemyPos.get(j);
-						if(((double)Math.abs(fPos[0] - ePos[0]) + Math.abs(fPos[1] - ePos[1])) > holdDistance) {
-							holdDistance = ((double)Math.abs(fPos[0] - ePos[0]) + Math.abs(fPos[1] - ePos[1]));
-						}
-					}
-					distance += holdDistance;
-				}
-				double maxDistance = (double)(friendlyPos.size() * 16 + 1);
-				
-				return ((double)((amountFriendlyPieces + 2*amountFriendlyKings) - (amountEnemyPieces + 2*amountEnemyKings)) + distance/maxDistance);
-			}
+			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)));
 		}
 		else {
 			if((amountFriendlyKings + amountFriendlyPieces) > 0 && (amountEnemyKings + amountEnemyPieces) == 0) {

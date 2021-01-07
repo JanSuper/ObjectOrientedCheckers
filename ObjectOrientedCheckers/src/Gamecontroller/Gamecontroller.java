@@ -74,6 +74,7 @@ public class Gamecontroller {
 		board = new Board();
 		field = board.getBoard();
 		turn = 0;
+		gameOver = false;
 	}
 	
 	public static void calcBlackMoves() {
@@ -369,22 +370,24 @@ public class Gamecontroller {
 		return (count > 2);
 	}
 	
-	public static void gameLoop() {
+	public static void gameLoop(double[] P1, double[] P2) {
 		while (!gameOver && turn < MAX_TURNS) {
-			makeMove();
+			makeMove(P1, P2);
 		}
 		testBoard();
 	}
 	
-	public static void makeMove() {
+	public static void makeMove(double[] P1, double[] P2) {
 		//TODO 
 		System.out.println(turn);
 		if(turn%2 == 0) {
+			AIController.weights = P1;
 			TrueMinimaxTree.MAX_DEPTH = 5;
 			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 			MoveToAction.AIAction(aiMove);
 		}
 		else {
+			AIController.weights = P2;
 			TrueMinimaxTree.MAX_DEPTH = 7;
 			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 			MoveToAction.AIAction(aiMove);
