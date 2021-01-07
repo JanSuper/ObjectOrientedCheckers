@@ -31,10 +31,10 @@ public class TrueMinimaxTree {
 		
 		recursion(rootNode, 1);
 		
-		for(int i = 0; i <= MAX_DEPTH - 1; i++) {
-			System.out.println(Arrays.toString(alphabeta[i]));
-		}
-
+//		for(int i = 0; i <= MAX_DEPTH - 1; i++) {
+//			System.out.println(Arrays.toString(alphabeta[i]));
+//		}
+//
 //		double newValue = rootNode.minimaxValue;
 //		
 //		if(rootNode.minimaxValue != -0.5 && Gamecontroller.turn + MAX_DEPTH < 50) {
@@ -50,14 +50,14 @@ public class TrueMinimaxTree {
 //			rootNode.minimaxValue = newValue;
 //		}
 //		
-		System.out.println(rootNode.minimaxValue);
-		System.out.println(rootNode.children.size());
-		System.out.println("----");
+//		System.out.println(rootNode.minimaxValue);
+//		System.out.println(rootNode.children.size());
+//		System.out.println("----");
 		
 		for (int i = 0; i <= rootNode.children.size() - 1; i++) {
-			System.out.println(rootNode.children.get(i).minimaxValue);
+//			System.out.println(rootNode.children.get(i).minimaxValue);
 			if(rootNode.children.get(i).minimaxValue == rootNode.minimaxValue) {
-				System.out.println(rootNode.children.get(i).children.size());
+//				System.out.println(rootNode.children.get(i).children.size());
 				return(rootNode.children.get(i).madeMove);
 			}
 		}
@@ -156,7 +156,7 @@ public class TrueMinimaxTree {
 							parentnode.minimaxValue  = -0.5;
 							alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -0.5);
 							alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -0.5);
-							System.out.println("draw at depth " + depth);
+//							System.out.println("draw at depth " + depth);
 						}
 					}
 				else {
@@ -171,7 +171,7 @@ public class TrueMinimaxTree {
 						parentnode.minimaxValue  = -0.5;
 						alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], -0.5);
 						alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], -0.5);
-						System.out.println("draw at depth " + depth);
+//						System.out.println("draw at depth " + depth);
 					}
 				}
 			}

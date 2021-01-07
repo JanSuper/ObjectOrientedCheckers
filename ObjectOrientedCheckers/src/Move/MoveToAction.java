@@ -36,16 +36,16 @@ public class MoveToAction {
 			boolean step = false;
 			
 			for(int i = possibleMoves.size()-1; i>=0; i--) {
-				System.out.println(Arrays.toString(possibleMoves.get(i).getToList().get(possibleMoves.get(i).getToList().size()-1)));
-				System.out.println("---");
-				System.out.println(Arrays.toString(toHold));
+//				System.out.println(Arrays.toString(possibleMoves.get(i).getToList().get(possibleMoves.get(i).getToList().size()-1)));
+//				System.out.println("---");
+//				System.out.println(Arrays.toString(toHold));
 				if(Arrays.equals(possibleMoves.get(i).getToList().get(possibleMoves.get(i).getToList().size()-1),toHold)) {
 					endpoint = true;
-					System.out.println("endpoint");
+//					System.out.println("endpoint");
 				}
 				else if(Arrays.equals(possibleMoves.get(i).getToList().get(0),toHold)) {
 					step = true;
-					System.out.println("step");
+//					System.out.println("step");
 				}
 			}
 			
@@ -104,7 +104,7 @@ public class MoveToAction {
 		}		
 		else {
 			for(int i = 0; i <= m.getToList().size()-1; i++) {
-				System.out.println("here?");
+//				System.out.println("here?");
 				int[] startingPos;
 				if (i == 0) {
 					startingPos = m.getPiece().getLocation();

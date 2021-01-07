@@ -75,6 +75,8 @@ public class Gamecontroller {
 		field = board.getBoard();
 		turn = 0;
 		gameOver = false;
+		playerOneWon = false;
+		madeMoves = new ArrayList();
 	}
 	
 	public static void calcBlackMoves() {
@@ -134,11 +136,11 @@ public class Gamecontroller {
 		turn++;
 		if(turn%2==0) {
 			calcBlackMoves();
-			System.out.println("Black's turn");
+//			System.out.println("Black's turn");
 		}
 		else {
 			calcWhiteMoves();
-			System.out.println("White's turn");
+//			System.out.println("White's turn");
 		}
 		
 		boolean endOfGame = true;
@@ -157,7 +159,7 @@ public class Gamecontroller {
 		}
 		
 		if(endOfGame) { //TODO game reset
-			System.out.println("end of game");
+//			System.out.println("end of game");
 			gameOver = true;
 			if((turn-1)%2 == 0) {
 				playerOneWon = true;
@@ -171,7 +173,7 @@ public class Gamecontroller {
 //			Main.board.place_pieces();
 		}
 		
-		System.out.println("turn: " + turn);
+//		System.out.println("turn: " + turn);
 	}
 	
 	public static void calcWhiteMoves() {
@@ -370,25 +372,25 @@ public class Gamecontroller {
 		return (count > 2);
 	}
 	
-	public static void gameLoop(double[] P1, double[] P2) {
+	public static void gameLoop(double[] P1, double[] P2, int P1depth, int P2depth) {
 		while (!gameOver && turn < MAX_TURNS) {
-			makeMove(P1, P2);
+			makeMove(P1, P2, P1depth, P2depth);
 		}
-		testBoard();
+//		testBoard();
 	}
 	
-	public static void makeMove(double[] P1, double[] P2) {
+	public static void makeMove(double[] P1, double[] P2, int P1depth, int P2depth) {
 		//TODO 
-		System.out.println(turn);
+//		System.out.println(turn);
 		if(turn%2 == 0) {
 			AIController.weights = P1;
-			TrueMinimaxTree.MAX_DEPTH = 5;
+			TrueMinimaxTree.MAX_DEPTH = P1depth;
 			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 			MoveToAction.AIAction(aiMove);
 		}
 		else {
 			AIController.weights = P2;
-			TrueMinimaxTree.MAX_DEPTH = 7;
+			TrueMinimaxTree.MAX_DEPTH = P2depth;
 			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 			MoveToAction.AIAction(aiMove);
 		}
