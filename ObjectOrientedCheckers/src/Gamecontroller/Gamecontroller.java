@@ -163,6 +163,10 @@ public class Gamecontroller {
 			gameOver = true;
 			if((turn-1)%2 == 0) {
 				playerOneWon = true;
+				System.out.println("one won");
+			}
+			else {
+				System.out.println("two won");
 			}
 			
 			

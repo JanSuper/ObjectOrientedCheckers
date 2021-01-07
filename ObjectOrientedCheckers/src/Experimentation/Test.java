@@ -26,30 +26,30 @@ public class Test {
 		      }
 		      BufferedWriter writer = new BufferedWriter(new FileWriter("filename.txt"));
 		      
-		      for(int i = 0; i <= 99; i++) {
+		      for(int i = 0; i <= 1; i++) {
 		    	  
 		    	  System.out.println(i);
 		    	  
 		    	  game = new Gamecontroller();
 		      	
-		    	  int gameOne = 0;
-		      		int gameTwo = 0;
+		    	  double gameOne = 0.0;
+		      		double gameTwo = 0.0;
 				
-					double[] P1 = {rn.nextDouble()*4.0-2.0, rn.nextDouble()*4.0-2.0, rn.nextDouble()*4.0-2.0, rn.nextDouble()*4.0-2.0};
+					double[] P1 = {rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0};
 					double[] P2 = {1.0, 2.0, 1.0, 2.0};
 				
 					int P1depth = 5;
-					int P2depth = 5;
+					int P2depth = 3;
 				
 					game.gameLoop(P1, P2, P1depth, P2depth);
 				
 				
 					if(game.turn == game.MAX_TURNS) {
-//						System.out.println("draw");
+						System.out.println("draw");
 					}
 					else if (game.playerOneWon) {
 //						System.out.println("Player one wins");
-						gameOne = 1;
+						gameOne = 1.0;
 					}
 					else {
 //						System.out.println("player two wins");
@@ -62,17 +62,25 @@ public class Test {
 				
 				
 					if(game.turn == game.MAX_TURNS) {
-//						System.out.println("draw");
+						System.out.println("draw");
 					}
 					else if (game.playerOneWon) {
 //						System.out.println("Player one wins");
 					}
 					else {
 //						System.out.println("player two wins");
-						gameTwo = 1;
+						gameTwo = 1.0;
+					}
+					
+					//TODO change way of noting wins
+					String weights = "";
+					for(int j = 0; j <= P1.length - 1; j++) {
+						weights += (String)(P1[j] + " ");
 					}
 		      
-				writer.write(Arrays.toString(P1) + " " + gameOne + " " + gameTwo);
+				writer.write(weights + " " + gameOne);
+		      	writer.newLine();
+		      	writer.write(weights + " " + gameTwo);
 		      	writer.newLine();
 		      
 		      }
