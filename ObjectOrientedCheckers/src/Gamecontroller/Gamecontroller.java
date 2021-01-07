@@ -3,6 +3,7 @@ package Gamecontroller;
 import java.util.ArrayList;
 import java.util.List;
 
+import AIClasses.AIController;
 import Board.Board;
 import Move.Move;
 import Move.MoveCalcTree;
@@ -14,14 +15,18 @@ import Piece.CheckersPiece;
 import Piece.Piece;
 import Piece.PlaceholderPiece;
 import Piece.WhitePiece;
+import TrueMinimax.TrueMinimaxTree;
 
 public class Gamecontroller {
 	public static Board board;
 	public static Object[][] field;
 	public static int turn = 0;
+	public static final int MAX_TURNS = 100;
+	public static boolean Visuals = true;
 	public static boolean playerOneAI = true;
 	public static boolean playerTwoAI = false;
 	public static boolean gameOver = false;
+	public static boolean playerOneWon = false;
 	public static List<Move> madeMoves = new ArrayList();
 	
 	public Gamecontroller() {
@@ -152,7 +157,12 @@ public class Gamecontroller {
 		
 		if(endOfGame) { //TODO game reset
 			System.out.println("end of game");
-//			gameOver = true;
+			gameOver = true;
+			if((turn-1)%2 == 0) {
+				playerOneWon = true;
+			}
+			
+			
 //			startNewGame();
 //			newGame();
 //			calcBlackMoves();
@@ -357,5 +367,27 @@ public class Gamecontroller {
 		}
 		
 		return (count > 2);
+	}
+	
+	public static void gameLoop() {
+		while (!gameOver && turn < MAX_TURNS) {
+			makeMove();
+		}
+		testBoard();
+	}
+	
+	public static void makeMove() {
+		//TODO 
+		System.out.println(turn);
+		if(turn%2 == 0) {
+			TrueMinimaxTree.MAX_DEPTH = 5;
+			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+			MoveToAction.AIAction(aiMove);
+		}
+		else {
+			TrueMinimaxTree.MAX_DEPTH = 7;
+			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+			MoveToAction.AIAction(aiMove);
+		}
 	}
 }

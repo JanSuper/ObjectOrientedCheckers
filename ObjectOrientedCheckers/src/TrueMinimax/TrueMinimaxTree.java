@@ -14,7 +14,7 @@ import Piece.Piece;
 
 public class TrueMinimaxTree {
 	
-	public static final int MAX_DEPTH = 5;
+	public static int MAX_DEPTH = 5;
 	
 	public static double[][] alphabeta = new double[MAX_DEPTH][2];
 	
@@ -23,6 +23,7 @@ public class TrueMinimaxTree {
 	public static Random rn = new Random();
 	
 	public static Move getMove(Object[][] board, List<Move> MadeMoves) {
+		alphabeta = new double[MAX_DEPTH][2];
 		
 		resetAlphaBeta();
 		

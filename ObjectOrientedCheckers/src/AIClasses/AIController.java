@@ -183,7 +183,7 @@ public class AIController {
 			}
 		}
 		if(movecount > 0) {
-			if(!endGame) {
+			if(true) {
 				return ((double)((amountFriendlyPieces + 2*amountFriendlyKings) - (amountEnemyPieces + 2*amountEnemyKings)));
 			}
 			else {

@@ -27,7 +27,10 @@ public class MoveToAction {
 			
 			int[] takePosition = {(postionHold[0] + toHold[0])/2, (postionHold[1] + toHold[1])/2};
 			
-			Main.board.getChildren().remove((Piece)Gamecontroller.field[takePosition[0]][takePosition[1]]);
+			if(Gamecontroller.Visuals) {
+				Main.board.getChildren().remove((Piece)Gamecontroller.field[takePosition[0]][takePosition[1]]);
+			}
+			
 			Gamecontroller.field[takePosition[0]][takePosition[1]] = null;
 			boolean endpoint = false;
 			boolean step = false;

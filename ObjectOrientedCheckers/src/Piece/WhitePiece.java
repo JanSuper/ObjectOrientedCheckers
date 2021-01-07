@@ -71,7 +71,9 @@ public class WhitePiece extends CheckersPiece{
 	}
 	
 	public void makeKing() {
-		king();
+		if(Gamecontroller.Visuals) {
+			king();
+		}
 		isKing = true;
 	}
 	
