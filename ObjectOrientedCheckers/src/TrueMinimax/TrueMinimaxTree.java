@@ -14,7 +14,7 @@ import Piece.Piece;
 
 public class TrueMinimaxTree {
 	
-	public static int MAX_DEPTH = 5;
+	public static int MAX_DEPTH = 1;
 	
 	public static double[][] alphabeta = new double[MAX_DEPTH][2];
 	
@@ -125,6 +125,7 @@ public class TrueMinimaxTree {
 									alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], score);
 								}
 								parentnode.scoreList.add(score);
+								parentnode.children.get(parentnode.children.size()-1).minimaxValue = score;
 							}
 							else {
 								alphabeta[depth][0] = alphabeta[depth-1][0];

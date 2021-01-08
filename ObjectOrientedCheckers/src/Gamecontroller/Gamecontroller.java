@@ -30,7 +30,7 @@ public class Gamecontroller {
 	public static boolean playerOneWon = false;
 	public static List<Move> madeMoves = new ArrayList();
 	
-	// 0 = Random / 1 = MCTS / 2 = MINIMAX depth 3 / 3 = MINIMAX depth 4/ 4 = MINIMAX depth 5 /etc
+	// 0 = Random / 1 = MCTS / 2 = MINIMAX depth 1 / 3 = MINIMAX depth 2/ 4 = MINIMAX depth 3 /etc
 	public static int AIone = 0;
 	public static int AItwo = 0;
 	
@@ -177,16 +177,16 @@ public class Gamecontroller {
 //			System.out.println("end of game");
 			gameOver = true;
 			if(amountWhite > 0 && amountBlack > 0) {
-				System.out.println("no more moves draw");
+//				System.out.println("no more moves draw");
 				gameDraw = true;
 			}
 			else {
 				if((turn-1)%2 == 0) {
 					playerOneWon = true;
-					System.out.println("one won");
+//					System.out.println("one won");
 				}
 				else {
-					System.out.println("two won");
+//					System.out.println("two won");
 				}
 			}
 			
@@ -416,7 +416,7 @@ public class Gamecontroller {
 			}
 			else {
 				AIController.weights = P1;
-				TrueMinimaxTree.MAX_DEPTH = P1AI + 1;
+				TrueMinimaxTree.MAX_DEPTH = P1AI - 1;
 				Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 				MoveToAction.AIAction(aiMove);
 			}
@@ -431,7 +431,7 @@ public class Gamecontroller {
 			}
 			else {
 				AIController.weights = P2;
-				TrueMinimaxTree.MAX_DEPTH = P2AI + 1;
+				TrueMinimaxTree.MAX_DEPTH = P2AI - 1;
 				Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
 				MoveToAction.AIAction(aiMove);
 			}
