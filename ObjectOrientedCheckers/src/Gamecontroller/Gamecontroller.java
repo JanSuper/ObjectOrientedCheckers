@@ -26,8 +26,13 @@ public class Gamecontroller {
 	public static boolean playerOneAI = true;
 	public static boolean playerTwoAI = false;
 	public static boolean gameOver = false;
+	public static boolean gameDraw = false;
 	public static boolean playerOneWon = false;
 	public static List<Move> madeMoves = new ArrayList();
+	
+	// 0 = Random / 1 = MCTS / 2 = MINIMAX depth 3 / 3 = MINIMAX depth 4/ 4 = MINIMAX depth 5 /etc
+	public static int AIone = 0;
+	public static int AItwo = 0;
 	
 	public Gamecontroller() {
 		newGame();
@@ -76,6 +81,7 @@ public class Gamecontroller {
 		turn = 0;
 		gameOver = false;
 		playerOneWon = false;
+		gameDraw = false;
 		madeMoves = new ArrayList();
 	}
 	
@@ -143,10 +149,19 @@ public class Gamecontroller {
 //			System.out.println("White's turn");
 		}
 		
+		int amountBlack = 0;
+		int amountWhite = 0;
+		
 		boolean endOfGame = true;
 		for(int i = 0; i <= field.length - 1; i++) {
 			for(int j = 0; j <= field[0].length - 1; j++) {
 				if(field[i][j] != null) {
+					if(((Piece) field[i][j]).getColour() == 0) {
+						amountWhite++;
+					}
+					else {
+						amountBlack++;
+					}
 					if(((Piece) field[i][j]).getMoves().size() != 0) {
 						endOfGame = false;
 						break;
@@ -161,14 +176,19 @@ public class Gamecontroller {
 		if(endOfGame) { //TODO game reset
 //			System.out.println("end of game");
 			gameOver = true;
-			if((turn-1)%2 == 0) {
-				playerOneWon = true;
-				System.out.println("one won");
+			if(amountWhite > 0 && amountBlack > 0) {
+				System.out.println("no more moves draw");
+				gameDraw = true;
 			}
 			else {
-				System.out.println("two won");
+				if((turn-1)%2 == 0) {
+					playerOneWon = true;
+					System.out.println("one won");
+				}
+				else {
+					System.out.println("two won");
+				}
 			}
-			
 			
 //			startNewGame();
 //			newGame();
@@ -383,20 +403,38 @@ public class Gamecontroller {
 //		testBoard();
 	}
 	
-	public static void makeMove(double[] P1, double[] P2, int P1depth, int P2depth) {
+	public static void makeMove(double[] P1, double[] P2, int P1AI, int P2AI) {
 		//TODO 
 //		System.out.println(turn);
 		if(turn%2 == 0) {
-			AIController.weights = P1;
-			TrueMinimaxTree.MAX_DEPTH = P1depth;
-			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
-			MoveToAction.AIAction(aiMove);
+			if(P1AI == 0) {
+				Move aiMove = AIController.getRandomMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+				MoveToAction.AIAction(aiMove);
+			}
+			else if(P1AI == 1) {
+				
+			}
+			else {
+				AIController.weights = P1;
+				TrueMinimaxTree.MAX_DEPTH = P1AI + 1;
+				Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+				MoveToAction.AIAction(aiMove);
+			}
 		}
 		else {
-			AIController.weights = P2;
-			TrueMinimaxTree.MAX_DEPTH = P2depth;
-			Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
-			MoveToAction.AIAction(aiMove);
+			if(P2AI == 0) {
+				Move aiMove = AIController.getRandomMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+				MoveToAction.AIAction(aiMove);
+			}
+			else if(P2AI == 1) {
+				
+			}
+			else {
+				AIController.weights = P2;
+				TrueMinimaxTree.MAX_DEPTH = P2AI + 1;
+				Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+				MoveToAction.AIAction(aiMove);
+			}
 		}
 	}
 }

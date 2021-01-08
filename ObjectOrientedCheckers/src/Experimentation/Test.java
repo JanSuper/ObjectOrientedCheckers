@@ -26,25 +26,25 @@ public class Test {
 		      }
 		      BufferedWriter writer = new BufferedWriter(new FileWriter("filename.txt"));
 		      
-		      for(int i = 0; i <= 1; i++) {
+		      for(int i = 0; i <= 99; i++) {
 		    	  
 		    	  System.out.println(i);
 		    	  
 		    	  game = new Gamecontroller();
 		      	
-		    	  double gameOne = 0.0;
+		    	  	double gameOne = 0.0;
 		      		double gameTwo = 0.0;
 				
-					double[] P1 = {rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0};
-					double[] P2 = {1.0, 2.0, 1.0, 2.0};
+					double[] P1 = {rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0};
+					double[] P2 = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
 				
-					int P1depth = 5;
-					int P2depth = 3;
+					int P1AI = 0;
+					int P2AI = 6;
 				
-					game.gameLoop(P1, P2, P1depth, P2depth);
+					game.gameLoop(P1, P2, P1AI, P2AI);
 				
 				
-					if(game.turn == game.MAX_TURNS) {
+					if(game.turn == game.MAX_TURNS || game.gameDraw) {
 						System.out.println("draw");
 					}
 					else if (game.playerOneWon) {
@@ -58,10 +58,10 @@ public class Test {
 					game = new Gamecontroller();
 					game.Visuals = false;
 				
-					game.gameLoop(P2, P1, P2depth, P1depth);
+					game.gameLoop(P2, P1, P2AI, P1AI);
 				
 				
-					if(game.turn == game.MAX_TURNS) {
+					if(game.turn == game.MAX_TURNS || game.gameDraw) {
 						System.out.println("draw");
 					}
 					else if (game.playerOneWon) {

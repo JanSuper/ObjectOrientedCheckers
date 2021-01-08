@@ -15,7 +15,7 @@ public class AIController {
 	
 	public static Random rn = new Random();
 	
-	public static double[] weights = {1.0, 2.0, 1.0, 2.0};
+	public static double[] weights = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
 	
 	public static Move getAiMove(Object[][] board, List<Move> MadeMoves) {
 		Object[][] holdBoard = Gamecontroller.deepBoardCopy(board); // too early
@@ -157,6 +157,11 @@ public class AIController {
 		int amountEnemyPieces = 0;
 		int amountFriendlyKings = 0;
 		int amountEnemyKings = 0;
+		
+		int normalmoves = 0;
+		int becomesKingmove = 0;
+		int capturemoves = 0;
+		
 		List<int[]> enemyPos = new ArrayList();
 		List<int[]> friendlyPos = new ArrayList();
 		for(int i = 0; i <= board.length - 1; i++) {
@@ -164,6 +169,18 @@ public class AIController {
 				if(board[i][j] != null) {
 					movecount += ((Piece)board[i][j]).getMoves().size();
 					if(((Piece)board[i][j]).getColour() == colour) {
+						List<Move> holdlist = ((Piece)board[i][j]).getMoves();
+						for(int k = 0; k <= holdlist.size() - 1; k++) {
+							if (holdlist.get(k).becomesKing()) {
+								becomesKingmove++;
+							}
+							if (holdlist.get(k).getRemoveList().size() > 0) {
+								capturemoves++;
+							}
+							if(!holdlist.get(k).becomesKing() && holdlist.get(k).getRemoveList().size() == 0) {
+								normalmoves++;
+							}
+						}
 						friendlyPos.add(((Piece)board[i][j]).getLocation());
 						if(((Piece)board[i][j]).isKing()) {
 							amountFriendlyKings++;
@@ -185,18 +202,31 @@ public class AIController {
 			}
 		}
 		if(movecount > 0) {
-			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)));
+			double newValue = weights[4]*(double)normalmoves + weights[5]*becomesKingmove + weights[6]*capturemoves;
+			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)) + newValue);
 		}
 		else {
 			if((amountFriendlyKings + amountFriendlyPieces) > 0 && (amountEnemyKings + amountEnemyPieces) == 0) {
-				return 100.0;
+				return 1000.0;
 			}
 			if((amountFriendlyKings + amountFriendlyPieces) == 0 && (amountEnemyKings + amountEnemyPieces) > 0) {
-				return -100.0;
+				return -1000.0;
 			}
 			return -0.5;
 		}
 		
+	}
+	
+	public static Move getRandomMove(Object[][] board) {
+		List<Move> movelist = new ArrayList();
+		for(int i = 0; i <= board.length - 1; i++) {
+			for(int j = 0; j <= board[0].length - 1; j++) {
+				if(board[i][j] != null) {
+					movelist.addAll(((Piece)board[i][j]).getMoves());
+				}
+			}
+		}
+		return movelist.get(rn.nextInt(movelist.size()));
 	}
 
 }

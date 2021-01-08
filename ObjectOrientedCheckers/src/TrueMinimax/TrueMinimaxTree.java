@@ -146,10 +146,10 @@ public class TrueMinimaxTree {
 				if((alphabeta[depth-1][0] < alphabeta[depth-1][1])) {
 					if(parentnode.maxNode) {
 						if(amountOfFriendly == 0) {
-							parentnode.parent.scoreList.add(-100.0);
-							parentnode.minimaxValue = -100.0;
-							alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -100.0);
-							alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -100.0);
+							parentnode.parent.scoreList.add(-1000.0);
+							parentnode.minimaxValue = -1000.0;
+							alphabeta[depth-2][1] = Math.min(alphabeta[depth-2][1], -1000.0);
+							alphabeta[depth-1][0] = Math.max(alphabeta[depth-1][0], -1000.0);
 						}
 						else { //TODO drawing better than losing
 							parentnode.parent.scoreList.add(-0.5);
@@ -161,10 +161,10 @@ public class TrueMinimaxTree {
 					}
 				else {
 					if(amountOfEnemies == 0) {
-						parentnode.parent.scoreList.add(100.0);
-						parentnode.minimaxValue = 100.0;
-						alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], 100.0);
-						alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], 100.0);
+						parentnode.parent.scoreList.add(1000.0);
+						parentnode.minimaxValue = 1000.0;
+						alphabeta[depth-2][0] = Math.max(alphabeta[depth-2][0], 1000.0);
+						alphabeta[depth-1][1] = Math.min(alphabeta[depth-1][1], 1000.0);
 					}
 					else { //TODO drawing better than losing
 						parentnode.parent.scoreList.add(-0.5);
