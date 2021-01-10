@@ -203,7 +203,7 @@ public class AIController {
 		}
 		if(movecount > 0) {
 			double newValue = weights[4]*(double)normalmoves + weights[5]*becomesKingmove + weights[6]*capturemoves;
-			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)) + newValue);
+			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)) + newValue + rn.nextDouble()/10.0);
 		}
 		else {
 			if((amountFriendlyKings + amountFriendlyPieces) > 0 && (amountEnemyKings + amountEnemyPieces) == 0) {
