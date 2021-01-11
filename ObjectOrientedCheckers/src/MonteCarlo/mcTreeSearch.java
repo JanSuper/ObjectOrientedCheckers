@@ -44,9 +44,9 @@ public class mcTreeSearch {
             simulate(node); //simulate and back propagate(update)
         }
 
-        printField(this.root.game_state);
-        for(mcNode child : this.root.children)
-            printField(child.game_state);
+//        printField(this.root.game_state);
+//        for(mcNode child : this.root.children)
+//            printField(child.game_state);
 
         mcNode best_child = this.root.children.get(0);
         for(mcNode child : root.children){
@@ -125,10 +125,10 @@ public class mcTreeSearch {
                     if (exp_turn%2 == 0) {
                         if (obj instanceof BlackPiece) {
 
-                            System.out.println("piece is black");
-                            System.out.println("num of poss moves = "+((BlackPiece)obj).getMoves().size());
-                            System.out.println();
-                            System.out.println();
+//                            System.out.println("piece is black");
+//                            System.out.println("num of poss moves = "+((BlackPiece)obj).getMoves().size());
+//                            System.out.println();
+//                            System.out.println();
 
                             for (Move m : ((BlackPiece) obj).getMoves()) {
                                 if(m.getRemoveList().size() == 0)
