@@ -92,34 +92,34 @@ public class AIController {
 				String RESET = "\033[0m";  // Text Reset
 				String PURPLE = "\033[0;35m";  // PURPLE
 
-				for(int i = 0; i<= Gamecontroller.field.length - 1; i++) {
-					Object[] arr = Gamecontroller.field[i];
-					for(Object obj : arr)
-					{
-						if(obj instanceof BlackPiece)
-							System.out.print(GREEN+"B  "+RESET);
-						else if(obj instanceof WhitePiece)
-							System.out.print(PURPLE+"W  "+RESET);
-						else if(obj == null)
-							System.out.print("0  ");
-					}
-					System.out.println();
-				}
-				System.out.println();
-				System.out.println();
-
-				System.out.println();
-				System.out.println("move from x= "+move.getPiece().getLocation()[0]+" y= "+move.getPiece().getLocation()[1]);
-				System.out.println("move to x= "+move.getToList().get(move.getToList().size()-1)[0]+" y= "+move.getToList().get(move.getToList().size()-1)[1]);
-				System.out.println("number of eaten pieces = "+move.getRemoveList().size());
+//				for(int i = 0; i<= Gamecontroller.field.length - 1; i++) {
+//					Object[] arr = Gamecontroller.field[i];
+//					for(Object obj : arr)
+//					{
+//						if(obj instanceof BlackPiece)
+//							System.out.print(GREEN+"B  "+RESET);
+//						else if(obj instanceof WhitePiece)
+//							System.out.print(PURPLE+"W  "+RESET);
+//						else if(obj == null)
+//							System.out.print("0  ");
+//					}
+//					System.out.println();
+//				}
+//				System.out.println();
+//				System.out.println();
+//
+//				System.out.println();
+//				System.out.println("move from x= "+move.getPiece().getLocation()[0]+" y= "+move.getPiece().getLocation()[1]);
+//				System.out.println("move to x= "+move.getToList().get(move.getToList().size()-1)[0]+" y= "+move.getToList().get(move.getToList().size()-1)[1]);
+//				System.out.println("number of eaten pieces = "+move.getRemoveList().size());
 				if(move.getRemoveList().size() == 2) {
 					Piece ep1, ep2;
 					ep1 = move.getRemoveList().get(0);
 					ep2 = move.getRemoveList().get(1);
-					System.out.println("ep1 x = "+ep1.getLocation()[0]+" y= "+ep1.getLocation()[1]);
-					System.out.println("ep2 x = "+ep2.getLocation()[0]+" y= "+ep2.getLocation()[1]);
+//					System.out.println("ep1 x = "+ep1.getLocation()[0]+" y= "+ep1.getLocation()[1]);
+//					System.out.println("ep2 x = "+ep2.getLocation()[0]+" y= "+ep2.getLocation()[1]);
 				}
-				System.out.println();
+//				System.out.println();
 
 				return move;
 			}
