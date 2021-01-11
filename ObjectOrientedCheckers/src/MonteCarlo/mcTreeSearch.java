@@ -9,7 +9,10 @@ import Piece.CheckersPiece;
 import Piece.Piece;
 import Piece.WhitePiece;
 
+import javax.swing.text.AbstractDocument;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -17,16 +20,20 @@ public class mcTreeSearch {
 
     private final mcNode root;
     private final Random rng = new Random();
-    private int OGturn;
+    public boolean withRAVE = false;
 
-    public mcTreeSearch(Object[][] g_state, List<Move> moveList) {
-    	System.out.println(Gamecontroller.turn);
-        this.root = new mcNode(g_state, moveList);
-        this.selection_pointer = this.root;
+    public mcTreeSearch(Object[][] g_state) {
+        this.root = new mcNode(g_state);
     }
-    public void setOGturn(int i){this.OGturn = i;}
+
+    public void setWithRAVE(boolean bool){this.withRAVE = bool;}
 
     public Move getNextMove() {
+
+        if(Gamecontroller.playerOneAI)
+            exp_turn = 0;
+        else
+            exp_turn = 1;
 
         long start = System.currentTimeMillis();
         int TIME_LIMIT = 2000;
@@ -36,99 +43,197 @@ public class mcTreeSearch {
             expand(node); //expand the selected node
             simulate(node); //simulate and back propagate(update)
         }
-        //check within children of root which one has best UCB
+
+        printField(this.root.game_state);
+        for(mcNode child : this.root.children)
+            printField(child.game_state);
+
         mcNode best_child = this.root.children.get(0);
-        double max = UCB(this.root.children.get(0));
-        for (mcNode child : root.children) {
-            if (UCB(child) > max) {
+        for(mcNode child : root.children){
+            if(child.num_simulations > best_child.num_simulations)
                 best_child = child;
-                max = UCB(child);
-            }
         }
+
         Move move = best_child.move_made;
+
         return move;
     }
 
-    private mcNode selection() {
-        max_ucb = 0;
-        recursive_selection(this.root);
-        return selection_pointer;
+    void printField(Object[][] field){
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_PURPLE = "\u001B[35m";
+
+
+        System.out.println();
+        for(Object[] arr: field){
+            for(Object obj : arr)
+            {
+                if(obj instanceof BlackPiece) {
+                    if(((Piece)obj).isKing())
+                        System.out.print(ANSI_PURPLE + " B " + ANSI_RESET);
+                    else
+                        System.out.print(ANSI_RED + " B " + ANSI_RESET);
+                }
+                else if(obj instanceof WhitePiece) {
+                    if(((Piece)obj).isKing())
+                        System.out.print(ANSI_PURPLE + " W " + ANSI_RESET);
+                    else
+                        System.out.print(ANSI_GREEN + " W " + ANSI_RESET);
+                }
+                else if(obj == null)
+                    System.out.print(" 0 ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+    private mcNode selection_method(mcNode node){
+
+        mcNode select_node = node.children.get(0);
+        for(mcNode child : node.children){
+            if(UCB(child) > UCB(select_node))
+                select_node = child;
+        }
+        if(select_node.isLeaf())
+            return select_node;
+        else
+            return selection_method(select_node);
     }
 
+    private mcNode selection() {
+        if(this.root.isLeaf())
+            return this.root;
+        return selection_method(this.root);
+    }
+
+    int exp_turn;
+
     private void expand(mcNode node) {
+        if (exp_turn%2 == 0)
+            AIController.calcBlackMoves(node.game_state, Gamecontroller.madeMoves);
+        else
+            AIController.calcWhiteMoves(node.game_state, Gamecontroller.madeMoves);
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        ArrayList<Move> possibleMovesEat = new ArrayList<>();
+
         for (Object[] a : node.game_state) {
             for (Object obj : a) {
                 if (obj != null) {
                     //if ai plays as black turn
-                    if (Gamecontroller.turn%2 == 0) {
+                    if (exp_turn%2 == 0) {
                         if (obj instanceof BlackPiece) {
-                        AIController.calcBlackMoves(node.game_state, node.moveList);
+
+                            System.out.println("piece is black");
+                            System.out.println("num of poss moves = "+((BlackPiece)obj).getMoves().size());
+                            System.out.println();
+                            System.out.println();
+
                             for (Move m : ((BlackPiece) obj).getMoves()) {
-                                Object[][] temp_board = Gamecontroller.deepBoardCopy(node.game_state);
-                                temp_board = AIMoveToAction.AIAction(m, temp_board);
-                                mcNode new_node = new mcNode(temp_board, node);
-                                new_node.moveList.add(m);
-                                node.children.add(new_node);
-                                new_node.setMove_made(m);
+                                if(m.getRemoveList().size() == 0)
+                                    possibleMoves.add(m);
+                                else
+                                    possibleMovesEat.add(m);
                             }
                         }
                     }
                     //if ai plays as white
                     else {
                         if (obj instanceof WhitePiece) {
-                            AIController.calcWhiteMoves(node.game_state, node.moveList);
-                            if(((WhitePiece) obj).getMoves().size() != 0){
-                                for (Move m : ((WhitePiece) obj).getMoves()) {
-                                    Object[][] temp_board = Gamecontroller.deepBoardCopy(node.game_state);
-                                    temp_board = AIMoveToAction.AIAction(m, temp_board);
-                                    mcNode new_node = new mcNode(temp_board, node);
-                                    new_node.moveList.add(m);
-                                    node.children.add(new_node);
-                                    new_node.setMove_made(m);
-                                }
+                            for (Move m : ((WhitePiece) obj).getMoves()) {
+                                if(m.getRemoveList().size() == 0)
+                                    possibleMoves.add(m);
+                                else
+                                    possibleMovesEat.add(m);
                             }
                         }
                     }
                 }
             }
         }
+
+        if(possibleMovesEat.size() == 0){
+            for(Move m : possibleMoves){
+                Object[][] new_board = AIMoveToAction.AIAction(m, Gamecontroller.deepBoardCopy(node.game_state));
+                mcNode new_node = new mcNode(new_board, node);
+                new_node.setMove_made(m);
+            }
+        }
+        else {
+            for(Move m : possibleMovesEat){
+                Object[][] new_board = AIMoveToAction.AIAction(m, Gamecontroller.deepBoardCopy(node.game_state));
+                mcNode new_node = new mcNode(new_board, node);
+                new_node.setMove_made(m);
+            }
+        }
+        exp_turn++;
     }
 
     private void simulate(mcNode node) {
         Object[][] board = node.game_state;//get a copy of board
+        int sim_count = 1;
+        int sim_turn;
+        if(Gamecontroller.playerOneAI)
+            sim_turn = 0;
+        else
+            sim_turn = 1;
 
-        int turn = Gamecontroller.turn;
-        int count = 0;
-        while (!gameOver(board) && count < 50) {// look 50 moves ahead
-            //if the player plays as black
-            if (Gamecontroller.turn%2 == 0) {
-                count++;
-                BlackPiece piece = getRandomBPiece(board, true);// get a random movable black piece
-                Move move;
-                if(piece == null)//if there are pieces that can move then game over
-                    count = 51;
+        while (!gameOver(board) && sim_count < 50){
+
+            /* get random move
+            * if move is equal to any of the children moves
+            */
+
+            ArrayList<Move> movesMade = new ArrayList<>();
+
+            if (sim_turn%2 == 0){
+                Move move = getRandomBlackMove(board);
+
+                if(withRAVE)
+                    movesMade.add(move);
+
+                if(move != null){
+                    Object[][] new_board = AIMoveToAction.AIAction(move, Gamecontroller.deepBoardCopy(board));
+                    board = new_board;
+                }
                 else
-                {
-                    move = piece.getMoves().get(rng.nextInt(piece.getMoves().size()));
-                    board = AIMoveToAction.AIAction(move, board);
+                    break;
+            }
+            else if(sim_turn%2 == 1){
+                Move move = getRandomWhiteMove(board);
+
+                if(withRAVE)
+                    movesMade.add(move);
+
+                if(move != null){
+                    Object[][] new_board = AIMoveToAction.AIAction(move, Gamecontroller.deepBoardCopy(board));
+                    board = new_board;
+                }
+                else
+                    break;
+            }
+
+            sim_turn=sim_turn+1;
+            sim_count=sim_count+1;
+
+            if(withRAVE){
+                int score = getScore(board, sim_turn);
+                for(mcNode child : this.root.children){
+                    for(Move m : movesMade){
+                        if(sameMove(m, child.move_made)){
+                            child.num_playouts_containing_this_move++;
+                            child.num_playouts_won_with_this_move+=score;
+                        }
+                    }
                 }
             }
-            else if(Gamecontroller.turn%2 == 1){
-                WhitePiece piece = getRandomWPiece(board, true);// get a random movable white piece
-                Move move;
-                if(piece == null)
-                    count = 51;
-                else
-                {
-                    move = piece.getMoves().get(rng.nextInt(piece.getMoves().size()));
-                    board = AIMoveToAction.AIAction(move, board);
-                }
 
-            }
         }
 
-        //after simulation, back propagate
-        int score = getScore(board);
+        int score = getScore(board, sim_turn);
+
+
         backpropagation(node, score);
     }
 
@@ -147,7 +252,12 @@ public class mcTreeSearch {
     /**
      * HELPER METHODS
      */
-    private int getScore(Object[][] board) {
+    private boolean sameMove(Move m1, Move m2){
+        return Arrays.equals(m1.getFrom(), m2.getFrom()) && Arrays.equals(m1.getToList().get(m1.getToList().size() - 1), m2.getToList().get(m2.getToList().size() - 1));
+    }
+
+    private int getScore(Object[][] board, int turn) {
+
         int num_white = 0, num_black = 0;
         //method checks if it's a W or L
         for (Object[] arr : board) {
@@ -160,12 +270,47 @@ public class mcTreeSearch {
                 }
             }
         }
-        if(num_black > num_white && this.OGturn == 0)
+
+        AIController.calcWhiteMoves(board, Gamecontroller.madeMoves);
+        int possWhiteMoves = 0;
+        AIController.calcBlackMoves(board, Gamecontroller.madeMoves);
+        int possBlackMoves = 0;
+
+        for(Object[] arr : board){
+            for(Object obj : arr){
+                if(obj instanceof WhitePiece)
+                    possWhiteMoves = possWhiteMoves + ((WhitePiece)obj).getMoves().size();
+
+                else if(obj instanceof BlackPiece)
+                    possBlackMoves = possBlackMoves + ((BlackPiece)obj).getMoves().size();
+            }
+        }
+        if((Gamecontroller.playerTwoAI && num_black == 0) || (Gamecontroller.playerOneAI && num_white == 0))
             return 1;
-        else if(num_white > num_black && this.OGturn == 1)
-            return 1;
-        else
-            return 0;
+
+        if(turn == 50){
+            if(Gamecontroller.playerOneAI){
+                if(num_black > num_white)
+                    return 1;
+                else
+                    return -1;
+            }
+            else if(Gamecontroller.playerTwoAI){
+                if(num_white > num_black)
+                    return 1;
+                else
+                    return -1;
+            }
+        }
+        if(Gamecontroller.playerOneAI){
+            if(num_white == 0 || (turn%2==1 && possWhiteMoves==0))
+                return 1;
+        }
+        else if(Gamecontroller.playerTwoAI){
+            if(num_black == 0 || (turn%2==0 && possBlackMoves==0))
+                return 1;
+        }
+        return -1;
     }
 
     private boolean exists_one_of_each(Object[][] board) {
@@ -210,10 +355,22 @@ public class mcTreeSearch {
         // UCB function is of the form: a+cb
         // where a = w/n  and  b = sqrt( (ln(N)/n )
 
+
         int w = node.num_wins;
         int n = node.num_simulations;
         double c = Math.sqrt(2);
         double N = node.parent.num_simulations;
+
+
+        if(withRAVE){
+            double ni = node.num_playouts_containing_this_move;
+            double wi = node.num_playouts_won_with_this_move;
+
+            double B = (ni)/(n+ni+4*2*n*ni);
+
+            return ( (1-B)*(wi/ni) )+( B*(wi/ni) )+( c* Math.sqrt((Math.log(node.parent.num_simulations))/ni));
+
+        }
 
         if(n == 0)
             return 999999;
@@ -225,74 +382,115 @@ public class mcTreeSearch {
 
     }
 
-    private double max_ucb = 0;
-    private mcNode selection_pointer;
+    private Move getRandomBlackMove(Object[][] board){
+        for(Object obj : board[7]){
+            if(obj instanceof BlackPiece)
+                ((BlackPiece)obj).makeKing();
+        }
+        AIController.calcBlackMoves(board, Gamecontroller.madeMoves);
 
-    private void recursive_selection(mcNode node) {
-        for (mcNode n : node.children) {
-            if (n.isLeaf()) {
-                if (UCB(n) > max_ucb) {
-                    selection_pointer = n;
-                    max_ucb = UCB(n);
-                }
-            } else
-                recursive_selection(n);
-        }
-    }
-
-    ArrayList<BlackPiece> blackPieces = new ArrayList<>();
-    private BlackPiece getRandomBPiece(Object[][] board, boolean isFirstIteration)
-    {
-        if(blackPieces.size() == 0)
-            return null;
-        if(isFirstIteration)
-        {
-            blackPieces.clear();
-            for (Object[] arr : board) {
-                for (Object obj : arr) {
-                    if (obj != null) {
-                        if (((Piece) obj).getColour() == 0)
-                            blackPieces.add((BlackPiece) obj);
-                    }
-                }
-            }//fill black pieces list
-        }
-        BlackPiece bp = blackPieces.get(rng.nextInt(blackPieces.size()));
-        if (bp.getMoves().size() == 0) {//if piece can't move
-            blackPieces.remove(bp);//remove from list
-            return getRandomBPiece(board, false);//recall function
-        }
-        else {
-            return bp;
-        }
-    }
-
-    ArrayList<WhitePiece> whitePieces = new ArrayList<>();
-    private WhitePiece getRandomWPiece(Object[][] board, boolean isFirstIteration)
-    {
-        if(whitePieces.size() == 0)
-            return null;
-        if(isFirstIteration)
-        {
-            whitePieces.clear();
-            for (Object[] arr : board) {
-                for (Object obj : arr) {
-                    if (obj != null) {
-                        if (((Piece) obj).getColour() == 1)
-                            whitePieces.add((WhitePiece) obj);
-                    }
+        ArrayList<BlackPiece> MovableBlackPieces = new ArrayList<>();
+        for (Object[] arr : board) {
+            for (Object obj : arr) {
+                if (obj != null) {
+                    if (obj instanceof BlackPiece && ((Piece)obj).getMoves().size()!=0) //if it is a movable black piece
+                        MovableBlackPieces.add((BlackPiece) obj);
                 }
             }
+        }// fill MovableBlackPieces
 
-        }//fill white pieces list
-        WhitePiece wp = whitePieces.get(rng.nextInt(whitePieces.size()));
-        if (wp.getMoves().size() == 0) {//if piece can't move
-            whitePieces.remove(wp);//remove from list
-            return getRandomWPiece(board, false);//recall function
+
+        if(MovableBlackPieces.size()==0)
+            return null;
+
+        ArrayList<BlackPiece> blackPiecesThatCanEat = new ArrayList<>();
+        for(BlackPiece bp : MovableBlackPieces){
+            for(Move m : bp.getMoves()){
+                if(m.getRemoveList().size()!=0)
+                    blackPiecesThatCanEat.add(bp);
+            }
+        }// fill blackPiecesThatCanEat
+
+        ArrayList<BlackPiece> blackPiecesThatCanEatNoDuplicate = new ArrayList<>();
+        for(BlackPiece bp : blackPiecesThatCanEat){
+            if(!blackPiecesThatCanEatNoDuplicate.contains(bp))
+                blackPiecesThatCanEatNoDuplicate.add(bp);
+        }// fill blackPiecesThatCanEatNoDuplicate
+
+        BlackPiece bp;
+        if(blackPiecesThatCanEat.size() == 0) {
+            bp = MovableBlackPieces.get(rng.nextInt(MovableBlackPieces.size()));
+            return bp.getMoves().get(rng.nextInt(bp.getMoves().size()));
         }
-        else {
-            return wp;
+
+        bp = blackPiecesThatCanEatNoDuplicate.get(rng.nextInt(blackPiecesThatCanEatNoDuplicate.size()));
+        ArrayList<Move> bpMoves = new ArrayList<>(bp.getMoves());
+        Move move = bpMoves.get(rng.nextInt(bpMoves.size()));
+        while(move.getRemoveList().size()==0) {
+            bpMoves.remove(move);
+            move = bp.getMoves().get(rng.nextInt(bp.getMoves().size()));
         }
+
+        Gamecontroller.madeMoves.add(move);
+        if(Gamecontroller.madeMoves.size()==17)
+            Gamecontroller.madeMoves.remove(0);
+
+        return move;
     }
 
+    private Move getRandomWhiteMove(Object[][] board){
+        for(Object obj : board[0]){
+            if(obj instanceof WhitePiece)
+                ((WhitePiece)obj).makeKing();
+        }
+        AIController.calcWhiteMoves(board, Gamecontroller.madeMoves);
+
+        ArrayList<WhitePiece> MovableWhitePieces = new ArrayList<>();
+        for (Object[] arr : board) {
+            for (Object obj : arr) {
+                if (obj != null) {
+                    if (obj instanceof WhitePiece && ((Piece)obj).getMoves().size()!=0)  //if it is a movable white piece
+                        MovableWhitePieces.add((WhitePiece) obj);
+                }
+            }
+        }// fill MovableWhitePieces
+
+        if(MovableWhitePieces.size()==0)
+            return null;
+
+        ArrayList<WhitePiece> whitePiecesThatCanEat = new ArrayList<>();
+        for(WhitePiece wp : MovableWhitePieces){
+            for(Move m : wp.getMoves()){
+                if(m.getRemoveList().size()!=0)
+                    whitePiecesThatCanEat.add(wp);
+            }
+        }// fill whitePiecesThatCanEat
+
+
+        ArrayList<WhitePiece> whitePiecesThatCanEatNoDuplicate = new ArrayList<>();
+        for(WhitePiece wp : whitePiecesThatCanEat){
+            if(!whitePiecesThatCanEatNoDuplicate.contains(wp))
+                whitePiecesThatCanEatNoDuplicate.add(wp);
+        }// fill whitePiecesThatCanEatNoDuplicate
+
+        WhitePiece wp;
+        if(whitePiecesThatCanEat.size() == 0) {
+            wp = MovableWhitePieces.get(rng.nextInt(MovableWhitePieces.size()));
+            return wp.getMoves().get(rng.nextInt(wp.getMoves().size()));
+        }
+
+        wp = whitePiecesThatCanEatNoDuplicate.get(rng.nextInt(whitePiecesThatCanEatNoDuplicate.size()));
+        ArrayList<Move> wpMoves = new ArrayList<>(wp.getMoves());
+        Move move = wpMoves.get(rng.nextInt(wpMoves.size()));
+        while(move.getRemoveList().size()==0) {
+            wpMoves.remove(move);
+            move = wp.getMoves().get(rng.nextInt(wp.getMoves().size()));
+        }
+
+        Gamecontroller.madeMoves.add(move);
+        if(Gamecontroller.madeMoves.size()==17)
+            Gamecontroller.madeMoves.remove(0);
+
+        return move;
+    }
 }

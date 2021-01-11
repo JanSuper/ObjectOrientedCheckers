@@ -31,16 +31,16 @@ public class AIController {
 				return aiMove;
 			}
 			else if(Gamecontroller.AIone == 1) {
-				mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
-				tree.setOGturn(0);
+				mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+				tree.setWithRAVE(true);
 				Move move = tree.getNextMove();
 
 				String GREEN = "\033[0;32m";
 				String RESET = "\033[0m";  // Text Reset
 				String PURPLE = "\033[0;35m";  // PURPLE
 
-				for(Object[] arr : Main.board.board)//print board
-				{
+				for(int i = 0; i<= Gamecontroller.field.length - 1; i++) {
+					Object[] arr = Gamecontroller.field[i];
 					for(Object obj : arr)
 					{
 						if(obj instanceof BlackPiece)
@@ -84,16 +84,16 @@ public class AIController {
 				return aiMove;
 			}
 			else if(Gamecontroller.AItwo == 1) {
-				mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
-				tree.setOGturn(1);
+				mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+				tree.setWithRAVE(true);
 				Move move = tree.getNextMove();
 
 				String GREEN = "\033[0;32m";
 				String RESET = "\033[0m";  // Text Reset
 				String PURPLE = "\033[0;35m";  // PURPLE
 
-				for(Object[] arr : Main.board.board)//print board
-				{
+				for(int i = 0; i<= Gamecontroller.field.length - 1; i++) {
+					Object[] arr = Gamecontroller.field[i];
 					for(Object obj : arr)
 					{
 						if(obj instanceof BlackPiece)
