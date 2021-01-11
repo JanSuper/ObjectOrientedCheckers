@@ -122,6 +122,7 @@ public class AIController {
 //				System.out.println();
 
 				return move;
+				
 			}
 			else {
 				AIController.weights = weightsAI2;
