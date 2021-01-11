@@ -20,6 +20,7 @@ public class Visual extends SmartGroup {
     }
 	
 	public void ResetUI() {
+	Main.setGameRules();
 	remove_pieces();
 	Gamecontroller control = new Gamecontroller();
    	board = Gamecontroller.field;
