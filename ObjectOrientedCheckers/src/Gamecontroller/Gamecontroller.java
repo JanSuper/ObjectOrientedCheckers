@@ -23,16 +23,16 @@ public class Gamecontroller {
 	public static int turn = 0;
 	public static final int MAX_TURNS = 100;
 	public static boolean Visuals = true;
-	public static boolean playerOneAI = true;
-	public static boolean playerTwoAI = false;
+	public static boolean playerOneAI = false;
+	public static boolean playerTwoAI = true;
 	public static boolean gameOver = false;
 	public static boolean gameDraw = false;
 	public static boolean playerOneWon = false;
 	public static List<Move> madeMoves = new ArrayList();
 	
 	// 0 = Random / 1 = MCTS / 2 = MINIMAX depth 1 / 3 = MINIMAX depth 2/ 4 = MINIMAX depth 3 /etc
-	public static int AIone = 0;
-	public static int AItwo = 0;
+	public static int AIone = 1;
+	public static int AItwo = 1;
 	
 	public Gamecontroller() {
 		newGame();

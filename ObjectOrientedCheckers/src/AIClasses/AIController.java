@@ -2,7 +2,11 @@ package AIClasses;
 
 import Move.Move;
 import Move.MoveCalcTree;
+import Move.MoveToAction;
+import ObjectUI.Main;
+import Piece.BlackPiece;
 import Piece.Piece;
+import Piece.WhitePiece;
 import TrueMinimax.TrueMinimaxTree;
 
 import java.util.ArrayList;
@@ -10,20 +14,123 @@ import java.util.List;
 import java.util.Random;
 
 import Gamecontroller.*;
+import MonteCarlo.mcTreeSearch;
 
 public class AIController {
 	
 	public static Random rn = new Random();
 	
 	public static double[] weights = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
+	public static double[] weightsAI1 = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
+	public static double[] weightsAI2 = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
 	
 	public static Move getAiMove(Object[][] board, List<Move> MadeMoves) {
-		Object[][] holdBoard = Gamecontroller.deepBoardCopy(board); // too early
-		
-		Move move = TrueMinimaxTree.getMove(holdBoard, MadeMoves);
-		//this class do be kinda useless tho ngl
-		
-		return move;
+		if(Gamecontroller.turn%2 == 0) {
+			if(Gamecontroller.AIone == 0) {
+				Move aiMove = AIController.getRandomMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+				return aiMove;
+			}
+			else if(Gamecontroller.AIone == 1) {
+				mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+				tree.setOGturn(0);
+				Move move = tree.getNextMove();
+
+				String GREEN = "\033[0;32m";
+				String RESET = "\033[0m";  // Text Reset
+				String PURPLE = "\033[0;35m";  // PURPLE
+
+				for(Object[] arr : Main.board.board)//print board
+				{
+					for(Object obj : arr)
+					{
+						if(obj instanceof BlackPiece)
+							System.out.print(GREEN+"B  "+RESET);
+						else if(obj instanceof WhitePiece)
+							System.out.print(PURPLE+"W  "+RESET);
+						else if(obj == null)
+							System.out.print("0  ");
+					}
+					System.out.println();
+				}
+				System.out.println();
+				System.out.println();
+
+				System.out.println();
+				System.out.println("move from x= "+move.getPiece().getLocation()[0]+" y= "+move.getPiece().getLocation()[1]);
+				System.out.println("move to x= "+move.getToList().get(move.getToList().size()-1)[0]+" y= "+move.getToList().get(move.getToList().size()-1)[1]);
+				System.out.println("number of eaten pieces = "+move.getRemoveList().size());
+				if(move.getRemoveList().size() == 2) {
+					Piece ep1, ep2;
+					ep1 = move.getRemoveList().get(0);
+					ep2 = move.getRemoveList().get(1);
+					System.out.println("ep1 x = "+ep1.getLocation()[0]+" y= "+ep1.getLocation()[1]);
+					System.out.println("ep2 x = "+ep2.getLocation()[0]+" y= "+ep2.getLocation()[1]);
+				}
+				System.out.println();
+
+				return move;
+			}
+			else {
+				AIController.weights = weightsAI1;
+				TrueMinimaxTree.MAX_DEPTH = Gamecontroller.AIone - 1;
+				Object[][] holdBoard = Gamecontroller.deepBoardCopy(board); // too early
+				Move aiMove = TrueMinimaxTree.getMove(holdBoard, MadeMoves);
+				return aiMove;
+			}
+		}
+		else {
+			if(Gamecontroller.AItwo == 0) {
+				Move aiMove = AIController.getRandomMove(Gamecontroller.deepBoardCopy(Gamecontroller.field));
+				return aiMove;
+			}
+			else if(Gamecontroller.AItwo == 1) {
+				mcTreeSearch tree = new mcTreeSearch(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+				tree.setOGturn(1);
+				Move move = tree.getNextMove();
+
+				String GREEN = "\033[0;32m";
+				String RESET = "\033[0m";  // Text Reset
+				String PURPLE = "\033[0;35m";  // PURPLE
+
+				for(Object[] arr : Main.board.board)//print board
+				{
+					for(Object obj : arr)
+					{
+						if(obj instanceof BlackPiece)
+							System.out.print(GREEN+"B  "+RESET);
+						else if(obj instanceof WhitePiece)
+							System.out.print(PURPLE+"W  "+RESET);
+						else if(obj == null)
+							System.out.print("0  ");
+					}
+					System.out.println();
+				}
+				System.out.println();
+				System.out.println();
+
+				System.out.println();
+				System.out.println("move from x= "+move.getPiece().getLocation()[0]+" y= "+move.getPiece().getLocation()[1]);
+				System.out.println("move to x= "+move.getToList().get(move.getToList().size()-1)[0]+" y= "+move.getToList().get(move.getToList().size()-1)[1]);
+				System.out.println("number of eaten pieces = "+move.getRemoveList().size());
+				if(move.getRemoveList().size() == 2) {
+					Piece ep1, ep2;
+					ep1 = move.getRemoveList().get(0);
+					ep2 = move.getRemoveList().get(1);
+					System.out.println("ep1 x = "+ep1.getLocation()[0]+" y= "+ep1.getLocation()[1]);
+					System.out.println("ep2 x = "+ep2.getLocation()[0]+" y= "+ep2.getLocation()[1]);
+				}
+				System.out.println();
+
+				return move;
+			}
+			else {
+				AIController.weights = weightsAI2;
+				TrueMinimaxTree.MAX_DEPTH = Gamecontroller.AItwo - 1;
+				Object[][] holdBoard = Gamecontroller.deepBoardCopy(board); // too early
+				Move aiMove = TrueMinimaxTree.getMove(holdBoard, MadeMoves);
+				return aiMove;
+			}
+		}
 	}
 	
 	public static Object[][] calcBlackMoves(Object[][] field, List<Move> MadeMoves){

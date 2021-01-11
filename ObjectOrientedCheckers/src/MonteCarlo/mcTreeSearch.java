@@ -19,8 +19,9 @@ public class mcTreeSearch {
     private final Random rng = new Random();
     private int OGturn;
 
-    public mcTreeSearch(Object[][] g_state) {
-        this.root = new mcNode(g_state);
+    public mcTreeSearch(Object[][] g_state, List<Move> moveList) {
+    	System.out.println(Gamecontroller.turn);
+        this.root = new mcNode(g_state, moveList);
         this.selection_pointer = this.root;
     }
     public void setOGturn(int i){this.OGturn = i;}
@@ -59,13 +60,14 @@ public class mcTreeSearch {
             for (Object obj : a) {
                 if (obj != null) {
                     //if ai plays as black turn
-                    if (Gamecontroller.turn == 0) {
+                    if (Gamecontroller.turn%2 == 0) {
                         if (obj instanceof BlackPiece) {
-                        	AIController.calcBlackMoves(node.game_state);
+                        AIController.calcBlackMoves(node.game_state, node.moveList);
                             for (Move m : ((BlackPiece) obj).getMoves()) {
                                 Object[][] temp_board = Gamecontroller.deepBoardCopy(node.game_state);
                                 temp_board = AIMoveToAction.AIAction(m, temp_board);
                                 mcNode new_node = new mcNode(temp_board, node);
+                                new_node.moveList.add(m);
                                 node.children.add(new_node);
                                 new_node.setMove_made(m);
                             }
@@ -74,12 +76,13 @@ public class mcTreeSearch {
                     //if ai plays as white
                     else {
                         if (obj instanceof WhitePiece) {
-                            AIController.calcWhiteMoves(node.game_state);
+                            AIController.calcWhiteMoves(node.game_state, node.moveList);
                             if(((WhitePiece) obj).getMoves().size() != 0){
                                 for (Move m : ((WhitePiece) obj).getMoves()) {
                                     Object[][] temp_board = Gamecontroller.deepBoardCopy(node.game_state);
                                     temp_board = AIMoveToAction.AIAction(m, temp_board);
                                     mcNode new_node = new mcNode(temp_board, node);
+                                    new_node.moveList.add(m);
                                     node.children.add(new_node);
                                     new_node.setMove_made(m);
                                 }

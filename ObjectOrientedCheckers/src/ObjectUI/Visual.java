@@ -18,6 +18,13 @@ public class Visual extends SmartGroup {
          place_pieces();
          translateZProperty().set(getTranslateZ()+500);
     }
+	
+	public void ResetUI() {
+	remove_pieces();
+	Gamecontroller control = new Gamecontroller();
+   	board = Gamecontroller.field;
+   	place_pieces();
+	}
     
     private void create_tiles(){
         for(int j = 0; j < 4; j++){
@@ -42,6 +49,16 @@ public class Visual extends SmartGroup {
                 getChildren().addAll(bt1, wt1, bt2, wt2);
             }
         }
+    }
+    
+    public void remove_pieces() {
+    	for(int i = 0; i <= board.length - 1; i++){
+            for(int j = 0; j <= board[0].length - 1; j++){
+            	if(board[i][j] != null) {
+            		getChildren().remove(((Piece)board[i][j]));
+            	}
+           }
+       }
     }
     
     public void place_pieces(){
