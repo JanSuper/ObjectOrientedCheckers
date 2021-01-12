@@ -397,6 +397,8 @@ public class Gamecontroller {
 	}
 	
 	public static void gameLoop(double[] P1, double[] P2, int P1depth, int P2depth) {
+		AIone = P1depth;
+		AItwo = P2depth;
 		while (!gameOver && turn < MAX_TURNS) {
 			makeMove(P1, P2, P1depth, P2depth);
 		}
@@ -412,7 +414,8 @@ public class Gamecontroller {
 				MoveToAction.AIAction(aiMove);
 			}
 			else if(P1AI == 1) {
-				
+				Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+				MoveToAction.AIAction(aiMove);
 			}
 			else {
 				AIController.weights = P1;
@@ -427,7 +430,8 @@ public class Gamecontroller {
 				MoveToAction.AIAction(aiMove);
 			}
 			else if(P2AI == 1) {
-				
+				Move aiMove = AIController.getAiMove(Gamecontroller.deepBoardCopy(Gamecontroller.field), Gamecontroller.copyMoveList(Gamecontroller.madeMoves));
+				MoveToAction.AIAction(aiMove);
 			}
 			else {
 				AIController.weights = P2;
