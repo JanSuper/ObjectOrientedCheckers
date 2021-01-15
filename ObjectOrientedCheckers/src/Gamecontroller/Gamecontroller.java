@@ -76,6 +76,7 @@ public class Gamecontroller {
 //	}
 	
 	public static void newGame() {
+		TrueMinimaxTree.nodes = 1;
 		board = new Board();
 		field = board.getBoard();
 		turn = 0;

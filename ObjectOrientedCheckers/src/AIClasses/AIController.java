@@ -24,6 +24,8 @@ public class AIController {
 	public static double[] weightsAI1 = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
 	public static double[] weightsAI2 = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
 	
+	public static boolean stochasticMinimax = true;
+	
 	public static Move getAiMove(Object[][] board, List<Move> MadeMoves) {
 		if(Gamecontroller.turn%2 == 0) {
 			if(Gamecontroller.AIone == 0) {
@@ -310,8 +312,13 @@ public class AIController {
 			}
 		}
 		if(movecount > 0) {
+			double stochvalue = 0.0;
+			
+			if(stochasticMinimax)
+				stochvalue = rn.nextDouble()/10.0;
+			
 			double newValue = weights[4]*(double)normalmoves + weights[5]*becomesKingmove + weights[6]*capturemoves;
-			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)) + newValue + rn.nextDouble()/10.0);
+			return ((double)((weights[0]*(double)amountFriendlyPieces + weights[1]*(double)amountFriendlyKings) - (weights[2]*(double)amountEnemyPieces + weights[3]*(double)amountEnemyKings)) + newValue + stochvalue);
 		}
 		else {
 			if((amountFriendlyKings + amountFriendlyPieces) > 0 && (amountEnemyKings + amountEnemyPieces) == 0) {

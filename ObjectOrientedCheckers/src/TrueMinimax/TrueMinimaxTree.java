@@ -22,6 +22,10 @@ public class TrueMinimaxTree {
 	
 	public static Random rn = new Random();
 	
+	public static boolean pruning = true;
+	
+	public static int nodes = 1;
+	
 	public static Move getMove(Object[][] board, List<Move> MadeMoves) {
 		alphabeta = new double[MAX_DEPTH][2];
 		
@@ -93,7 +97,8 @@ public class TrueMinimaxTree {
 					
 					List<Move> holdList = ((Piece)holdBoard[i][j]).getMoves(); // Hold onto list of moves for simplicity
 					for(int k = 0; k <= holdList.size() - 1; k++) {// for every possible move	
-						if(((alphabeta[depth-1][0] < alphabeta[depth-1][1]))) {
+						if(alphabeta[depth-1][0] < alphabeta[depth-1][1] || !pruning) {
+							nodes++;
 							Object[][] tempBoard = Gamecontroller.deepBoardCopy(holdBoard);
 							Object[][] projectedBoard = AIMoveToAction.AIAction(MoveCalcTree.copyMove(holdList.get(k)), Gamecontroller.deepBoardCopy(tempBoard));
 							
@@ -144,7 +149,7 @@ public class TrueMinimaxTree {
 		
 		
 			if(parentnode.children.size() == 0) {//TODO
-				if((alphabeta[depth-1][0] < alphabeta[depth-1][1])) {
+				if((alphabeta[depth-1][0] < alphabeta[depth-1][1]) || !pruning) {
 					if(parentnode.maxNode) {
 						if(amountOfFriendly == 0) {
 							parentnode.parent.scoreList.add(-1000.0);
