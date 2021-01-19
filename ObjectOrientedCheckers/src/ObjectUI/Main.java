@@ -44,7 +44,6 @@ public class Main extends Application {
 				this.stage.close();
 				board = new Visual();
 				StartUI m = new StartUI();
-				System.out.println("open salami");
 				try {
 					m.start(m.primaryStage);
 				}
