@@ -231,7 +231,7 @@ public class mcTreeSearch {
             }
         }
 
-        System.out.println("num black = "+num_black+" and num white = "+num_white);
+//        System.out.println("num black = "+num_black+" and num white = "+num_white);
 
         if(num_black != 0 && num_white != 0){
             int numWhitePieces = 0;

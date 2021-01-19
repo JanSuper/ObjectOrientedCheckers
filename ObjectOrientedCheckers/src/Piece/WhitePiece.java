@@ -85,8 +85,6 @@ public class WhitePiece extends CheckersPiece{
 	    {
 	        this.setOnMouseClicked(e->{	   
 	        	
-	        	System.out.println("bruh");
-	        	
 	        	Gamecontroller.removePlaceholders();
 	        	
 	        		if(!Gamecontroller.playerTwoAI) {
