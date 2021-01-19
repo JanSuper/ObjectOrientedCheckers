@@ -35,10 +35,12 @@ public class mcTreeSearch {
 
     public Move getNextMove() {
 
-        if(Gamecontroller.playerOneAI)
-            exp_turn = 0;
-        else
-            exp_turn = 1;
+    	exp_turn = Gamecontroller.turn%2;
+    	
+//        if(Gamecontroller.playerOneAI)
+//            exp_turn = 0;
+//        else
+//            exp_turn = 1;
 
         long start = System.currentTimeMillis();
         int TIME_LIMIT = Gamecontroller.mcLimit;
@@ -138,11 +140,11 @@ public class mcTreeSearch {
     private void simulate(mcNode node) {
         Object[][] board = node.game_state;//get a copy of board
         int sim_count = 1;
-        int sim_turn;
-        if(Gamecontroller.playerOneAI)
-            sim_turn = 0;
-        else
-            sim_turn = 1;
+        int sim_turn = Gamecontroller.turn%2;
+//        if(Gamecontroller.playerOneAI)
+//            sim_turn = 0;
+//        else
+//            sim_turn = 1;
 
         while (!gameOver(board) && sim_count < 50){
             ArrayList<Move> movesMade = new ArrayList<>();

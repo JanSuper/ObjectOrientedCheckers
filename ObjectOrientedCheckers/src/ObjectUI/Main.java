@@ -9,14 +9,13 @@ import Board.Board;
 import Gamecontroller.Gamecontroller;
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	public static boolean done = false;
     public static Visual board = new Visual();
     public SmartStage stage = new SmartStage(board);
-    public Scene scene = new Scene(board, WIDTH, HEIGHT, true);
-    Camera camera = new PerspectiveCamera();
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
@@ -24,9 +23,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-    	board.main = this;
-    	
-    	scene.setCamera(camera);
+        Camera camera = new PerspectiveCamera();
+        Scene scene = new Scene(board, WIDTH, HEIGHT, true);
+        scene.setCamera(camera);
 
         stage.setTitle("title");
         stage.setScene(scene);
@@ -37,6 +36,21 @@ public class Main extends Application {
 		Gamecontroller.AItwo = StartUI.AItwo;
 		Gamecontroller.mcLimit = StartUI.mcLIMIT;
 		Gamecontroller.mctsWithRave = StartUI.mctsWithRave;
+		
+		stage.addEventHandler(KeyEvent.KEY_PRESSED, even -> {
+			if(even.getCode() == KeyCode.ESCAPE) {
+				this.stage.close();
+				board = new Visual();
+				StartUI m = new StartUI();
+				System.out.println("open salami");
+				try {
+					m.start(m.primaryStage);
+				}
+				catch (Exception exception) {
+					exception.printStackTrace();
+				}
+			}
+		});
 
         stage.show();
     }
@@ -132,7 +146,7 @@ public class Main extends Application {
     }
     
     public void setToThis() {
-    	//stage.close();
+    	stage.close();
 
 
         StartUI s = new StartUI();

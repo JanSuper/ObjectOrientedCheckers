@@ -8,7 +8,6 @@ import Piece.WhitePiece;
 
 public class Visual extends SmartGroup {
 
-	public Main main;
 	private static final double WIDTH_OF_TILE = 100;
     public Object[][] board;
     
@@ -26,7 +25,6 @@ public class Visual extends SmartGroup {
 	Gamecontroller control = new Gamecontroller();
    	board = Gamecontroller.field;
    	place_pieces();
-   	main.setToThis();
 	}
     
     private void create_tiles(){

@@ -246,15 +246,15 @@ public class StartUI extends Application{
                     StartUI.AIone = Integer.parseInt(depthValue1.getText()) + 1;
                 }
 
-                if(choicesPlayer2.getValue() == "Player 1")
-                    StartUI.playerOneAI = false;
+                if(choicesPlayer2.getValue() == "Player 2")
+                    StartUI.playerTwoAI = false;
                 else if(choicesPlayer2.getValue()=="MCTS" || choicesPlayer2.getValue() == "MCTS with rave") {
                     StartUI.playerTwoAI = true;
                     StartUI.AItwo = 1;
                     System.out.println("i am here");
                     StartUI.mcLIMIT = Integer.parseInt(depthValue2.getText());
 
-                    StartUI.mctsWithRave = choicesPlayer1.getValue() == "MCTS with rave";
+                    StartUI.mctsWithRave = choicesPlayer2.getValue() == "MCTS with rave";
                 }
                 else if(choicesPlayer2.getValue()=="MINIMAX" || choicesPlayer2.getValue() == "MINIMAX with pruning"){
                     StartUI.playerTwoAI = true;

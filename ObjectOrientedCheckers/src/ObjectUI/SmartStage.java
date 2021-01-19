@@ -48,9 +48,6 @@ public class SmartStage extends Stage
                 case NUMPAD6:
                     group.goRight();
                     break;
-                case ESCAPE:
-                    Main.board.ResetUI();
-                    break;
             }
         });
     }
