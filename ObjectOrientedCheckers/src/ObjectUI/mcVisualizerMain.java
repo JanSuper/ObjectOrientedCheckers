@@ -20,4 +20,10 @@ public class mcVisualizerMain extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    
+    public static void main(String[] args) { 
+    	//setGameRules();
+        //launch(args);
+		Application.launch(args);
+    }
 }

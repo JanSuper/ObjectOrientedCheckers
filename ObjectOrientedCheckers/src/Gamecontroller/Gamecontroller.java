@@ -178,7 +178,7 @@ public class Gamecontroller {
 		}
 		
 		if(endOfGame) { //TODO game reset
-//			System.out.println("end of game");
+			System.out.println("end of game");
 			gameOver = true;
 			if(amountWhite > 0 && amountBlack > 0) {
 //				System.out.println("no more moves draw");
@@ -187,10 +187,10 @@ public class Gamecontroller {
 			else {
 				if((turn-1)%2 == 0) {
 					playerOneWon = true;
-//					System.out.println("one won");
+					System.out.println("one won");
 				}
 				else {
-//					System.out.println("two won");
+					System.out.println("two won");
 				}
 			}
 			
