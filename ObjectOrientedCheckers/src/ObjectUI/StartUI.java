@@ -76,10 +76,10 @@ public class StartUI extends Application{
                 depthValue1.setTranslateX(240);
                 depthValue1.setTranslateY(140);
                 depthValue1.setPrefWidth(40);
-
-
-                pane.getChildren().add(depthValue1);
+                if(!pane.getChildren().contains(depthValue1))
+                    pane.getChildren().add(depthValue1);
             }
+            
         }));
         pane.getChildren().add(depth1);
 
@@ -106,7 +106,8 @@ public class StartUI extends Application{
                 depthValue2.setTranslateY(140);
                 depthValue2.setPrefWidth(40);
 
-                pane.getChildren().add(depthValue2);
+                if(!pane.getChildren().contains(depthValue2))
+                    pane.getChildren().add(depthValue2);
             }else if(choicesPlayer2.getValue().equals("MCTS") || choicesPlayer2.getValue().equals("MCTS with rave")){
                 depth2.setText("Stop condition (in ms) :");
                 depth2.setTranslateX(340);
