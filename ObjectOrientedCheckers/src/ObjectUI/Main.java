@@ -12,8 +12,11 @@ import javafx.scene.*;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	public static boolean done = false;
     public static Visual board = new Visual();
     public SmartStage stage = new SmartStage(board);
+    public Scene scene = new Scene(board, WIDTH, HEIGHT, true);
+    Camera camera = new PerspectiveCamera();
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
@@ -21,9 +24,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Camera camera = new PerspectiveCamera();
-        Scene scene = new Scene(board, WIDTH, HEIGHT, true);
-        scene.setCamera(camera);
+    	board.main = this;
+    	
+    	scene.setCamera(camera);
 
         stage.setTitle("title");
         stage.setScene(scene);
@@ -126,6 +129,19 @@ public class Main extends Application {
         	  }
         	   Gamecontroller.AItwo = AITypeP2;
     	   }
+    }
+    
+    public void setToThis() {
+    	//stage.close();
+
+
+        StartUI s = new StartUI();
+        try{
+            s.start(s.primaryStage);
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
 }

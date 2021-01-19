@@ -229,74 +229,49 @@ public class mcTreeSearch {
             }
         }
 
+        System.out.println("num black = "+num_black+" and num white = "+num_white);
+
         if(num_black != 0 && num_white != 0){
-            int possWhiteMoves = 0;
-            AIController.calcWhiteMoves(board, Gamecontroller.madeMoves);
+            int numWhitePieces = 0;
+            int numBlackPieces = 0;
+            int numWhiteKings = 0;
+            int numBlackKings = 0;
+
             for(Object[] arr : board){
                 for(Object obj : arr){
                     if(obj != null){
-                        if(obj instanceof WhitePiece)
-                            possWhiteMoves = possWhiteMoves + ((WhitePiece)obj).getMoves().size();
-                    }
-                }
-            }
-            int possBlackMoves = 0;
-            AIController.calcBlackMoves(board, Gamecontroller.madeMoves);
-            for(Object[] arr : board){
-                for(Object obj : arr){
-                    if(obj != null){
-                        if(obj instanceof BlackPiece)
-                            possBlackMoves = possBlackMoves + ((BlackPiece)obj).getMoves().size();
-                    }
-                }
-            }
-
-            if(turn % 2 == 0 && Gamecontroller.playerOneAI &&possBlackMoves == 0)
-                return 0.5;
-            else if(turn % 2 == 1 && Gamecontroller.playerTwoAI &&possWhiteMoves == 0)
-                return 0.5;
-            else{
-                int numWhitePieces = 0;
-                int numBlackPieces = 0;
-                int numWhiteKings = 0;
-                int numBlackKings = 0;
-
-                for(Object[] arr : board){
-                    for(Object obj : arr){
-                        if(obj != null){
-                            if(obj instanceof BlackPiece){
-                                if(((BlackPiece)obj).isKing())
-                                    numBlackKings++;
-                                else
-                                    numBlackPieces++;
-                            }
-                            else if(obj instanceof WhitePiece){
-                                if(((WhitePiece)obj).isKing())
-                                    numWhiteKings++;
-                                else
-                                    numWhitePieces++;
-                            }
+                        if(obj instanceof BlackPiece){
+                            if(((BlackPiece)obj).isKing())
+                                numBlackKings++;
+                            else
+                                numBlackPieces++;
+                        }
+                        else if(obj instanceof WhitePiece){
+                            if(((WhitePiece)obj).isKing())
+                                numWhiteKings++;
+                            else
+                                numWhitePieces++;
                         }
                     }
                 }
+            }
 
-                double sumWhitePoints = numWhitePieces + numWhiteKings*2;
-                double sumBlackPoints = numBlackPieces + numBlackKings*2;
+            double sumWhitePoints = numWhitePieces + numWhiteKings*2;
+            double sumBlackPoints = numBlackPieces + numBlackKings*2;
 
-                if(Gamecontroller.playerOneAI){
-                    if(sumBlackPoints > sumWhitePoints)
-                        return 1;
-                    else if(sumWhitePoints > sumBlackPoints)
-                        return 0;
-                    return 0.5;
-                }
-                else if(Gamecontroller.playerTwoAI){
-                    if(sumWhitePoints > sumBlackPoints)
-                        return 1;
-                    else if(sumBlackPoints > sumWhitePoints)
-                        return 0;
-                    return 0.5;
-                }
+            if(Gamecontroller.playerOneAI){
+                if(sumBlackPoints > sumWhitePoints)
+                    return 1;
+                else if(sumWhitePoints > sumBlackPoints)
+                    return 0;
+                return 0.5;
+            }
+            else if(Gamecontroller.playerTwoAI){
+                if(sumWhitePoints > sumBlackPoints)
+                    return 1;
+                else if(sumBlackPoints > sumWhitePoints)
+                    return 0;
+                return 0.5;
             }
         }
         else if(num_black == 0){
@@ -304,11 +279,12 @@ public class mcTreeSearch {
                 return 0;
             return 1;
         }
-        else if(num_white == 0){
+        else{
             if(Gamecontroller.playerTwoAI)
                 return 0;
             return 1;
         }
+        System.out.println("we here ");
         return 0;
     }
 
