@@ -162,16 +162,7 @@ public class StartUI extends Application{
                 error1.setTextFill(Color.RED);
                 pane.getChildren().add(error1);
             }
-
-            if(choicesPlayer2.getValue() == null){
-                readyToStart.set(false);
-                error2.setTranslateX(choicesPlayer2.getTranslateX());
-                error2.setTranslateY(choicesPlayer2.getTranslateY() + 25);
-                error2.setTextFill(Color.RED);
-                pane.getChildren().add(error2);
-            }
-
-            if((choicesPlayer1.getValue()=="MINIMAX" || choicesPlayer1.getValue()=="MINIMAX with pruning") && depthValue1.getText().equals("")){
+            else if((choicesPlayer1.getValue()=="MINIMAX" || choicesPlayer1.getValue()=="MINIMAX with pruning") && depthValue1.getText().equals("")){
                 readyToStart.set(false);
                 error3.setTranslateX(depthValue1.getTranslateX());
                 error3.setTranslateY(depthValue1.getTranslateY() + 25);
@@ -185,8 +176,29 @@ public class StartUI extends Application{
                 error5.setTextFill(Color.RED);
                 pane.getChildren().add(error5);
             }
-
-            if((choicesPlayer2.getValue()=="MINIMAX" || choicesPlayer2.getValue()=="MINIMAX with pruning") && depthValue2.getText().equals("")){
+            else if((choicesPlayer1.getValue() == "MINIMAX" || choicesPlayer1.getValue() == "MINIMAX with pruning") && !isPositiveINT(depthValue1.getText(), 1)){
+                readyToStart.set(false);
+                error7.setTranslateX(depthValue1.getTranslateX());
+                error7.setTranslateY(depthValue1.getTranslateY() + 25);
+                error7.setTextFill(Color.RED);
+                pane.getChildren().add(error7);
+            }
+            else if(( choicesPlayer1.getValue()=="MCTS" || choicesPlayer1.getValue()=="MCTS with rave") && !isPositiveINT(depthValue1.getText(), 0)){
+                readyToStart.set(false);
+                error9.setTranslateX(depthValue1.getTranslateX());
+                error9.setTranslateY(depthValue1.getTranslateY() + 25);
+                error9.setTextFill(Color.RED);
+                pane.getChildren().add(error9);
+            }
+            
+            if(choicesPlayer2.getValue() == null){
+                readyToStart.set(false);
+                error2.setTranslateX(choicesPlayer2.getTranslateX());
+                error2.setTranslateY(choicesPlayer2.getTranslateY() + 25);
+                error2.setTextFill(Color.RED);
+                pane.getChildren().add(error2);
+            }
+            else if((choicesPlayer2.getValue()=="MINIMAX" || choicesPlayer2.getValue()=="MINIMAX with pruning") && depthValue2.getText().equals("")){
                 readyToStart.set(false);
                 error4.setTranslateX(depthValue2.getTranslateX());
                 error4.setTranslateY(depthValue2.getTranslateY() + 25);
@@ -201,22 +213,7 @@ public class StartUI extends Application{
                 pane.getChildren().add(error6);
             }
 
-            if((choicesPlayer1.getValue() == "MINIMAX" || choicesPlayer1.getValue() == "MINIMAX with pruning") && !isPositiveINT(depthValue1.getText(), 1)){
-                readyToStart.set(false);
-                error7.setTranslateX(depthValue1.getTranslateX());
-                error7.setTranslateY(depthValue1.getTranslateY() + 25);
-                error7.setTextFill(Color.RED);
-                pane.getChildren().add(error7);
-            }
-            else if(( choicesPlayer1.getValue()=="MCTS" || choicesPlayer1.getValue()=="MCTS with rave") && !isPositiveINT(depthValue1.getText(), 0)){
-                readyToStart.set(false);
-                error9.setTranslateX(depthValue1.getTranslateX());
-                error9.setTranslateY(depthValue1.getTranslateY() + 25);
-                error9.setTextFill(Color.RED);
-                pane.getChildren().add(error9);
-            }
-
-            if((choicesPlayer2.getValue()=="MINIMAX" || choicesPlayer2.getValue()=="MINIMAX with pruning") && !isPositiveINT(depthValue2.getText(), 1)){
+            else if((choicesPlayer2.getValue()=="MINIMAX" || choicesPlayer2.getValue()=="MINIMAX with pruning") && !isPositiveINT(depthValue2.getText(), 1)){
                 readyToStart.set(false);
                 error8.setTranslateX(depthValue2.getTranslateX());
                 error8.setTranslateY(depthValue2.getTranslateY() + 25);
