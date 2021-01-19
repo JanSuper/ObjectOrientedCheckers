@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	public static boolean done = false;
     public static Visual board = new Visual();
     public SmartStage stage = new SmartStage(board);
 
@@ -37,6 +38,7 @@ public class Main extends Application {
 		Gamecontroller.mcLimit = StartUI.mcLIMIT;
 		Gamecontroller.mctsWithRave = StartUI.mctsWithRave;
 		
+		if(!done) {
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, even -> {
 			if(even.getCode() == KeyCode.ESCAPE) {
 				this.stage.close();
@@ -51,6 +53,8 @@ public class Main extends Application {
 				}
 			}
 		});
+		done = true;
+		}
 
         stage.show();
     }
