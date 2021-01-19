@@ -30,6 +30,7 @@ public class Main extends Application {
 
         stage.setTitle("title");
         stage.setScene(scene);
+        
 
 		Gamecontroller.playerOneAI = StartUI.playerOneAI;
 		Gamecontroller.playerTwoAI = StartUI.playerTwoAI;
