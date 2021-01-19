@@ -141,11 +141,6 @@ public class mcTreeSearch {
         Object[][] board = node.game_state;//get a copy of board
         int sim_count = 1;
         int sim_turn = Gamecontroller.turn%2;
-//        if(Gamecontroller.playerOneAI)
-//            sim_turn = 0;
-//        else
-//            sim_turn = 1;
-
         while (!gameOver(board) && sim_count < 50){
             ArrayList<Move> movesMade = new ArrayList<>();
 
@@ -358,7 +353,7 @@ public class mcTreeSearch {
             return 1.5086816547632376*a + 0.41318192411441723*b;
         }
 
-        return 1.5086816547632376*a + 0.41318192411441723*b;
+        return a + c*b;
 
     }
 
