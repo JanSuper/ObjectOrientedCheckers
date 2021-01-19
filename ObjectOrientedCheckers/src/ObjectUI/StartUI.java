@@ -24,8 +24,6 @@ public class StartUI extends Application{
     public static boolean mctsWithRave;
     public static int AIone;
     public static int AItwo;
-    
-    public static Main singleton = null;
 
     public Stage primaryStage = new Stage();
     Label depth1 = new Label();
@@ -264,14 +262,9 @@ public class StartUI extends Application{
                 primaryStage.close();
 
 
-                if(singleton == null) {
-                	Main m = new Main();
-                	singleton = m;
-            }
-                
-                
+                Main m = new Main();
                 try{
-                	singleton.start(singleton.stage);
+                    m.start(m.stage);
                 }
                 catch (Exception exception) {
                     exception.printStackTrace();

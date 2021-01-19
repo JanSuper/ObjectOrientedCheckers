@@ -38,8 +38,8 @@ public class Test {
 					double[] P1 = {rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0};
 					double[] P2 = {1.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0};
 				
-					int P1AI = 8;
-					int P2AI = 4;
+					int P1AI = 0;
+					int P2AI = 6;
 				
 					game.gameLoop(P1, P2, P1AI, P2AI);
 				
@@ -57,10 +57,8 @@ public class Test {
 				
 					game = new Gamecontroller();
 					game.Visuals = false;
-					
-					double[] P1new = {rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0, rn.nextDouble()*2.0};
 				
-					game.gameLoop(P2, P1new, P2AI, P1AI);
+					game.gameLoop(P2, P1, P2AI, P1AI);
 				
 				
 					if(game.turn == game.MAX_TURNS || game.gameDraw) {
@@ -79,15 +77,10 @@ public class Test {
 					for(int j = 0; j <= P1.length - 1; j++) {
 						weights += (String)(P1[j] + " ");
 					}
-					
-					String weightsnew = "";
-					for(int j = 0; j <= P1new.length - 1; j++) {
-						weightsnew += (String)(P1new[j] + " ");
-					}
 		      
 				writer.write(weights + " " + gameOne);
 		      	writer.newLine();
-		      	writer.write(weightsnew + " " + gameTwo);
+		      	writer.write(weights + " " + gameTwo);
 		      	writer.newLine();
 		      
 		      }
