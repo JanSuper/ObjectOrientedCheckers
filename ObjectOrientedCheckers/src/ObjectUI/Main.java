@@ -12,6 +12,7 @@ import javafx.scene.*;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	public static boolean done = false;
     public static Visual board = new Visual();
     public SmartStage stage = new SmartStage(board);
 
@@ -21,18 +22,29 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+    	board.main = this;
         Camera camera = new PerspectiveCamera();
+        
         Scene scene = new Scene(board, WIDTH, HEIGHT, true);
         scene.setCamera(camera);
 
         stage.setTitle("title");
         stage.setScene(scene);
+
+		Gamecontroller.playerOneAI = StartUI.playerOneAI;
+		Gamecontroller.playerTwoAI = StartUI.playerTwoAI;
+		Gamecontroller.AIone = StartUI.AIone;
+		Gamecontroller.AItwo = StartUI.AItwo;
+		Gamecontroller.mcLimit = StartUI.mcLIMIT;
+		Gamecontroller.mctsWithRave = StartUI.mctsWithRave;
+
         stage.show();
     }
 
     public static void main(String[] args) { 
-    	setGameRules();
-        launch(args);
+    	//setGameRules();
+        //launch(args);
+		Application.launch(StartUI.class, args);
     }
     
     public static void setGameRules() {
@@ -117,6 +129,19 @@ public class Main extends Application {
         	  }
         	   Gamecontroller.AItwo = AITypeP2;
     	   }
+    }
+    
+    public void setToThis() {
+    	stage.close();
+
+
+        StartUI s = new StartUI();
+        try{
+            s.start(s.primaryStage);
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
 }

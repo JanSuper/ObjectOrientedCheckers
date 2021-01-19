@@ -9,6 +9,7 @@ import Move.Move;
 import Move.MoveCalcTree;
 import Move.MoveToAction;
 import ObjectUI.Main;
+import ObjectUI.StartUI;
 import ObjectUI.Visual;
 import Piece.BlackPiece;
 import Piece.CheckersPiece;
@@ -23,16 +24,18 @@ public class Gamecontroller {
 	public static int turn = 0;
 	public static final int MAX_TURNS = 100;
 	public static boolean Visuals = true;
-	public static boolean playerOneAI = false;
-	public static boolean playerTwoAI = true;
+	public static boolean playerOneAI = StartUI.playerOneAI;
+	public static boolean playerTwoAI = StartUI.playerTwoAI;
 	public static boolean gameOver = false;
 	public static boolean gameDraw = false;
 	public static boolean playerOneWon = false;
+	public static int mcLimit = StartUI.mcLIMIT;
+	public static boolean mctsWithRave = StartUI.mctsWithRave;
 	public static List<Move> madeMoves = new ArrayList();
 	
 	// 0 = Random / 1 = MCTS / 2 = MINIMAX depth 1 / 3 = MINIMAX depth 2/ 4 = MINIMAX depth 3 /etc
-	public static int AIone = 1;
-	public static int AItwo = 1;
+	public static int AIone = StartUI.AIone;
+	public static int AItwo = StartUI.AItwo;
 	
 	public Gamecontroller() {
 		newGame();

@@ -1,86 +1,83 @@
-package MonteCarlo;
+package ObjectUI;
 
 import AIClasses.AIController;
 import AIClasses.AIMoveToAction;
+import Board.Board;
 import Gamecontroller.Gamecontroller;
+import MonteCarlo.mcNode;
 import Move.Move;
 import Piece.BlackPiece;
-import Piece.CheckersPiece;
 import Piece.Piece;
 import Piece.WhitePiece;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Sphere;
 
-import javax.swing.text.AbstractDocument;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
-public class mcTreeSearch {
+public class mcVisualizerGroup extends SmartGroup {
 
-    private final mcNode root;
-    private final Random rng = new Random();
-    public boolean withRAVE = Gamecontroller.mctsWithRave;
-    private boolean withWeights = false;
+    public static mcVisualiserNode selectedNode;
 
-    public mcTreeSearch(Object[][] g_state) {
-        this.root = new mcNode(g_state);
+    public mcNode root;
+    int exp_turn = 0;
+
+    public mcVisualizerGroup(){
+        super();
+        new Board();
+        this.root = new mcNode(Board.board);
+        visualizeTree(this.root, 0, 0);
     }
 
-    public void setWithRAVE(boolean bool){this.withRAVE = bool;}
-
-    public void setWithWeights(boolean b){
-        this.withWeights = b;
-    }
-
-    public Move getNextMove() {
-
-        if(Gamecontroller.playerOneAI)
-            exp_turn = 0;
-        else
-            exp_turn = 1;
-
-        long start = System.currentTimeMillis();
-        int TIME_LIMIT = Gamecontroller.mcLimit;
-        long end = start + TIME_LIMIT;
-        while (System.currentTimeMillis() < end) {
-            mcNode node = selection(); //get best node
-            expand(node); //expand the selected node
-            simulate(node); //simulate and back propagate(update)
+    public void mcVisExpand(){
+        if(selectedNode != null){
+            //get node contained in node
+            //expand and visualize
+            if(selectedNode.getMcnode().children.size() == 0) {
+                expand(selectedNode.getMcnode());
+                visualizeNode(selectedNode);
+            }
         }
+    }
 
+    void visualizeTree(mcNode node, int depth, int childNum){
+        mcVisualiserNode s = new mcVisualiserNode();
 
-        mcNode best_child = this.root.children.get(0);
-        for(mcNode child : root.children){
-            if(child.num_simulations > best_child.num_simulations)
-                best_child = child;
+        s.setDepth(depth);
+        s.setChildNum(childNum);
+        s.setMcnode(node);
+
+        s.setTranslateX(50 + 50*childNum*3);
+        s.setTranslateY(50 + 50*depth*3);
+
+        if(!getChildren().contains(s))
+            getChildren().add(s);
+
+        for(int i = 0; i < node.children.size(); i++)
+            visualizeTree(node.children.get(i), depth+1, i);
+    }
+
+    void visualizeNode(mcVisualiserNode node){
+        //for all children, visualize
+        for(int i = 0; i < node.getMcnode().children.size(); i++){
+            mcVisualiserNode s = new mcVisualiserNode();
+
+            s.setDepth(node.getDepth()+1);
+            s.setChildNum(i);
+            s.setMcnode(node.getMcnode().children.get(i));
+            node.children.add(s);
+
+            s.setTranslateX(50 + 50*s.getChildNum()*3);
+            s.setTranslateY(50 + 50*s.getDepth()*3);
+
+            if(!getChildren().contains(s))
+                getChildren().add(s);
+
         }
-
-        Move move = best_child.move_made;
-
-        return move;
     }
 
-    private mcNode selection_method(mcNode node){
-
-        mcNode select_node = node.children.get(0);
-        for(mcNode child : node.children){
-            if(UCB(child) > UCB(select_node))
-                select_node = child;
-        }
-        if(select_node.isLeaf())
-            return select_node;
-        else
-            return selection_method(select_node);
-    }
-
-    private mcNode selection() {
-        if(this.root.isLeaf())
-            return this.root;
-        return selection_method(this.root);
-    }
-
-    int exp_turn;
 
     private void expand(mcNode node) {
         if (exp_turn%2 == 0)
@@ -135,7 +132,79 @@ public class mcTreeSearch {
         exp_turn++;
     }
 
-    private void simulate(mcNode node) {
+    private double UCB(mcNode node) {
+        // UCB function is of the form: a+cb
+        // where a = w/n  and  b = sqrt( (ln(N)/n )
+
+
+        int w = node.num_wins;
+        int n = node.num_simulations;
+        double c = Math.sqrt(2);
+        double N = node.parent.num_simulations;
+
+        if(n == 0)
+            return 999999;
+
+        double a = w / n;
+        double b = Math.sqrt((Math.log(N)) / n);
+
+        return a + c * b;
+
+    }
+
+    void printField(){
+        printThisField(selectedNode.getMcnode().game_state);
+        System.out.println("num of simulations = "+selectedNode.getMcnode().num_simulations);
+        System.out.println("num of wins = "+selectedNode.getMcnode().num_wins);
+    }
+
+    void selectNode(){
+        //get visNode from mcNode
+        System.out.println("yz");
+        mcNode snode = selection();
+        for(Node node : getChildren()){
+            if(node instanceof mcVisualiserNode){
+                if(((mcVisualiserNode)node).getMcnode().equals(snode))
+                    changeSelectedNode((mcVisualiserNode)node);
+            }
+        }
+    }
+
+    void changeSelectedNode(mcVisualiserNode node) {
+        if(mcVisualizerGroup.selectedNode != null){
+            PhongMaterial m = new PhongMaterial();
+            m.setDiffuseColor(Color.GREY);
+            mcVisualizerGroup.selectedNode.setMaterial(m);
+        }
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.PURPLE);
+        node.setMaterial(material);
+        selectedNode = node;
+    }
+
+    private mcNode selection() {
+        if(this.root.isLeaf())
+            return this.root;
+        return selection_method(this.root);
+    }
+
+    private mcNode selection_method(mcNode node){
+
+        mcNode select_node = node.children.get(0);
+        for(mcNode child : node.children){
+            if(UCB(child) > UCB(select_node))
+                select_node = child;
+        }
+        if(select_node.isLeaf())
+            return select_node;
+        else
+            return selection_method(select_node);
+    }
+
+    public void simulate() {
+
+        mcNode node = selectedNode.getMcnode();
+
         Object[][] board = node.game_state;//get a copy of board
         int sim_count = 1;
         int sim_turn;
@@ -150,9 +219,6 @@ public class mcTreeSearch {
             if (sim_turn%2 == 0){
                 Move move = getRandomBlackMove(board);
 
-                if(withRAVE)
-                    movesMade.add(move);
-
                 if(move != null){
                     Object[][] new_board = AIMoveToAction.AIAction(move, Gamecontroller.deepBoardCopy(board));
                     board = new_board;
@@ -162,9 +228,6 @@ public class mcTreeSearch {
             }
             else if(sim_turn%2 == 1){
                 Move move = getRandomWhiteMove(board);
-
-                if(withRAVE)
-                    movesMade.add(move);
 
                 if(move != null){
                     Object[][] new_board = AIMoveToAction.AIAction(move, Gamecontroller.deepBoardCopy(board));
@@ -176,21 +239,12 @@ public class mcTreeSearch {
 
             sim_turn=sim_turn+1;
             sim_count=sim_count+1;
-
-            if(withRAVE){
-                double score = getScore(board, sim_turn);
-                for(mcNode child : this.root.children){
-                    for(Move m : movesMade){
-                        if(sameMove(m, child.move_made)){
-                            child.num_playouts_containing_this_move++;
-                            child.num_playouts_won_with_this_move+=score;
-                        }
-                    }
-                }
-            }
         }
 
+        printThisField(board);
+
         double score = getScore(board, sim_turn);
+        System.out.println("score = "+score);
 
         backpropagation(node, score);
     }
@@ -205,13 +259,6 @@ public class mcTreeSearch {
         //do it for root too
         pointer.num_wins += score;
         pointer.num_simulations++;
-    }
-
-    /**
-     * HELPER METHODS
-     */
-    private boolean sameMove(Move m1, Move m2){
-        return Arrays.equals(m1.getFrom(), m2.getFrom()) && Arrays.equals(m1.getToList().get(m1.getToList().size() - 1), m2.getToList().get(m2.getToList().size() - 1));
     }
 
     private double getScore(Object[][] board, int turn) {
@@ -288,6 +335,13 @@ public class mcTreeSearch {
         return 0;
     }
 
+    private boolean gameOver(Object[][] board) {
+        if (exists_one_of_each(board)) {
+            return noPossibleMoves(board);
+        } else
+            return true;
+    }
+
     private boolean exists_one_of_each(Object[][] board) {
         int num_black = 0;
         int num_white = 0;
@@ -319,48 +373,8 @@ public class mcTreeSearch {
         return true;
     }
 
-    private boolean gameOver(Object[][] board) {
-        if (exists_one_of_each(board)) {
-            return noPossibleMoves(board);
-        } else
-            return true;
-    }
-
-    private double UCB(mcNode node) {
-        // UCB function is of the form: a+cb
-        // where a = w/n  and  b = sqrt( (ln(N)/n )
-
-
-        int w = node.num_wins;
-        int n = node.num_simulations;
-        double c = Math.sqrt(2);
-        double N = node.parent.num_simulations;
-
-        if(n == 0)
-            return 999999;
-
-        if(withRAVE){
-            double ni = node.num_playouts_containing_this_move;
-            double wi = node.num_playouts_won_with_this_move;
-
-            double B = (ni)/(n+ni+4*2*n*ni);
-
-            return ( (1-B)*(w/n) )+( B*(wi/ni) )+( c* Math.sqrt((Math.log(node.parent.num_simulations))/ni));
-
-        }
-
-        double a = w / n;
-        double b = Math.sqrt((Math.log(N)) / n);
-
-        if(this.withWeights){
-            return 1.5086816547632376*a + 0.41318192411441723*b;
-        }
-
-        return 1.5086816547632376*a + 0.41318192411441723*b;
-
-    }
-
     private Move getRandomBlackMove(Object[][] board){
+        Random rng = new Random();
         for(Object obj : board[7]){
             if(obj instanceof BlackPiece)
                 ((BlackPiece)obj).makeKing();
@@ -417,6 +431,9 @@ public class mcTreeSearch {
     }
 
     private Move getRandomWhiteMove(Object[][] board){
+
+        Random rng = new Random();
+
         for(Object obj : board[0]){
             if(obj instanceof WhitePiece)
                 ((WhitePiece)obj).makeKing();
@@ -470,5 +487,45 @@ public class mcTreeSearch {
             Gamecontroller.madeMoves.remove(0);
 
         return move;
+    }
+
+    void printThisField(Object[][] field){
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_PURPLE = "\u001B[35m";
+
+        System.out.println();
+        System.out.println();
+
+        for(Object[] arr: field){
+            for(Object obj : arr)
+            {
+                if(obj instanceof BlackPiece) {
+                    if(((Piece)obj).isKing())
+                        System.out.print(ANSI_PURPLE + " B " + ANSI_RESET);
+                    else
+                        System.out.print(ANSI_RED + " B " + ANSI_RESET);
+                }
+                else if(obj instanceof WhitePiece) {
+                    if(((Piece)obj).isKing())
+                        System.out.print(ANSI_PURPLE + " W " + ANSI_RESET);
+                    else
+                        System.out.print(ANSI_GREEN + " W " + ANSI_RESET);
+                }
+                else if(obj == null)
+                    System.out.print(" 0 ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    void deleteChildren(){
+        if(selectedNode != null) {
+            selectedNode.getMcnode().children = new ArrayList<>();
+            for(mcVisualiserNode child : selectedNode.children)
+                getChildren().remove(child);
+        }
     }
 }
